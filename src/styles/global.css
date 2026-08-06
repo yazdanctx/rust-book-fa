@@ -1,0 +1,319 @@
+@import "tailwindcss";
+
+/* ── Fonts ────────────────────────────────────────────────────────────────
+   Peyda is Persian-only; Latin text and code fall through to the system
+   and mono stacks. Only three weights ship (see ADR notes in SPEC §5).     */
+
+@font-face {
+  font-family: "Peyda";
+  src: url("/fonts/PeydaFaNumWeb-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Peyda";
+  src: url("/fonts/PeydaFaNumWeb-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Peyda";
+  src: url("/fonts/PeydaFaNumWeb-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Theme ──────────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-background: #000;
+  --color-foreground: #fff;
+  --color-pitch-black: #000;
+
+  --color-card: #1b1918;
+  --color-muted: #1b1918;
+  --color-muted-foreground: #78726d;
+
+  --color-border: #443f3c;
+  --color-input: #443f3c;
+  --color-ring: #78726d;
+
+  --color-primary: #d6d3d1;
+  --color-primary-foreground: #000;
+  --color-secondary: #292624;
+  --color-secondary-foreground: #b1ada9;
+  --color-accent: #292624;
+  --color-accent-foreground: #c2bfbc;
+
+  --color-link: #54a2ff;
+  --color-link-visited: #ac4bff;
+  --color-code: #a36100;
+
+  --font-sans:
+    "Peyda", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji";
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────── */
+
+@layer base {
+  html {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    scroll-margin-top: 80px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  /* Code is always LTR, whatever the document direction. */
+  [dir="rtl"] pre,
+  [dir="rtl"] code,
+  [dir="rtl"] kbd,
+  [dir="rtl"] samp {
+    direction: ltr;
+    text-align: left;
+  }
+
+  /* Inline code sits inside RTL prose, so it must also be a bidi island:
+     without isolation the browser reorders its trailing punctuation into the
+     surrounding Persian run — `let mut x = 5;` renders as `; let mut x = 5`. */
+  [dir="rtl"] :not(pre) > code,
+  [dir="rtl"] kbd,
+  [dir="rtl"] samp {
+    unicode-bidi: isolate;
+    text-align: start;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--color-secondary);
+    color: var(--color-foreground);
+  }
+}
+
+/* ── Prose ────────────────────────────────────────────────────────────────
+   Hand-rolled rather than @tailwindcss/typography: the book uses a bounded
+   set of elements, and the plugin's defaults would need overriding for RTL
+   and for the monochrome palette anyway.                                   */
+
+.prose {
+  font-size: 1.0625rem;
+  line-height: 1.9;
+  color: var(--color-foreground);
+}
+
+.prose > * + * {
+  margin-block-start: 1.25em;
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+  margin-block-start: 2.5em;
+  margin-block-end: 0.75em;
+}
+
+.prose h3 {
+  font-size: 1.25rem;
+  margin-block-start: 2em;
+  margin-block-end: 0.6em;
+}
+
+.prose h4,
+.prose h5 {
+  font-size: 1.0625rem;
+  margin-block-start: 1.75em;
+  margin-block-end: 0.5em;
+}
+
+.prose a {
+  color: var(--color-link);
+  text-decoration-line: none;
+}
+
+.prose a:visited {
+  color: var(--color-link-visited);
+}
+
+.prose a:hover {
+  text-decoration-line: underline;
+}
+
+/* Italics read poorly in Persian; upstream leans on <em> heavily. */
+.prose em,
+.prose i,
+.prose cite {
+  font-style: normal;
+  font-weight: 600;
+}
+
+.prose strong {
+  font-weight: 700;
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: 1.5em;
+}
+
+.prose li + li {
+  margin-block-start: 0.4em;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose blockquote {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  padding: 1.25rem;
+  padding-inline-end: 2.75rem;
+  font-style: normal;
+  position: relative;
+}
+
+.prose blockquote::before {
+  content: "💡";
+  position: absolute;
+  top: 1.25rem;
+  inset-inline-end: 1rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.prose blockquote > * + * {
+  margin-block-start: 1em;
+}
+
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--color-code);
+  word-break: break-word;
+}
+
+.prose pre {
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  padding: 1rem 1.15rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  background: var(--color-card);
+}
+
+.prose pre code {
+  font-family: var(--font-mono);
+  font-size: inherit;
+  color: inherit;
+  background: none;
+}
+
+.prose img {
+  border: 1px solid var(--color-border);
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.prose img.center {
+  margin-inline: auto;
+}
+
+.prose figure {
+  margin: 0;
+}
+
+.prose figcaption,
+.prose .caption {
+  color: var(--color-muted-foreground);
+  font-size: 0.9375rem;
+  margin-block-start: 0.6em;
+}
+
+.prose kbd {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  padding: 0.1em 0.4em;
+  background: var(--color-secondary);
+}
+
+.prose hr {
+  border: none;
+  border-block-start: 1px solid var(--color-border);
+  margin-block: 2.5em;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  display: block;
+  overflow-x: auto;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid var(--color-border);
+  padding: 0.5rem 0.75rem;
+  text-align: start;
+  vertical-align: top;
+}
+
+.prose th {
+  background: var(--color-card);
+  font-weight: 600;
+}
+
+/* ── Code blocks ──────────────────────────────────────────────────────────
+   Token colours come from the monochrome Shiki theme in src/lib/shiki-mono.ts,
+   which emits inline styles. Only layout concerns live here.               */
+
+.prose .astro-code {
+  font-variant-ligatures: none;
+}
+
+/* The filename marker that precedes a listing (SPEC §2.1 step 3). */
+.prose .filename {
+  display: block;
+  color: var(--color-muted-foreground);
+  font-size: 0.9375rem;
+  margin-block-end: 0.5em;
+}
+
+.prose .filename code {
+  color: inherit;
+}

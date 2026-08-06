@@ -1,0 +1,83 @@
+---
+// Temporary page for verifying the design system (T2). Delete once the real
+// page route lands in T6.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Code } from "astro:components";
+import { shikiMono } from "../lib/shiki-mono";
+
+const sample = `use std::collections::HashMap;
+
+/// Counts how many times each word appears.
+fn tally(words: &[&str]) -> HashMap<String, usize> {
+    let mut counts = HashMap::new();
+    for word in words {
+        *counts.entry(word.to_string()).or_insert(0) += 1;
+    }
+    counts
+}
+`;
+---
+
+<BaseLayout title="بررسی استایل">
+  <main class="mx-auto max-w-3xl px-5 py-16">
+    <h1 class="text-3xl font-bold">بررسی استایل</h1>
+
+    <div class="prose mt-8">
+      <p>
+        این صفحه برای بررسی ظاهر متن فارسی در کنار کد لاتین ساخته شده است. متن
+        فارسی راست‌چین است، اما بلوک‌های کد و نام‌هایی مثل <code
+          >HashMap</code
+        > همیشه چپ‌چین می‌مانند.
+      </p>
+
+      <h2>یک عنوان سطح دو</h2>
+
+      <p>
+        در این پاراگراف <strong>متن پرررنگ</strong> و <em>متن تأکیدی</em> را
+        می‌بینید. شماره‌ها هم باید درست نمایش داده شوند: ۱۲۳۴۵۶۷۸۹۰.
+      </p>
+
+      <blockquote>
+        <p>
+          نکته: این یک بلوک نقل‌قول است که در نسخه انگلیسی کتاب برای یادداشت‌ها
+          استفاده می‌شود.
+        </p>
+      </blockquote>
+
+      <h3>یک عنوان سطح سه</h3>
+
+      <ul>
+        <li>مورد اول فهرست</li>
+        <li>مورد دوم فهرست با کد درون‌خطی <code>let mut x = 5;</code></li>
+        <li>مورد سوم فهرست</li>
+      </ul>
+
+      <p><span class="filename">نام فایل: src/main.rs</span></p>
+
+      <Code code={sample} lang="rust" theme={shikiMono} />
+
+      <p class="caption">لیستینگ ۲-۱: شمارش تعداد تکرار هر واژه</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ستون اول</th>
+            <th>ستون دوم</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>مقدار</td>
+            <td><code>i32</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        برای خروج از برنامه کلید <kbd>ctrl</kbd>-<kbd>c</kbd> را فشار دهید.
+      </p>
+
+      <p><a href="#">یک پیوند نمونه</a></p>
+    </div>
+  </main>
+</BaseLayout>

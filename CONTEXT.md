@@ -1,0 +1,84 @@
+# Rust Book FA
+
+A Persian (Farsi) translation of *The Rust Programming Language*, published as a
+static Astro site. The English source is vendored as markdown; translation
+happens file-by-file over a long period, so the site must render a partially
+complete book honestly.
+
+## Language
+
+### Content
+
+**Page**:
+One chapter or section of the book, corresponding to exactly one markdown file
+in `src-fa/`. There are 111 of them.
+_Avoid_: Chapter (a Page may be a section within a chapter), Article, Post
+
+**Slug**:
+A Page's URL path segment, identical to its source filename without the
+extension — e.g. `ch01-01-installation`. Inherited unchanged from mdbook so
+that inbound links and in-book cross-references keep working.
+_Avoid_: Path, ID, Permalink
+
+**Summary**:
+`src-fa/SUMMARY.md` — the single source of truth for which Pages exist, their
+reading order, their nesting, and their Farsi titles. Not itself a Page.
+_Avoid_: TOC, Index, Sidebar, Manifest
+
+**Untranslated Page**:
+A Page whose `src-fa/` file is exactly zero bytes. It has a Farsi title (from
+the Summary) but no body, is not routed, and appears everywhere in the UI as a
+Disabled Link.
+_Avoid_: Empty page, Missing page, Draft, Stub
+
+**Translated Page**:
+A Page whose `src-fa/` file has any content at all. The first keystroke
+promotes an Untranslated Page to a Translated one; there is no explicit status
+to maintain.
+_Avoid_: Published page, Complete page
+
+**Disabled Link**:
+How an Untranslated Page is presented wherever it would otherwise be a link —
+in the Summary sidebar, in prev/next, and in cross-references inside prose. A
+muted, unclickable element labelled **در دست نگارش** ("being written").
+_Avoid_: Greyed link, Broken link, Placeholder
+
+**Translation Progress**:
+The count of Translated Pages out of 111, derived on every build from file
+sizes alone.
+
+### Source material
+
+**Resolved Source**:
+`src-en-resolved/` — the English book with every Include Directive replaced by
+the real code it referenced and every Listing flattened to plain markdown. It
+is generated, committed, and never served; it is the worksheet a translator
+copies from when starting a Page.
+_Avoid_: Compiled source, Build output, Dist
+
+**Include Directive**:
+An mdbook `{{#include}}` or `{{#rustdoc_include}}` marker in the English
+source pointing at a real file in the upstream book's `listings/` tree. There
+are 707 of them, and none survive into `src-en-resolved/`.
+_Avoid_: Import, Transclusion, Macro
+
+**Anchor**:
+The suffix on an Include Directive selecting part of the target file — either a
+name matching an `// ANCHOR:` comment (`:here`, `:all`) or a line number.
+
+**Listings Tree**:
+The upstream Rust Book's `listings/` directory of compilable example crates and
+captured terminal output. Not vendored into this repo; supplied by path when
+generating the Resolved Source.
+
+**Listing**:
+A code block presented as a numbered, captioned figure — optionally with the
+filename it belongs to. Written as an mdbook `<Listing>` element upstream;
+flattened to a filename line, a fenced block, and a caption line.
+_Avoid_: Snippet, Example, Figure
+
+**Ferris Badge**:
+The crab icon marking a code block as deliberately broken — it does not
+compile, it panics, or it does not do what it appears to do. Derived from the
+attributes on the upstream code fence, which carry no other meaning here.
+_Avoid_: Warning, Callout, Admonition
