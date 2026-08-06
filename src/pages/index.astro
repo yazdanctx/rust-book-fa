@@ -15,73 +15,89 @@ const fa = (n: number) => toPersianDigits(String(n));
 ---
 
 <BookLayout
-  title="زبان برنامه‌نویسی راست"
-  description="ترجمه فارسی کتاب The Rust Programming Language"
+    title="زبان برنامه‌نویسی راست"
+    description="ترجمه فارسی کتاب The Rust Programming Language"
 >
-  <main class="mx-auto max-w-3xl">
-    <section class="hero">
-      {/* Decorative: alt is intentionally empty so screen readers skip it.
-          Add a description here if the image ever carries meaning. */}
-      <img
-        src="/toji.avif"
-        alt=""
-        width="833"
-        height="833"
-        class="hero-img"
-        fetchpriority="high"
-      />
-      <div class="hero-fade"></div>
-      <h1 class="hero-title">راست رو فارسی یاد بگیر</h1>
-    </section>
+    <main class="mx-auto max-w-3xl">
+        <section class="hero">
+            {
+                /* Decorative: alt is intentionally empty so screen readers skip it.
+          Add a description here if the image ever carries meaning. */
+            }
+            <img
+                src="/toji.avif"
+                alt=""
+                width="833"
+                height="833"
+                class="hero-img"
+                fetchpriority="high"
+            />
+            <div class="hero-fade"></div>
+            <h1 class="hero-title">زبان برنامه نویسی راست</h1>
+        </section>
 
-    <div class="px-5 pb-16">
-      <div class="prose">
-        <p>
-          کل کتاب رسمی راست، فارسیِ روون — نه ترجمه‌ی خشکِ کتاب‌درسی. فصل‌به‌فصل
-          می‌رم جلو و هر چی آماده شد همین‌جا می‌ذارم.
-        </p>
-        <p>
-          اون‌هایی که هنوز نوبتشون نشده با برچسب
-          <span class="nav-badge">در دست نگارش</span> توی فهرست می‌بینی؛ فعلاً
-          کلیک نمی‌خورن، ولی حواسم بهشون هست.
-        </p>
-      </div>
+        <div class="px-5 pb-16">
+            <div class="prose">
+                <p>
+                    کل کتاب رسمی راست، فارسیِ روون — نه ترجمه‌ی خشکِ کتاب‌درسی.
+                    فصل‌به‌فصل می‌رم جلو و هر چی آماده شد همین‌جا می‌ذارم.
+                </p>
+                <p>
+                    اون‌هایی که هنوز نوبتشون نشده با برچسب
+                    <span class="nav-badge">در دست نگارش</span> توی فهرست می‌بینی.
+                    فعلاً کلیک نمی‌خورن، ولی حواسم بهشون هست.
+                </p>
+            </div>
 
-      <section
-        class="mt-10 border border-(--color-border) p-5"
-        aria-label="میزان پیشرفت ترجمه"
-      >
-        <p class="text-sm">
-          تا اینجا <strong>{fa(translated)}</strong> صفحه از
-          <strong>{fa(total)}</strong> آماده شده — {fa(percent)}٪
-        </p>
-        <div class="progress-track mt-3" role="presentation">
-          <div class="progress-fill" style={`width: ${percent}%`}></div>
+            <section
+                class="mt-10 border border-(--color-border) p-5"
+                aria-label="میزان پیشرفت ترجمه"
+            >
+                <p class="text-sm">
+                    تا اینجا <strong>{fa(translated)}</strong> صفحه از
+                    <strong>{fa(total)}</strong> آماده شده — {fa(percent)}٪
+                </p>
+                <div class="progress-track mt-3" role="presentation">
+                    <div class="progress-fill" style={`width: ${percent}%`}>
+                    </div>
+                </div>
+            </section>
+
+            {
+                entry && (
+                    <p class="mt-8">
+                        <a
+                            href={`/${entry.slug}/`}
+                            class="pager-link inline-block"
+                        >
+                            <span class="pager-label">بزن بریم</span>
+                            <span
+                                class="pager-title"
+                                set:html={titleToHtml(entry.title)}
+                            />
+                        </a>
+                    </p>
+                )
+            }
+
+            <footer
+                class="mt-16 text-xs leading-relaxed text-(--color-muted-foreground)"
+            >
+                <p>
+                    کتاب اصلی، کار تیم <span class="latin">Rust</span> هست و من
+                    خودم این کتابو میخونم و بعد به زبان خودم برات بازگو میکنم.
+                    اگه دیدی کار لنگ میزنه برو
+                    <a
+                        href="https://doc.rust-lang.org/book/"
+                        class="underline hover:no-underline"
+                        >کتاب اصلی رو بخون</a
+                    >
+                </p>
+                <p class="mt-2">
+                    متن اصلی با مجوز <span class="latin">MIT</span> و
+                    <span class="latin">Apache-2.0</span> منتشر شده
+                </p>
+            </footer>
         </div>
-      </section>
-
-      {
-        entry && (
-          <p class="mt-8">
-            <a href={`/${entry.slug}/`} class="pager-link inline-block">
-              <span class="pager-label">بزن بریم</span>
-              <span class="pager-title" set:html={titleToHtml(entry.title)} />
-            </a>
-          </p>
-        )
-      }
-
-      <footer class="mt-16 text-xs leading-relaxed text-(--color-muted-foreground)">
-        <p>
-          اصلِ کتاب کارِ تیم راسته و با مجوز
-          <span class="latin">MIT</span> و <span class="latin">Apache-2.0</span>
-          منتشر شده؛ من فقط فارسیش می‌کنم. هر جا ترجمه لنگ زد، برو سراغ
-          <a
-            href="https://doc.rust-lang.org/book/"
-            class="underline hover:no-underline">نسخه‌ی انگلیسی</a
-          >.
-        </p>
-      </footer>
-    </div>
-  </main>
+    </main>
 </BookLayout>
