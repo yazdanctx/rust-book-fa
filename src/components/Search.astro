@@ -1,0 +1,98 @@
+---
+/**
+ * Pagefind search, mounted in the sidebar header.
+ *
+ * The index only exists after `pagefind --site dist` has run, so this is inert
+ * during `astro dev`: the import fails, the input stays disabled, nothing
+ * throws. Run `pnpm build && pnpm preview` to exercise search.
+ */
+---
+
+<div class="book-search">
+  <input
+    type="search"
+    id="search-input"
+    placeholder="جستجو در کتاب…"
+    aria-label="جستجو در کتاب"
+    autocomplete="off"
+    disabled
+  />
+  <div id="search-results" class="search-results" aria-live="polite"></div>
+</div>
+
+{/*
+  is:inline keeps this out of the Vite bundle. Pagefind's module is generated
+  after the build and lives outside it, and when Vite processes the dynamic
+  import it wraps it in a preload helper whose `__VITE_PRELOAD__` placeholder is
+  left unreplaced — a ReferenceError at runtime. A native import avoids that
+  entirely, at the cost of writing plain JS here.
+*/}
+<script is:inline>
+  (() => {
+    const input = document.querySelector("#search-input");
+    const output = document.querySelector("#search-results");
+    if (!input || !output) return;
+
+    let pagefind;
+    let timer;
+
+    async function load() {
+      if (pagefind) return pagefind;
+      try {
+        pagefind = await import("/pagefind/pagefind.js");
+        await pagefind.options({ excerptLength: 20 });
+        return pagefind;
+      } catch {
+        return undefined;
+      }
+    }
+
+    load().then((pf) => {
+      if (pf) input.disabled = false;
+    });
+
+    const escape = (s) =>
+      String(s).replace(/[&<>"]/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+      );
+
+    async function run(term) {
+      if (term.length < 2) {
+        output.innerHTML = "";
+        return;
+      }
+      const pf = await load();
+      if (!pf) return;
+
+      const search = await pf.search(term);
+      const top = await Promise.all(
+        search.results.slice(0, 8).map((r) => r.data()),
+      );
+
+      if (top.length === 0) {
+        output.innerHTML = '<p class="search-empty">نتیجه‌ای پیدا نشد.</p>';
+        return;
+      }
+
+      // `excerpt` is Pagefind-generated markup containing <mark>, so it is not
+      // escaped; the title is ours and is.
+      output.innerHTML = top
+        .map(
+          (r) =>
+            '<a class="search-hit" href="' +
+            escape(r.url) +
+            '"><span class="search-hit-title">' +
+            escape(r.meta && r.meta.title ? r.meta.title : r.url) +
+            '</span><span class="search-hit-excerpt">' +
+            r.excerpt +
+            "</span></a>",
+        )
+        .join("");
+    }
+
+    input.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => run(input.value.trim()), 180);
+    });
+  })();
+</script>

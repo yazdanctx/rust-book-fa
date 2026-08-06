@@ -1,5 +1,3 @@
-## Extending Cargo with Custom Commands
-
 Cargo is designed so that you can extend it with new subcommands without having
 to modify it. If a binary in your `$PATH` is named `cargo-something`, you can
 run it as if it were a Cargo subcommand by running `cargo something`. Custom

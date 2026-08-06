@@ -1,5 +1,3 @@
-## All the Places Patterns Can Be Used
-
 Patterns pop up in a number of places in Rust, and you’ve been using them a lot
 without realizing it! This section discusses all the places where patterns are
 valid.
@@ -98,7 +96,7 @@ in the tuple, the overall type won’t match and we’ll get a compiler error. F
 example, Listing 19-2 shows an attempt to destructure a tuple with three
 elements into two variables, which won’t work.
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
     let (x, y) = (1, 2, 3);

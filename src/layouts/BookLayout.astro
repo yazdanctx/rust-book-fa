@@ -1,0 +1,56 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Sidebar from "../components/Sidebar.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  englishSlug?: string;
+  /** Slug of the current page, for sidebar highlighting. */
+  current?: string;
+}
+
+const { title, description, englishSlug, current } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} englishSlug={englishSlug}>
+  <div class="book-layout">
+    <Sidebar current={current} />
+
+    <div class="book-main">
+      <button
+        class="sidebar-toggle"
+        type="button"
+        aria-controls="sidebar"
+        aria-expanded="false"
+        data-sidebar-toggle
+      >
+        ☰ فهرست کتاب
+      </button>
+
+      <slot />
+    </div>
+  </div>
+
+  <div class="sidebar-backdrop" data-sidebar-backdrop aria-hidden="true"></div>
+</BaseLayout>
+
+<script>
+  const body = document.body;
+  const toggle = document.querySelector<HTMLButtonElement>("[data-sidebar-toggle]");
+  const backdrop = document.querySelector<HTMLElement>("[data-sidebar-backdrop]");
+
+  function setOpen(open: boolean): void {
+    body.classList.toggle("sidebar-open", open);
+    toggle?.setAttribute("aria-expanded", String(open));
+  }
+
+  toggle?.addEventListener("click", () =>
+    setOpen(!body.classList.contains("sidebar-open")),
+  );
+  backdrop?.addEventListener("click", () => setOpen(false));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
+  });
+</script>

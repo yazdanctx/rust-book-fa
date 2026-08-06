@@ -1,5 +1,3 @@
-## Macros
-
 We’ve used macros like `println!` throughout this book, but we haven’t fully
 explored what a macro is and how it works. The term _macro_ refers to a family
 of features in Rust—declarative macros with `macro_rules!` and three kinds of
@@ -222,7 +220,7 @@ programmer to write code like Listing 20-37 using our crate.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 use hello_macro::HelloMacro;
@@ -334,7 +332,7 @@ won’t compile until we add a definition for the `impl_hello_macro` function.
 
 <span class="filename">نام فایل: hello_macro_derive/src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 use proc_macro::TokenStream;

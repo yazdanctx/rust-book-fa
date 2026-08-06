@@ -1,5 +1,3 @@
-## To `panic!` or Not to `panic!`
-
 So, how do you decide when you should call `panic!` and when you should return
 `Result`? When code panics, there’s no way to recover. You could call `panic!`
 for any error situation, whether there’s a possible way to recover or not, but

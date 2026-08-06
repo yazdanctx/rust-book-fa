@@ -1,5 +1,3 @@
-## An Example Program Using Structs
-
 To understand when we might want to use structs, let’s write a program that
 calculates the area of a rectangle. We’ll start by using single variables and
 then refactor the program until we’re using structs instead.
@@ -162,7 +160,7 @@ previous chapters. This won’t work, however.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 struct Rectangle {

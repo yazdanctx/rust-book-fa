@@ -1,5 +1,3 @@
-## Packages and Crates
-
 The first parts of the module system we’ll cover are packages and crates.
 
 A _crate_ is the smallest amount of code that the Rust compiler considers at a

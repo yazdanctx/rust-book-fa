@@ -1,5 +1,3 @@
-## Advanced Functions and Closures
-
 This section explores some advanced features related to functions and closures,
 including function pointers and returning closures.
 
@@ -146,7 +144,7 @@ in Listing 20-33.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn main() {

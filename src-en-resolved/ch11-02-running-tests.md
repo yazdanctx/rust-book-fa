@@ -1,5 +1,3 @@
-## Controlling How Tests Are Run
-
 Just as `cargo run` compiles your code and then runs the resultant binary,
 `cargo test` compiles your code in test mode and runs the resultant test
 binary. The default behavior of the binary produced by `cargo test` is to run
@@ -63,7 +61,7 @@ parameter and returns 10, as well as a test that passes and a test that fails.
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/panics.svg" alt="این کد پنیک می‌کند!" title="این کد پنیک می‌کند!" />
+<img class="ferris" src="/img/ferris/panics.svg" alt="این کد پنیک می‌کند!" title="این کد پنیک می‌کند!" />
 
 ```rust
 fn prints_and_returns_10(a: i32) -> i32 {

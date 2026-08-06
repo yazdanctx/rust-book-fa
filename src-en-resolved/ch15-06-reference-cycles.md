@@ -1,5 +1,3 @@
-## Reference Cycles Can Leak Memory
-
 Rust’s memory safety guarantees make it difficult, but not impossible, to
 accidentally create memory that is never cleaned up (known as a _memory leak_).
 Preventing memory leaks entirely is not one of Rust’s guarantees, meaning
@@ -122,7 +120,7 @@ to 1 as well. This instance’s memory can’t be dropped either, because the ot
 remain uncollected forever. To visualize this reference cycle, we’ve created
 the diagram in Figure 15-4.
 
-<img alt="A rectangle labeled 'a' that points to a rectangle containing the integer 5. A rectangle labeled 'b' that points to a rectangle containing the integer 10. The rectangle containing 5 points to the rectangle containing 10, and the rectangle containing 10 points back to the rectangle containing 5, creating a cycle." src="img/trpl15-04.svg" class="center" />
+<img alt="A rectangle labeled 'a' that points to a rectangle containing the integer 5. A rectangle labeled 'b' that points to a rectangle containing the integer 10. The rectangle containing 5 points to the rectangle containing 10, and the rectangle containing 10 points back to the rectangle containing 5, creating a cycle." src="/img/trpl15-04.svg" class="center" />
 
 <span class="caption">Figure 15-4: A reference cycle of lists `a` and `b`
 pointing to each other</span>

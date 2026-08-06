@@ -1,5 +1,3 @@
-# Error Handling
-
 Errors are a fact of life in software, so Rust has a number of features for
 handling situations in which something goes wrong. In many cases, Rust requires
 you to acknowledge the possibility of an error and take some action before your

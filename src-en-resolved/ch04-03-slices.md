@@ -1,5 +1,3 @@
-## The Slice Type
-
 _Slices_ let you reference a contiguous sequence of elements in a
 [collection](ch08-00-common-collections.md). A slice is a kind
 of reference, so it does not have ownership.
@@ -250,7 +248,7 @@ will throw a compile-time error:
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn main() {

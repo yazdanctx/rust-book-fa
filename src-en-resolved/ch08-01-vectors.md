@@ -1,5 +1,3 @@
-## Storing Lists of Values with Vectors
-
 The first collection type we’ll look at is `Vec<T>`, also known as a vector.
 Vectors allow you to store more than one value in a single data structure that
 puts all the values next to each other in memory. Vectors can only store values
@@ -101,7 +99,7 @@ existing elements. As an example, let’s see what happens when we have a vector
 of five elements and then we try to access an element at index 100 with each
 technique, as shown in Listing 8-5.
 
-<img class="ferris" src="img/ferris/panics.svg" alt="این کد پنیک می‌کند!" title="این کد پنیک می‌کند!" />
+<img class="ferris" src="/img/ferris/panics.svg" alt="این کد پنیک می‌کند!" title="این کد پنیک می‌کند!" />
 
 ```rust
     let v = vec![1, 2, 3, 4, 5];
@@ -137,7 +135,7 @@ reference to the first element in a vector and try to add an element to the
 end. This program won’t work if we also try to refer to that element later in
 the function.
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
     let mut v = vec![1, 2, 3, 4, 5];

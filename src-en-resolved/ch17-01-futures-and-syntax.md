@@ -1,5 +1,3 @@
-## Futures and the Async Syntax
-
 The key elements of asynchronous programming in Rust are _futures_ and Rust’s
 `async` and `await` keywords.
 
@@ -210,7 +208,7 @@ Unfortunately, this code doesn’t compile yet.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 async fn main() {

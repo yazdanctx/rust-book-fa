@@ -1,5 +1,3 @@
-## Functions
-
 Functions are prevalent in Rust code. You’ve already seen one of the most
 important functions in the language: the `main` function, which is the entry
 point of many programs. You’ve also seen the `fn` keyword, which allows you to
@@ -170,7 +168,7 @@ to another variable, as the following code tries to do; you’ll get an error:
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn main() {
@@ -324,7 +322,7 @@ an expression to a statement?
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn main() {

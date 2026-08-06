@@ -1,5 +1,3 @@
-## Control Flow
-
 The ability to run some code depending on whether a condition is `true` and the
 ability to run some code repeatedly while a condition is `true` are basic
 building blocks in most programming languages. The most common constructs that
@@ -76,7 +74,7 @@ following code:
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn main() {
@@ -209,7 +207,7 @@ example, we’ll get an error:
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn main() {

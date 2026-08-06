@@ -181,7 +181,7 @@ struct we want to use instead of `thread::spawn`.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn main() {
@@ -469,7 +469,7 @@ returned a `ThreadPool` instance containing them.
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
+<img class="ferris" src="/img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
 
 ```rust
 use std::thread;
@@ -695,7 +695,7 @@ closure. The code in Listing 21-17 won’t quite compile yet.
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 impl ThreadPool {
@@ -984,7 +984,7 @@ Listing 21-21.
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
+<img class="ferris" src="/img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
 
 ```rust
 // --snip--

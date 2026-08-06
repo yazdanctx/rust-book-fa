@@ -1,5 +1,3 @@
-## Refactoring to Improve Modularity and Error Handling
-
 To improve our program, we’ll fix four problems that have to do with the
 program’s structure and how it’s handling potential errors. First, our `main`
 function now performs two tasks: It parses arguments and reads files. As our
@@ -340,7 +338,7 @@ well, which we’ll do in the next listing.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 impl Config {
@@ -627,7 +625,7 @@ the signature in more detail when we fill in the implementation.
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {

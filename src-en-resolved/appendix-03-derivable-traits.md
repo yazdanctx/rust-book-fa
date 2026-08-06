@@ -1,5 +1,3 @@
-## Appendix C: Derivable Traits
-
 In various places in the book, we’ve discussed the `derive` attribute, which
 you can apply to a struct or enum definition. The `derive` attribute generates
 code that will implement a trait with its own default implementation on the

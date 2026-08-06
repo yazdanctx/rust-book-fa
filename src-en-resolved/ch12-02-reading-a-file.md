@@ -1,5 +1,3 @@
-## Reading a File
-
 Now we’ll add functionality to read the file specified in the `file_path`
 argument. First, we need a sample file to test it with: We’ll use a file with a
 small amount of text over multiple lines with some repeated words. Listing 12-3

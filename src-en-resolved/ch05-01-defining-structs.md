@@ -1,5 +1,3 @@
-## Defining and Instantiating Structs
-
 Structs are similar to tuples, discussed in [“The Tuple Type”][tuples] section, in that both hold multiple related values. Like tuples, the
 pieces of a struct can be different types. Unlike with tuples, in a struct
 you’ll name each piece of data so it’s clear what the values mean. Adding these

@@ -1,5 +1,3 @@
-# Using Structs to Structure Related Data
-
 A _struct_, or _structure_, is a custom data type that lets you package
 together and name multiple related values that make up a meaningful group. If
 you’re familiar with an object-oriented language, a struct is like an object’s

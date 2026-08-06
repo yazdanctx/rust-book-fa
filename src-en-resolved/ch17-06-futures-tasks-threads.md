@@ -1,5 +1,3 @@
-## Putting It All Together: Futures, Tasks, and Threads
-
 As we saw in [Chapter 16][ch16], threads provide one approach to
 concurrency. We’ve seen another approach in this chapter: using async with
 futures and streams. If you’re wondering when to choose one method over the other,

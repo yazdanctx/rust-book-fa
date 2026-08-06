@@ -1,5 +1,3 @@
-## Advanced Types
-
 The Rust type system has some features that we’ve so far mentioned but haven’t
 yet discussed. We’ll start by discussing newtypes in general as we examine why
 they are useful as types. Then, we’ll move on to type aliases, a feature
@@ -205,7 +203,7 @@ Control Flow Construct”][the-match-control-flow-construct]
 section in Chapter 6, we discussed that `match` arms must all return the same
 type. So, for example, the following code doesn’t work:
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
     let guess = match guess.trim().parse() {
@@ -280,7 +278,7 @@ we can’t know how long the string is until runtime. That means we can’t crea
 a variable of type `str`, nor can we take an argument of type `str`. Consider
 the following code, which does not work:
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
     let s1: str = "Hello there!";

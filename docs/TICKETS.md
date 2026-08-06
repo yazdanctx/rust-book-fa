@@ -91,7 +91,8 @@ is linked exactly once.
   an unlisted file.
 - `src/lib/digits.ts`: Latin → Persian-Indic numerals.
 - `src/pages/[slug].astro`: `getStaticPaths` over translated pages only; `h1`
-  from the Summary; `rehype-shift-headings` demoting body headings one level.
+  from the Summary; `rehype-normalize-headings` shifting body headings by a
+  per-document offset so the shallowest lands on `h2`.
 
 **Done when:** a page translated by hand-copying one file from
 `src-en-resolved/` renders at its slug with the Farsi Summary title as `h1`, and

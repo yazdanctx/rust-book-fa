@@ -1,5 +1,3 @@
-## Accepting Command Line Arguments
-
 Let’s create a new project with, as always, `cargo new`. We’ll call our project
 `minigrep` to distinguish it from the `grep` tool that you might already have
 on your system:

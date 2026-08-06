@@ -35,7 +35,7 @@ stream by calling its `next` method and then awaiting the output, as in Listing
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
         let values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

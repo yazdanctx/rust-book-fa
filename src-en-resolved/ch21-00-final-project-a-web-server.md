@@ -1,5 +1,3 @@
-# Final Project: Building a Multithreaded Web Server
-
 It’s been a long journey, but we’ve reached the end of the book. In this
 chapter, we’ll build one more project together to demonstrate some of the
 concepts we covered in the final chapters, as well as recap some earlier
@@ -16,7 +14,7 @@ Here is our plan for building the web server:
 4. Create a proper HTTP response.
 5. Improve the throughput of our server with a thread pool.
 
-<img alt="Screenshot of a web browser visiting the address 127.0.0.1:8080 displaying a webpage with the text content “Hello! Hi from Rust”" src="img/trpl21-01.png" class="center" style="width: 50%;" />
+<img alt="Screenshot of a web browser visiting the address 127.0.0.1:8080 displaying a webpage with the text content “Hello! Hi from Rust”" src="/img/trpl21-01.png" class="center" style="width: 50%;" />
 
 <span class="caption">Figure 21-1: Our final shared project</span>
 

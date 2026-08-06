@@ -1,5 +1,3 @@
-## Paths for Referring to an Item in the Module Tree
-
 To show Rust where to find an item in a module tree, we use a path in the same
 way we use a path when navigating a filesystem. To call a function, we need to
 know its path.
@@ -30,7 +28,7 @@ Keyword”][pub] section, we’ll go into more detail about `pub`.
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 mod front_of_house {
@@ -149,7 +147,7 @@ access to the `add_to_waitlist` function in the child module, so we mark the
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 mod front_of_house {

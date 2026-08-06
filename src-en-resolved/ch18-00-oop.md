@@ -1,5 +1,3 @@
-# Object-Oriented Programming Features
-
 <!-- Old headings. Do not remove or links may break. -->
 
 <a id="object-oriented-programming-features-of-rust"></a>

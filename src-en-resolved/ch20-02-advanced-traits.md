@@ -1,5 +1,3 @@
-## Advanced Traits
-
 We first covered traits in the [“Defining Shared Behavior with
 Traits”][traits] section in Chapter 10, but we didn’t discuss
 the more advanced details. Now that you know more about Rust, we can get into
@@ -393,7 +391,7 @@ the code in Listing 20-21, we’ll get a compilation error.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn main() {
@@ -537,7 +535,7 @@ doesn’t implement `Display`, such as the `Point` struct:
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 struct Point {

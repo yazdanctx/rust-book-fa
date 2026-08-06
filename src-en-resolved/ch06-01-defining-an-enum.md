@@ -1,5 +1,3 @@
-## Defining an Enum
-
 Where structs give you a way of grouping together related fields and data, like
 a `Rectangle` with its `width` and `height`, enums give you a way of saying a
 value is one of a possible set of values. For example, we may want to say that
@@ -331,7 +329,7 @@ types, the compiler won’t let us use an `Option<T>` value as if it were
 definitely a valid value. For example, this code won’t compile, because it’s
 trying to add an `i8` to an `Option<i8>`:
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
     let x: i8 = 5;

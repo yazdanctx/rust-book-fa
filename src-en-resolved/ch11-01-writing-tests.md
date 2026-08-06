@@ -1,5 +1,3 @@
-## How to Write Tests
-
 _Tests_ are Rust functions that verify that the non-test code is functioning in
 the expected manner. The bodies of test functions typically perform these three
 actions:
@@ -197,7 +195,7 @@ is to call the `panic!` macro. Enter the new test as a function named
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/panics.svg" alt="این کد پنیک می‌کند!" title="این کد پنیک می‌کند!" />
+<img class="ferris" src="/img/ferris/panics.svg" alt="این کد پنیک می‌کند!" title="این کد پنیک می‌کند!" />
 
 ```rust
 pub fn add(left: u64, right: u64) -> u64 {
@@ -436,7 +434,7 @@ introduce a bug in our code. We’ll change the implementation of the `can_hold`
 method by replacing the greater-than sign (`>`) with a less-than sign (`<`)
 when it compares the widths:
 
-<img class="ferris" src="img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
+<img class="ferris" src="/img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
 
 ```rust
 // --snip--
@@ -550,7 +548,7 @@ We create a variable named `result` that holds the result of calling
 Let’s introduce a bug into our code to see what `assert_eq!` looks like when it
 fails. Change the implementation of the `add_two` function to instead add `3`:
 
-<img class="ferris" src="img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
+<img class="ferris" src="/img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
 
 ```rust
 pub fn add_two(a: u64) -> u64 {
@@ -667,7 +665,7 @@ input parameter.
 Now let’s introduce a bug into this code by changing `greeting` to exclude
 `name` to see what the default test failure looks like:
 
-<img class="ferris" src="img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
+<img class="ferris" src="/img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
 
 ```rust
 pub fn greeting(name: &str) -> String {
@@ -824,7 +822,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 Looks good! Now let’s introduce a bug in our code by removing the condition
 that the `new` function will panic if the value is greater than 100:
 
-<img class="ferris" src="img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
+<img class="ferris" src="/img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
 
 ```rust
 // --snip--
@@ -924,7 +922,7 @@ To see what happens when a `should_panic` test with an `expected` message
 fails, let’s again introduce a bug into our code by swapping the bodies of the
 `if value < 1` and the `else if value > 100` blocks:
 
-<img class="ferris" src="img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
+<img class="ferris" src="/img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
 
 ```rust
         if value < 1 {

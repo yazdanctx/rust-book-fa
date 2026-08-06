@@ -1,5 +1,3 @@
-## Appendix A: Keywords
-
 The following lists contain keywords that are reserved for current or future
 use by the Rust language. As such, they cannot be used as identifiers (except
 as raw identifiers, as we discuss in the [“Raw
@@ -91,7 +89,7 @@ that uses `match` as its name:
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn match(needle: &str, haystack: &str) -> bool {

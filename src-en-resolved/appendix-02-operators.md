@@ -1,5 +1,3 @@
-## Appendix B: Operators and Symbols
-
 This appendix contains a glossary of Rust’s syntax, including operators and
 other symbols that appear by themselves or in the context of paths, generics,
 trait bounds, macros, attributes, comments, tuples, and brackets.

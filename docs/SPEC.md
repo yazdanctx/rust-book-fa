@@ -40,7 +40,7 @@ Decisions are recorded in [`adr/`](./adr/).
     │   ├── digits.ts        # Latin -> Persian-Indic numerals
     │   └── progress.ts      # translation progress
     ├── plugins/
-    │   ├── rehype-shift-headings.ts
+    │   ├── rehype-normalize-headings.ts
     │   └── rehype-book-links.ts
     ├── components/
     ├── layouts/
@@ -70,8 +70,7 @@ Per file, in order:
      target
    - numeric — `:7`, `:3`, `:10` — line selection
    Anchor comment lines themselves are stripped from the emitted code.
-   `{{#include}}` and `{{#rustdoc_include}}` are treated identically; the
-   rustdoc variant's hidden `#`-prefixed lines are dropped.
+   `{{#include}}` and `{{#rustdoc_include}}` are treated identically.
 2. **Map fence attributes** to a Ferris Badge marker and discard the rest.
    `does_not_compile`, `panics`, `not_desired_behavior` become badges;
    `ignore`, `noplayground`, `no_run`, `should_panic`, `test_harness`,
@@ -81,13 +80,31 @@ Per file, in order:
    `<span class="filename">` / `<span class="caption">` markers become plain
    markdown: a filename line above the block, a caption line below it, prefixed
    `لیستینگ ‹number›` with Persian numerals.
-4. **Strip `<!-- ignore -->`** markers (mdbook link-check hints).
-5. **Preserve** `<a id="…">` legacy anchors, `<img>` tags with their `class` and
+4. **Strip `<!-- ignore -->`** markers (mdbook link-check hints). These are
+   frequently split across a line break, because the source hard-wraps at 80
+   columns — the strip must run on the whole document, not line by line.
+5. **Drop the leading title heading.** Every page opens with a heading naming
+   the page; the title is supplied by the layout instead (ADR-0005).
+6. **Preserve** `<a id="…">` legacy anchors, `<img>` tags with their `class` and
    inline styles, `<figure>`/`<figcaption>` (9 uses), `<kbd>`, tables, and
    reference-style link definitions.
 
 **Fails the whole run, loudly, on any unresolvable include or unknown anchor.**
 With 707 directives, silent partial failure is invisible.
+
+Two mdbook behaviours the resolver must match exactly, both found in the data
+rather than the documentation:
+
+- **An anchor name can cover several disjoint regions.** In `listing-14-06`,
+  `here` opens at line 1, closes at line 7, then reopens at line 11; all regions
+  with that name are concatenated in file order. Using only the first match
+  yields plausible-looking but wrong code.
+- **An out-of-range end line is clamped, not an error.** `Cargo.toml:6:12`
+  against an 11-line file is load-bearing in ch20.
+
+Also: `{{#rustdoc_include}}` needs no hidden-line handling — there are zero
+`^# ` lines in the listings tree — captions contain `>` from Rust generics, and
+one `<Listing>` is nested inside a blockquote.
 
 `SUMMARY.md` is not processed by this script.
 
@@ -138,8 +155,10 @@ Route: `src/pages/[slug].astro`, `getStaticPaths` over translated pages only.
 
 ### 4.1 Structure
 
-`h1` is the Farsi Summary title; body headings shift down one level (ADR-0005).
-Prose column is `max-w-3xl`, matching yazdan.me.
+`h1` is the Farsi Summary title. The body's duplicate title heading is already
+gone (§2.1 step 5) and `rehype-normalize-headings` shifts the remainder by a
+per-document offset so the shallowest lands on `h2` (ADR-0005). Prose column is
+`max-w-3xl`, matching yazdan.me.
 
 ### 4.2 Code
 
@@ -154,10 +173,25 @@ Prose column is `max-w-3xl`, matching yazdan.me.
 
 ### 4.3 Links (`rehype-book-links.ts`)
 
-- `.md` targets (112 inline + 6 reference-style) → `/slug/`, preserving `#hash`.
-- Target is an Untranslated Page → rendered as a Disabled Link inline, keeping
-  the link text. This makes a 404 impossible by construction.
-- External links unchanged.
+Cross-references are written as **`.html`** targets — mdbook's output filenames
+— not `.md`. Of the 244 reference definitions in the prose: 202 point at
+`chNN-….html`, 42 are external, and only 7 links anywhere use `.md`. Handling
+only `.md` leaves 202 links pointing at pages that do not exist here.
+
+> An earlier draft of this spec claimed "112 inline `.md` links". That count was
+> wrong: it included `SUMMARY.md`'s own 111 links, which the resolver excludes.
+
+- `slug.md` / `slug.html` (+ optional `#hash`) → `/slug/#hash`.
+- The slug is validated against `SUMMARY.md`. An unrecognised target is left
+  untouched and warned about, rather than confidently rewritten.
+- Target is an Untranslated Page → the anchor becomes an inline Disabled Link,
+  keeping its text. This makes a 404 impossible by construction.
+- External links and in-page fragments unchanged.
+
+**Known limitation:** `#fragment` targets are derived from the *English* heading
+text. Once a page is translated its heading ids become Farsi, so inbound
+fragments go stale and land at the top of the correct page. Fixing this means
+updating fragments as pages are translated; no code can infer it.
 
 ### 4.4 Images
 
@@ -192,9 +226,21 @@ Also carried over: `.prose blockquote` as a bordered card with a 💡 marker,
 on headings, non-italic `em`/`cite` (italics read poorly in Persian).
 
 **Fonts**: three Peyda weights only — Regular 400, SemiBold 600, Bold 700 — as
-`@font-face` with `font-display: swap`, Regular preloaded. Peyda is Persian-only;
-Latin and code fall through to a system/mono stack. The other seven weights stay
-in `fonts/` unreferenced and unshipped.
+`@font-face` with `font-display: swap`, Regular preloaded. The other seven
+weights stay in `fonts/` unreferenced and unshipped.
+
+**Digits.** `PeydaFaNumWeb` is the *FaNum* cut: it maps Latin digit codepoints to
+Persian numeral glyphs. So all prose digits display as Persian automatically —
+`Figure 4-1` in the HTML renders as `Figure ۴-۱` — which is the desired default
+for a Persian book, and makes `toPersianDigits` belt-and-braces for navigation
+(it produces genuine Persian codepoints, so copy-paste is correct too).
+
+Two consequences:
+
+- Code keeps Latin digits for free, because it falls through to the mono stack.
+- Anything that must stay Latin in prose — version numbers, licence names —
+  needs the `.latin` utility class. `dir="ltr"` does **not** help: this is font
+  substitution, not bidi.
 
 ## 6. Site-level
 

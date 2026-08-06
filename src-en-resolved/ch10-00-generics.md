@@ -1,5 +1,3 @@
-# Generic Types, Traits, and Lifetimes
-
 Every programming language has tools for effectively handling the duplication
 of concepts. In Rust, one such tool is _generics_: abstract stand-ins for
 concrete types or other properties. We can express the behavior of generics or

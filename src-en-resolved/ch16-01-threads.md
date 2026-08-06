@@ -1,5 +1,3 @@
-## Using Threads to Run Code Simultaneously
-
 In most current operating systems, an executed program’s code is run in a
 _process_, and the operating system will manage multiple processes at once.
 Within a program, you can also have independent parts that run simultaneously.
@@ -238,7 +236,7 @@ thread. However, this won’t work yet, as you’ll see in a moment.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 use std::thread;
@@ -299,7 +297,7 @@ that won’t be valid.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 use std::thread;

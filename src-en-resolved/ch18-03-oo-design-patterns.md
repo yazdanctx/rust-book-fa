@@ -1,5 +1,3 @@
-## Implementing an Object-Oriented Design Pattern
-
 The _state pattern_ is an object-oriented design pattern. The crux of the
 pattern is that we define a set of states a value can have internally. The
 states are represented by a set of _state objects_, and the value’s behavior
@@ -57,7 +55,7 @@ because we haven’t implemented the `blog` crate.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 use blog::Post;
@@ -385,7 +383,7 @@ as shown in Listing 18-17.
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 impl Post {

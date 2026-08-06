@@ -1,5 +1,3 @@
-## Storing Keys with Associated Values in Hash Maps
-
 The last of our common collections is the hash map. The type `HashMap<K, V>`
 stores a mapping of keys of type `K` to values of type `V` using a _hashing
 function_, which determines how it places these keys and values into memory.

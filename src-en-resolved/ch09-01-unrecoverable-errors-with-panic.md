@@ -1,5 +1,3 @@
-## Unrecoverable Errors with `panic!`
-
 Sometimes bad things happen in your code, and there’s nothing you can do about
 it. In these cases, Rust has the `panic!` macro. There are two ways to cause a
 panic in practice: by taking an action that causes our code to panic (such as
@@ -33,7 +31,7 @@ Let’s try calling `panic!` in a simple program:
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/panics.svg" alt="این کد پنیک می‌کند!" title="این کد پنیک می‌کند!" />
+<img class="ferris" src="/img/ferris/panics.svg" alt="این کد پنیک می‌کند!" title="این کد پنیک می‌کند!" />
 
 ```rust
 fn main() {
@@ -78,7 +76,7 @@ attempts to access an index in a vector beyond the range of valid indexes.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/panics.svg" alt="این کد پنیک می‌کند!" title="این کد پنیک می‌کند!" />
+<img class="ferris" src="/img/ferris/panics.svg" alt="این کد پنیک می‌کند!" title="این کد پنیک می‌کند!" />
 
 ```rust
 fn main() {

@@ -1,5 +1,3 @@
-# The Rust Programming Language
-
 _by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the
 Rust Community_
 

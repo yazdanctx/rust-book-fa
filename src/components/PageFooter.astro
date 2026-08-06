@@ -1,0 +1,62 @@
+---
+import { getNeighbours } from "../lib/pages";
+import { titleToHtml } from "../lib/summary";
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const { prev, next } = await getNeighbours(slug);
+
+const UNTRANSLATED = "در دست نگارش";
+const englishUrl = `https://doc.rust-lang.org/book/${slug}.html`;
+
+/**
+ * Neighbours are shown in strict Summary order and never skipped (ADR-0006):
+ * an untranslated neighbour renders disabled, so the book's real structure stays
+ * visible instead of silently teleporting the reader past missing chapters.
+ */
+const pager = [
+  { page: prev, label: "قبلی", arrow: "→" },
+  { page: next, label: "بعدی", arrow: "←" },
+];
+---
+
+<footer class="mt-20 border-t border-(--color-border) pt-8 pb-16 text-sm">
+  <nav class="flex flex-wrap gap-4" aria-label="پیمایش صفحه‌ها">
+    {
+      pager.map(({ page, label, arrow }) => (
+        <div class="min-w-0 flex-1 basis-64">
+          {page ? (
+            page.translated ? (
+              <a href={`/${page.slug}/`} class="pager-link">
+                <span class="pager-label">{arrow} {label}</span>
+                <span class="pager-title" set:html={titleToHtml(page.title)} />
+              </a>
+            ) : (
+              <span class="pager-link pager-disabled" aria-disabled="true" title={UNTRANSLATED}>
+                <span class="pager-label">{arrow} {label}</span>
+                <span class="pager-title" set:html={titleToHtml(page.title)} />
+                <span class="nav-badge">{UNTRANSLATED}</span>
+              </span>
+            )
+          ) : null}
+        </div>
+      ))
+    }
+  </nav>
+
+  <div class="mt-10 space-y-2 text-xs text-(--color-muted-foreground)">
+    <p>
+      <a href={englishUrl} class="underline hover:no-underline" rel="alternate" hreflang="en">
+        خواندن این صفحه در نسخه اصلی انگلیسی
+      </a>
+    </p>
+    <p>
+      ترجمه فارسی کتاب <span class="latin">The Rust Programming Language</span>.
+      متن اصلی تحت مجوز دوگانه <span class="latin">MIT</span> و
+      <span class="latin">Apache-2.0</span> منتشر شده است.
+    </p>
+  </div>
+</footer>

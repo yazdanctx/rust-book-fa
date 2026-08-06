@@ -75,6 +75,10 @@
 
   body {
     margin: 0;
+    /* The mobile drawer parks off-screen with a transform. Without clipping,
+       that off-screen box extends the scrollable area and the page loads
+       scrolled sideways with the content cut off. */
+    overflow-x: clip;
   }
 
   h1,
@@ -116,6 +120,321 @@
     background: var(--color-secondary);
     color: var(--color-foreground);
   }
+}
+
+/* ── Book layout & sidebar ────────────────────────────────────────────────
+   The document is dir="rtl", so the first flex child sits on the right and
+   logical properties resolve accordingly: the sidebar's divider is its
+   inline-end edge, and the mobile drawer slides in from the right.          */
+
+.book-layout {
+  display: flex;
+  align-items: flex-start;
+}
+
+.book-sidebar {
+  width: 19rem;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-inline-end: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.book-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.35rem 0.6rem;
+  color: var(--color-secondary-foreground);
+  text-decoration: none;
+  border-radius: 2px;
+  line-height: 1.6;
+}
+
+a.nav-link:hover {
+  background: var(--color-card);
+  color: var(--color-foreground);
+}
+
+a.nav-link[aria-current="page"] {
+  background: var(--color-secondary);
+  color: var(--color-foreground);
+  font-weight: 600;
+}
+
+.nav-number {
+  color: var(--color-muted-foreground);
+  font-size: 0.8em;
+  margin-inline-end: 0.4em;
+  /* Numbering is Persian-Indic but still a number: isolate it so it cannot
+     reorder against the title text beside it. */
+  unicode-bidi: isolate;
+}
+
+.nav-disabled {
+  color: var(--color-muted-foreground);
+  cursor: default;
+}
+
+.nav-badge {
+  display: inline-block;
+  margin-inline-start: 0.5em;
+  padding: 0.05em 0.4em;
+  font-size: 0.7rem;
+  color: var(--color-muted-foreground);
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.nav-children {
+  padding-inline-start: 1rem;
+  margin-block: 0.15rem 0.5rem;
+  border-inline-start: 1px solid var(--color-border);
+}
+
+.book-sidebar ol {
+  list-style: none;
+  margin: 0;
+  padding-inline-start: 0;
+}
+
+.book-sidebar > ol > li + li {
+  margin-block-start: 0.15rem;
+}
+
+/* ── Mobile drawer ──────────────────────────────────────────────────────── */
+
+.sidebar-toggle,
+.sidebar-backdrop {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .book-sidebar {
+    position: fixed;
+    inset-block: 0;
+    /* The drawer opens from the right, and this document is RTL — where
+       inline-START is the right edge. (`inset-inline-end` would pin it to the
+       left.) */
+    inset-inline-start: 0;
+    z-index: 40;
+    width: min(20rem, 85vw);
+    max-height: none;
+    border-inline-end: none;
+    border-inline-start: 1px solid var(--color-border);
+    transition:
+      transform 0.2s ease,
+      visibility 0.2s ease;
+    /* Transforms are physical — `direction` does not flip them — so hiding the
+       drawer past the right edge is always a positive translateX. `visibility`
+       keeps the closed drawer out of the tab order and away from screen
+       readers, which `transform` alone does not. */
+    transform: translateX(100%);
+    visibility: hidden;
+  }
+
+  body.sidebar-open .book-sidebar {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    background: var(--color-background);
+    border: none;
+    border-block-end: 1px solid var(--color-border);
+    color: var(--color-foreground);
+    font: inherit;
+    font-size: 0.9rem;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    background: rgb(0 0 0 / 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  body.sidebar-open .sidebar-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-sidebar,
+  .sidebar-backdrop {
+    transition: none;
+  }
+}
+
+/* ── Progress bar ─────────────────────────────────────────────────────────
+   Fills from the inline start, so it grows right-to-left in this document.    */
+
+.progress-track {
+  height: 6px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  min-width: 2px;
+}
+
+/* ── Search ───────────────────────────────────────────────────────────────
+   Hand-rolled around Pagefind's JS API rather than its bundled UI, which ships
+   its own light-theme CSS and layout that would need overriding wholesale.    */
+
+.book-search {
+  margin-block-start: 0.75rem;
+}
+
+.book-search input {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--color-foreground);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+}
+
+.book-search input::placeholder {
+  color: var(--color-muted-foreground);
+}
+
+.book-search input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.search-results:not(:empty) {
+  margin-block-start: 0.5rem;
+  border: 1px solid var(--color-border);
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.search-hit {
+  display: block;
+  padding: 0.5rem 0.6rem;
+  text-decoration: none;
+  border-block-end: 1px solid var(--color-border);
+}
+
+.search-hit:last-child {
+  border-block-end: none;
+}
+
+.search-hit:hover {
+  background: var(--color-card);
+}
+
+.search-hit-title {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+.search-hit-excerpt {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 1.7;
+  color: var(--color-muted-foreground);
+}
+
+.search-hit-excerpt mark {
+  background: var(--color-secondary);
+  color: var(--color-foreground);
+}
+
+.search-empty {
+  padding: 0.5rem 0.6rem;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-muted-foreground);
+}
+
+/* ── Latin escape hatch ───────────────────────────────────────────────────
+   PeydaFaNumWeb is the "FaNum" cut: it maps Latin digit codepoints to Persian
+   numeral glyphs. That is the right default for Persian prose, but it also
+   rewrites things that must stay Latin — version numbers, licence names,
+   identifiers. `dir="ltr"` does not help, because this is a font substitution,
+   not bidi. Switching the family is the only fix.                            */
+
+.latin {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* ── Page footer pager ──────────────────────────────────────────────────── */
+
+.pager-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  text-decoration: none;
+  color: var(--color-secondary-foreground);
+}
+
+a.pager-link:hover {
+  background: var(--color-card);
+  color: var(--color-foreground);
+}
+
+.pager-disabled {
+  color: var(--color-muted-foreground);
+  border-style: dashed;
+  cursor: default;
+}
+
+.pager-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+  margin-block-end: 0.25rem;
+}
+
+.pager-title {
+  display: block;
+  line-height: 1.6;
+}
+
+.pager-title code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  unicode-bidi: isolate;
 }
 
 /* ── Prose ────────────────────────────────────────────────────────────────
@@ -304,6 +623,39 @@
 
 .prose .astro-code {
   font-variant-ligatures: none;
+}
+
+/* ── Ferris badges ────────────────────────────────────────────────────────
+   Emitted by resolve.ts as an <img class="ferris"> immediately before a code
+   block whose upstream fence was marked does_not_compile / panics /
+   not_desired_behavior. The alt and title text carry the meaning in Farsi, so
+   the icon is decorative reinforcement rather than the whole message.        */
+
+.prose img.ferris {
+  width: 2.75rem;
+  height: auto;
+  border: none;
+  display: block;
+  margin-block-end: 0.5rem;
+  margin-inline: 0;
+}
+
+/* Sits directly above its block, so kill the inherited paragraph spacing. */
+.prose img.ferris + pre,
+.prose img.ferris + .astro-code {
+  margin-block-start: 0;
+}
+
+/* ── Links to untranslated pages ──────────────────────────────────────────
+   Produced by rehype-book-links when a cross-reference points at a page that
+   has no content yet. Muted with a dotted underline: it must read as "not yet"
+   rather than as a broken link or as plain prose.                           */
+
+.prose .link-todo {
+  color: var(--color-muted-foreground);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: help;
 }
 
 /* The filename marker that precedes a listing (SPEC §2.1 step 3). */

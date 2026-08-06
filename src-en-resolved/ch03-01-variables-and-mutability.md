@@ -1,5 +1,3 @@
-## Variables and Mutability
-
 As mentioned in the [“Storing Values with
 Variables”][storing-values-with-variables] section, by default,
 variables are immutable. This is one of many nudges Rust gives you to write
@@ -17,7 +15,7 @@ code with the following code, which won’t compile just yet:
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn main() {
@@ -224,7 +222,7 @@ different names, such as `spaces_str` and `spaces_num`; instead, we can reuse
 the simpler `spaces` name. However, if we try to use `mut` for this, as shown
 here, we’ll get a compile-time error:
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
     let mut spaces = "   ";

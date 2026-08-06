@@ -82,3 +82,54 @@ The crab icon marking a code block as deliberately broken — it does not
 compile, it panics, or it does not do what it appears to do. Derived from the
 attributes on the upstream code fence, which carry no other meaning here.
 _Avoid_: Warning, Callout, Admonition
+
+## Translation terminology
+
+The convention: **general computing concepts get a Persian word; Rust-specific
+jargon gets the transliteration Persian developers actually say; identifiers,
+keywords and macro names stay in Latin inside code spans** (`match`, `Result`,
+`Box<T>`, `Send`, `cargo install`).
+
+These choices propagate through 182,828 words, so they are expensive to revise
+later. Draft status — review before translating chapter bodies.
+
+| English | Farsi | Note |
+|---|---|---|
+| ownership | مالکیت | |
+| borrowing | قرض‌گرفتن | not وام‌گیری |
+| reference | ارجاع | |
+| slice | برش | |
+| struct | استراکت | transliterated, to keep it distinct from "structure" generally |
+| enum | انیوم | transliterated |
+| trait | تریت | transliterated; trait object → تریت‌آبجکت |
+| crate | کریت | |
+| package | پکیج | |
+| module | ماژول | |
+| scope | دامنه | |
+| generic | جنریک | |
+| lifetime | طول‌عمر | |
+| closure | کلوژر | not بستار |
+| iterator | ایتریتور | not تکرارگر |
+| collection | مجموعه | |
+| vector | وکتور | |
+| string | رشته | translated, unlike most type names |
+| hash map | هش‌مپ | |
+| smart pointer | اشاره‌گر هوشمند | |
+| heap | هیپ | |
+| thread | ترد | not نخ |
+| concurrency | همروندی | |
+| async | ناهمگام | `async`/`await` themselves stay in Latin |
+| future | فیوچر | |
+| stream | استریم | |
+| task | تسک | |
+| pattern matching | تطبیق الگو | |
+| refutability | ردشدنی بودن | |
+| unsafe | ناایمن | |
+| macro | ماکرو | |
+| edition | ادیشن | transliterated, so it is not confused with a version number |
+| mutability | تغییرپذیری | interior mutability → تغییرپذیری درونی |
+| error handling | مدیریت خطا | recoverable → قابل جبران, unrecoverable → جبران‌ناپذیر |
+| Cargo | کارگو | but `cargo` the command stays Latin |
+
+Appendix letters (A–G) stay Latin so that in-book cross-references such as
+"see Appendix D" remain coherent.

@@ -1,5 +1,3 @@
-## Processing a Series of Items with Iterators
-
 The iterator pattern allows you to perform some task on a sequence of items in
 turn. An iterator is responsible for the logic of iterating over each item and
 determining when the sequence has finished. When you use iterators, you don’t
@@ -170,7 +168,7 @@ incremented by 1.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
+<img class="ferris" src="/img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
 
 ```rust
     let v1: Vec<i32> = vec![1, 2, 3];

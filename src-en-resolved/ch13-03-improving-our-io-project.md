@@ -1,5 +1,3 @@
-## Improving Our I/O Project
-
 With this new knowledge about iterators, we can improve the I/O project in
 Chapter 12 by using iterators to make places in the code clearer and more
 concise. Let’s look at how iterators can improve our implementation of the
@@ -82,7 +80,7 @@ won’t compile until we update `Config::build` as well.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn main() {
@@ -108,7 +106,7 @@ compile, because we need to update the function body.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 impl Config {

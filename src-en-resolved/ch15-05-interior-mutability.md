@@ -1,5 +1,3 @@
-## `RefCell<T>` and the Interior Mutability Pattern
-
 _Interior mutability_ is a design pattern in Rust that allows you to mutate
 data even when there are immutable references to that data; normally, this
 action is disallowed by the borrowing rules. To mutate data, the pattern uses
@@ -86,7 +84,7 @@ examine how it’s possible.
 A consequence of the borrowing rules is that when you have an immutable value,
 you can’t borrow it mutably. For example, this code won’t compile:
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn main() {
@@ -225,7 +223,7 @@ implement a mock object to do just that, but the borrow checker won’t allow it
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 #[cfg(test)]
@@ -401,7 +399,7 @@ at runtime.
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/panics.svg" alt="این کد پنیک می‌کند!" title="این کد پنیک می‌کند!" />
+<img class="ferris" src="/img/ferris/panics.svg" alt="این کد پنیک می‌کند!" title="این کد پنیک می‌کند!" />
 
 ```rust
     impl Messenger for MockMessenger {

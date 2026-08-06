@@ -1,5 +1,3 @@
-## Recoverable Errors with `Result`
-
 Most errors aren’t serious enough to require the program to stop entirely.
 Sometimes when a function fails, it’s for a reason that you can easily interpret
 and respond to. For example, if you try to open a file and that operation fails
@@ -506,7 +504,7 @@ the value we use `?` on.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 use std::fs::File;

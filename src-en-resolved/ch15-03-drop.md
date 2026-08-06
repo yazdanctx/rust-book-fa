@@ -1,5 +1,3 @@
-## Running Code on Cleanup with the `Drop` Trait
-
 The second trait important to the smart pointer pattern is `Drop`, which lets
 you customize what happens when a value is about to go out of scope. You can
 provide an implementation for the `Drop` trait on any type, and that code can
@@ -105,7 +103,7 @@ Trying to call the `Drop` trait’s `drop` method manually by modifying the
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn main() {

@@ -230,7 +230,7 @@ function parseFenceInfo(info: string, mdFile: string, lineNo: number): FenceInfo
 
 function ferrisMarkup(kind: FerrisKind): string {
   const label = LABEL.ferris[kind];
-  return `<img class="ferris" src="img/ferris/${kind}.svg" alt="${label}" title="${label}" />`;
+  return `<img class="ferris" src="/img/ferris/${kind}.svg" alt="${label}" title="${label}" />`;
 }
 
 // ── Listing flattening ────────────────────────────────────────────────────
@@ -260,6 +260,28 @@ function captionLine(number: string | undefined, caption: string): string {
   return `<span class="caption">${prefix}${caption}</span>`;
 }
 
+// ── Title heading ──────────────────────────────────────────────────────────
+
+/**
+ * Drops the page's leading heading, which is its title.
+ *
+ * Every one of the 111 pages opens with a heading naming the page, at an
+ * inconsistent level (26 at `h1`, 85 at `h2`, one at `h3`). The site renders the
+ * title from `SUMMARY.md` instead (ADR-0005), so leaving it in the body would
+ * print it twice. Removing it here rather than at render time keeps the change
+ * visible in the committed worksheet, and means a translator never has to
+ * wonder why a heading they typed disappeared.
+ */
+function stripTitleHeading(lines: string[]): string[] {
+  const index = lines.findIndex((l) => l.trim() !== "");
+  if (index === -1) return lines;
+  if (!/^#{1,6}\s+\S/.test(lines[index]!)) return lines;
+
+  const rest = lines.slice(index + 1);
+  while (rest[0]?.trim() === "") rest.shift();
+  return rest;
+}
+
 // ── Document transform ─────────────────────────────────────────────────────
 
 function transform(source: string, mdFile: string, listingsRoot: string): string {
@@ -271,7 +293,7 @@ function transform(source: string, mdFile: string, listingsRoot: string): string
     .replace(/\r\n/g, "\n")
     .replace(/<!--\s*ignore\s*-->/g, "");
 
-  const lines = normalized.split("\n");
+  const lines = stripTitleHeading(normalized.split("\n"));
   const out: string[] = [];
 
   /** Pending caption to emit after the current <Listing> closes. */
@@ -370,6 +392,13 @@ function transform(source: string, mdFile: string, listingsRoot: string): string
     if (INCLUDE_RE.test(text)) {
       problem(mdFile, lineNo, "include directive outside a code fence");
     }
+
+    // Image paths become site-absolute. Done here rather than in a rehype
+    // plugin because these are raw HTML tags in the markdown, which the
+    // markdown pipeline keeps as opaque `raw` nodes — a rehype plugin visiting
+    // `element` nodes never sees them. `public/img/` mirrors `src-en/img/`, so
+    // a leading slash is the whole transformation.
+    text = text.replace(/(<img[^>]*\ssrc=")img\//g, "$1/img/");
 
     // Loose filename / caption markers (those not wrapped in <Listing>).
     text = text.replace(

@@ -1,5 +1,3 @@
-## Graceful Shutdown and Cleanup
-
 The code in Listing 21-20 is responding to requests asynchronously through the
 use of a thread pool, as we intended. We get some warnings about the `workers`,
 `id`, and `thread` fields that we’re not using in a direct way that reminds us
@@ -28,7 +26,7 @@ quite work yet.
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 impl Drop for ThreadPool {
@@ -138,7 +136,7 @@ here we _do_ need to use an `Option` to be able to move `sender` out of
 
 <span class="filename">نام فایل: src/lib.rs</span>
 
-<img class="ferris" src="img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
+<img class="ferris" src="/img/ferris/not_desired_behavior.svg" alt="این کد رفتار مورد انتظار را ندارد." title="این کد رفتار مورد انتظار را ندارد." />
 
 ```rust
 pub struct ThreadPool {

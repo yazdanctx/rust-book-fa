@@ -1,5 +1,3 @@
-## Shared-State Concurrency
-
 Message passing is a fine way to handle concurrency, but it’s not the only way.
 Another method would be for multiple threads to access the same shared data.
 Consider this part of the slogan from the Go language documentation again: “Do
@@ -116,7 +114,7 @@ Rust helps us use it correctly.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 use std::sync::Mutex;
@@ -195,7 +193,7 @@ the `Rc<T>` before moving ownership to the thread.
 
 <span class="filename">نام فایل: src/main.rs</span>
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 use std::rc::Rc;

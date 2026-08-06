@@ -1,0 +1,24 @@
+---
+import BookLayout from "../layouts/BookLayout.astro";
+import { getBookPages } from "../lib/pages";
+import { toPersianDigits } from "../lib/digits";
+
+const pages = await getBookPages();
+const remaining = pages.filter((p) => !p.translated).length;
+---
+
+<BookLayout title="صفحه پیدا نشد">
+  <main class="mx-auto max-w-3xl px-5 py-16">
+    <h1 class="text-3xl font-bold">صفحه‌ای پیدا نشد</h1>
+
+    <div class="prose mt-8">
+      <p>
+        نشانی‌ای که دنبال آن بودید وجود ندارد. اگر به‌دنبال فصلی از کتاب هستید،
+        ممکن است هنوز ترجمه نشده باشد — در حال حاضر
+        {toPersianDigits(String(remaining))} صفحه در دست نگارش است.
+      </p>
+      <p>فهرست کامل کتاب در نوار کنار همین صفحه در دسترس است.</p>
+      <p><a href="/">بازگشت به صفحه اصلی</a></p>
+    </div>
+  </main>
+</BookLayout>

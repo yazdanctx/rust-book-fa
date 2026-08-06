@@ -1,5 +1,3 @@
-## Refutability: Whether a Pattern Might Fail to Match
-
 Patterns come in two forms: refutable and irrefutable. Patterns that will match
 for any possible value passed are _irrefutable_. An example would be `x` in the
 statement `let x = 5;` because `x` matches anything and therefore cannot fail
@@ -27,7 +25,7 @@ where Rust requires an irrefutable pattern and vice versa. Listing 19-8 shows a
 `let` statement, but for the pattern, we’ve specified `Some(x)`, a refutable
 pattern. As you might expect, this code will not compile.
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
     let Some(x) = some_option_value;

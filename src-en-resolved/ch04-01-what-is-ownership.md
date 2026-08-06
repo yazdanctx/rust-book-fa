@@ -1,5 +1,3 @@
-## What Is Ownership?
-
 _Ownership_ is a set of rules that govern how a Rust program manages memory.
 All programs have to manage the way they use a computer’s memory while running.
 Some languages have garbage collection that regularly looks for no-longer-used
@@ -334,7 +332,7 @@ no longer valid. Therefore, Rust doesn’t need to free anything when `s1` goes
 out of scope. Check out what happens when you try to use `s1` after `s2` is
 created; it won’t work:
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
     let s1 = String::from("hello");

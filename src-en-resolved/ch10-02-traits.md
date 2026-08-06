@@ -420,7 +420,7 @@ However, you can only use `impl Trait` if you’re returning a single type. For
 example, this code that returns either a `NewsArticle` or a `SocialPost` with
 the return type specified as `impl Summary` wouldn’t work:
 
-<img class="ferris" src="img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
+<img class="ferris" src="/img/ferris/does_not_compile.svg" alt="این کد کامپایل نمی‌شود!" title="این کد کامپایل نمی‌شود!" />
 
 ```rust
 fn returns_summarizable(switch: bool) -> impl Summary {

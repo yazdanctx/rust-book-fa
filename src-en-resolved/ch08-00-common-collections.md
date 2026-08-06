@@ -1,5 +1,3 @@
-# Common Collections
-
 Rust’s standard library includes a number of very useful data structures called
 _collections_. Most other data types represent one specific value, but
 collections can contain multiple values. Unlike the built-in array and tuple
