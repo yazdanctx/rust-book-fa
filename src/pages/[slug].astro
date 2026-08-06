@@ -22,7 +22,7 @@ const heading = page.number ? `${page.number}. ${page.title}` : page.title;
 <BookLayout title={page.title} englishSlug={page.slug} current={page.slug}>
   <main class="mx-auto max-w-3xl px-5 py-12">
     {/* data-pagefind-body scopes the search index to the page's own content:
-        without it every hit would also match the 111-item sidebar. The title is
+        without it every hit would also match the whole sidebar. The title is
         tagged separately so results show the Farsi Summary title. */}
     <article data-pagefind-body>
       <h1

@@ -1,7 +1,5 @@
 # زبان برنامه‌نویسی راست
 
-[زبان برنامه‌نویسی راست](title-page.md)
-[پیش‌گفتار](foreword.md)
 [مقدمه](ch00-00-introduction.md)
 
 - [شروع کار](ch01-00-getting-started.md)
@@ -124,12 +122,3 @@
   - [ساخت یک وب‌سرور تک‌تردی](ch21-01-single-threaded.md)
   - [از سرور تک‌تردی به چندتردی](ch21-02-multithreaded.md)
   - [خاموش‌سازی مرتب و پاک‌سازی](ch21-03-graceful-shutdown-and-cleanup.md)
-
-- [پیوست](appendix-00.md)
-  - [A - کلمات کلیدی](appendix-01-keywords.md)
-  - [B - عملگرها و نمادها](appendix-02-operators.md)
-  - [C - تریت‌های مشتق‌پذیر](appendix-03-derivable-traits.md)
-  - [D - ابزارهای مفید توسعه](appendix-04-useful-development-tools.md)
-  - [E - ادیشن‌ها](appendix-05-editions.md)
-  - [F - ترجمه‌های کتاب](appendix-06-translation.md)
-  - [G - راست چگونه ساخته می‌شود و «راست نایتلی»](appendix-07-nightly-rust.md)

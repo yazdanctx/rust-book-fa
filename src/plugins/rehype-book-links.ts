@@ -1,6 +1,7 @@
 import type { Root, Element } from "hast";
 import { visit } from "unist-util-visit";
 import { join } from "node:path";
+import { readdirSync } from "node:fs";
 import { getTranslatedSlugs } from "../lib/translated.ts";
 import { readSummary } from "../lib/summary.ts";
 
@@ -24,24 +25,48 @@ const UNTRANSLATED = "در دست نگارش";
 /** A bare `slug.md` or `slug.html`, optionally with a `#fragment`. */
 const BOOK_LINK_RE = /^([A-Za-z0-9._-]+)\.(?:md|html)(#.*)?$/;
 
-let knownSlugs: Set<string> | undefined;
+const EN_BOOK = "https://doc.rust-lang.org/book/";
+
+let siteSlugs: Set<string> | undefined;
+let upstreamSlugs: Set<string> | undefined;
 const warned = new Set<string>();
 
-function getKnownSlugs(): Set<string> {
-  if (!knownSlugs) {
+/** Pages this site publishes — the Summary is the authority. */
+function getSiteSlugs(): Set<string> {
+  if (!siteSlugs) {
     const summary = readSummary(join(process.cwd(), "src-fa", "SUMMARY.md"));
-    knownSlugs = new Set(summary.map((p) => p.slug));
+    siteSlugs = new Set(summary.map((p) => p.slug));
   }
-  return knownSlugs;
+  return siteSlugs;
+}
+
+/**
+ * Every page of the upstream book, from the vendored English source.
+ *
+ * Needed to tell a deliberately dropped page apart from a broken link. The
+ * appendices and front matter are out of scope for this translation, but the
+ * prose still references them 13 times — those readers are better served by the
+ * English original than by a 404.
+ */
+function getUpstreamSlugs(): Set<string> {
+  if (!upstreamSlugs) {
+    upstreamSlugs = new Set(
+      readdirSync(join(process.cwd(), "src-en"))
+        .filter((f) => f.endsWith(".md") && f !== "SUMMARY.md")
+        .map((f) => f.replace(/\.md$/, "")),
+    );
+  }
+  return upstreamSlugs;
 }
 
 export function rehypeBookLinks() {
   return (tree: Root): void => {
     const translated = getTranslatedSlugs();
-    const known = getKnownSlugs();
+    const site = getSiteSlugs();
+    const upstream = getUpstreamSlugs();
 
     visit(tree, "element", (node: Element) => {
-      if (node.tagName === "a") rewriteAnchor(node, known, translated);
+      if (node.tagName === "a") rewriteAnchor(node, site, upstream, translated);
       else if (node.tagName === "img") rewriteImage(node);
     });
   };
@@ -49,7 +74,8 @@ export function rehypeBookLinks() {
 
 function rewriteAnchor(
   node: Element,
-  known: Set<string>,
+  site: Set<string>,
+  upstream: Set<string>,
   translated: Set<string>,
 ): void {
   const href = node.properties?.["href"];
@@ -61,14 +87,25 @@ function rewriteAnchor(
   const slug = match[1]!;
   const hash = match[2] ?? "";
 
-  // Anything that is not a page of this book is left alone: better an untouched
-  // link than a confidently wrong one.
-  if (!known.has(slug)) {
+  if (!site.has(slug)) {
+    // A real page of the book that this translation does not carry (the
+    // appendices and front matter): send the reader to the English original,
+    // which is more use than a dead link.
+    if (upstream.has(slug)) {
+      node.properties!["href"] = `${EN_BOOK}${slug}.html${hash}`;
+      node.properties!["class"] = "link-en";
+      node.properties!["hreflang"] = "en";
+      node.properties!["title"] = "این بخش ترجمه نشده — نسخه انگلیسی";
+      return;
+    }
+
+    // Not a book page at all. Left alone: better an untouched link than a
+    // confidently wrong one.
     if (!warned.has(href)) {
       warned.add(href);
       console.warn(
         `[book-links] "${href}" looks like a book link but "${slug}" is not a ` +
-          `page in SUMMARY.md — left unchanged.`,
+          `page of the book — left unchanged.`,
       );
     }
     return;

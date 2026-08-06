@@ -736,6 +736,18 @@ a.pager-link:hover {
   cursor: help;
 }
 
+/* Links to parts of the book this translation does not carry — the appendices
+   and front matter. They resolve to the English original, so they are marked to
+   set the expectation before the click. */
+.prose .link-en::after {
+  content: "↗ EN";
+  font-size: 0.7em;
+  margin-inline-start: 0.25em;
+  vertical-align: super;
+  color: var(--color-muted-foreground);
+  unicode-bidi: isolate;
+}
+
 /* The filename marker that precedes a listing (SPEC §2.1 step 3). */
 .prose .filename {
   display: block;

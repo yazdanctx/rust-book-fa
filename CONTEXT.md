@@ -11,7 +11,8 @@ complete book honestly.
 
 **Page**:
 One chapter or section of the book, corresponding to exactly one markdown file
-in `src-fa/`. There are 111 of them.
+in `src-fa/`. There are 101 of them: the introduction plus chapters 1–21. The
+appendices and front matter are out of scope.
 _Avoid_: Chapter (a Page may be a section within a chapter), Article, Post
 
 **Slug**:
@@ -44,7 +45,7 @@ muted, unclickable element labelled **در دست نگارش** ("being written")
 _Avoid_: Greyed link, Broken link, Placeholder
 
 **Translation Progress**:
-The count of Translated Pages out of 111, derived on every build from file
+The count of Translated Pages out of 101, derived on every build from file
 sizes alone.
 
 ### Source material
@@ -131,5 +132,5 @@ later. Draft status — review before translating chapter bodies.
 | error handling | مدیریت خطا | recoverable → قابل جبران, unrecoverable → جبران‌ناپذیر |
 | Cargo | کارگو | but `cargo` the command stays Latin |
 
-Appendix letters (A–G) stay Latin so that in-book cross-references such as
-"see Appendix D" remain coherent.
+The appendices are not part of this translation (ADR-0007), so the prose's 13
+references to them resolve to the English original rather than to a page here.

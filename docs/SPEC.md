@@ -26,10 +26,10 @@ Decisions are recorded in [`adr/`](./adr/).
 ├── fonts/                   # all 10 Peyda weights (source; only 3 ship)
 ├── scripts/
 │   ├── resolve.ts           # src-en/ + listings tree -> src-en-resolved/
-│   └── scaffold.ts          # -> 111 zero-byte files in src-fa/
+│   └── scaffold.ts          # -> 101 zero-byte files in src-fa/
 ├── src-en/                  # vendored upstream English source, never modified
 ├── src-en-resolved/         # generated + committed; the translation worksheet
-├── src-fa/                  # the translation. SUMMARY.md + 111 page files
+├── src-fa/                  # the translation. SUMMARY.md + 101 page files
 ├── public/
 │   ├── fonts/               # 3 shipped weights
 │   └── img/                 # copied from src-en/img
@@ -110,7 +110,7 @@ one `<Listing>` is nested inside a blockquote.
 
 ### 2.2 `scripts/scaffold.ts` (re-runnable, strictly additive)
 
-Creates one zero-byte file in `src-fa/` for each of the 111 pages the Summary
+Creates one zero-byte file in `src-fa/` for each of the pages the Summary
 links. **Never** writes to a file that already exists — no `--force` flag
 exists. Prints `created N, skipped M`. See ADR-0002.
 
@@ -125,14 +125,14 @@ text on images and Listing captions are prose and are part of the translation.
 
 ## 3. Navigation
 
-`src-fa/SUMMARY.md` is the source of truth: it mirrors the upstream structure
-(three ungrouped prefix links — title page, foreword, introduction — then 21
-chapter groups with nested sections, then the appendices) with **Farsi titles**.
-It is hand-translated once, up front.
+`src-fa/SUMMARY.md` is the source of truth: one ungrouped prefix link (the
+introduction) followed by 21 chapter groups with nested sections, all with
+**Farsi titles**. It is hand-translated once, up front. The upstream front
+matter and appendices are out of scope (ADR-0007).
 
 - Parsed into a nav tree: `{ title, slug, depth, children }`, max depth 2.
 - **Numbering** is derived from nesting (`۱`, `۱.۱`, `۱.۲`) using
-  Persian-Indic digits. Prefix links and appendices are unnumbered.
+  Persian-Indic digits. Prefix links are unnumbered.
 - **Sidebar behaviour** (mdbook-like): all chapter groups listed; sub-sections
   expanded only for the active chapter; active item highlighted. On mobile it is
   a drawer opening from the **right** (RTL).
@@ -182,7 +182,10 @@ only `.md` leaves 202 links pointing at pages that do not exist here.
 > wrong: it included `SUMMARY.md`'s own 111 links, which the resolver excludes.
 
 - `slug.md` / `slug.html` (+ optional `#hash`) → `/slug/#hash`.
-- The slug is validated against `SUMMARY.md`. An unrecognised target is left
+- The slug is validated against `SUMMARY.md`. A slug that is **not** in the
+  Summary but **is** a page of the upstream book — the appendices and front
+  matter, per ADR-0007 — becomes a link to `doc.rust-lang.org`, marked
+  `class="link-en"` and annotated `↗ EN`. A slug that is neither is left
   untouched and warned about, rather than confidently rewritten.
 - Target is an Untranslated Page → the anchor becomes an inline Disabled Link,
   keeping its text. This makes a 404 impossible by construction.
