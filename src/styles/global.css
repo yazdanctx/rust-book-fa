@@ -71,6 +71,40 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     scrollbar-gutter: stable;
+
+    /* Tells the browser to render its own UI dark: scrollbars, form controls,
+       and the overscroll area. Without it the native scrollbar stays light grey
+       against a black page. */
+    color-scheme: dark;
+
+    /* Standard property (Firefox, Chromium 121+). A pure-black thumb would be
+       invisible on a black track, so the thumb takes the border grey. */
+    scrollbar-color: var(--color-border) var(--color-background);
+  }
+
+  /* WebKit/Blink fine control, for the main document and every scroll container
+     the layout creates: the sidebar, code blocks, tables, search results. */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border: 2px solid var(--color-background);
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted-foreground);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: var(--color-background);
   }
 
   body {
