@@ -8,8 +8,8 @@ import { titleToHtml } from "../lib/summary";
 const { translated, total, percent } = await getProgress();
 const pages = await getBookPages();
 
-// Where to send a reader who just wants to start: the first translated page in
-// reading order, or nothing at all if the book has not been started.
+// Where to send someone who just wants to start reading: the first translated
+// page in reading order, or nothing at all if the book has not been started.
 const entry = pages.find((p) => p.translated);
 const fa = (n: number) => toPersianDigits(String(n));
 ---
@@ -18,48 +18,70 @@ const fa = (n: number) => toPersianDigits(String(n));
   title="زبان برنامه‌نویسی راست"
   description="ترجمه فارسی کتاب The Rust Programming Language"
 >
-  <main class="mx-auto max-w-3xl px-5 py-16">
-    <h1 class="text-4xl leading-snug font-bold">زبان برنامه‌نویسی راست</h1>
-
-    <div class="prose mt-8">
-      <p>
-        این ترجمه فارسی کتاب رسمی زبان برنامه‌نویسی راست است. ترجمه به‌صورت
-        تدریجی و فصل‌به‌فصل انجام می‌شود؛ صفحه‌هایی که هنوز ترجمه نشده‌اند در
-        فهرست با برچسب <span class="nav-badge">در دست نگارش</span> نشان داده
-        می‌شوند و قابل کلیک نیستند.
-      </p>
-    </div>
-
-    <section class="mt-12 border border-(--color-border) p-5" aria-label="میزان پیشرفت ترجمه">
-      <p class="text-sm">
-        <strong>{fa(translated)}</strong> از <strong>{fa(total)}</strong> صفحه ترجمه
-        شده است — {fa(percent)}٪
-      </p>
-      <div class="progress-track mt-3" role="presentation">
-        <div class="progress-fill" style={`width: ${percent}%`}></div>
-      </div>
+  <main class="mx-auto max-w-3xl">
+    <section class="hero">
+      {/* Decorative: alt is intentionally empty so screen readers skip it.
+          Add a description here if the image ever carries meaning. */}
+      <img
+        src="/toji.avif"
+        alt=""
+        width="833"
+        height="833"
+        class="hero-img"
+        fetchpriority="high"
+      />
+      <div class="hero-fade"></div>
+      <h1 class="hero-title">راست رو فارسی یاد بگیر</h1>
     </section>
 
-    {
-      entry && (
-        <p class="mt-10">
-          <a href={`/${entry.slug}/`} class="pager-link inline-block">
-            <span class="pager-label">شروع خواندن</span>
-            <span class="pager-title" set:html={titleToHtml(entry.title)} />
-          </a>
+    <div class="px-5 pb-16">
+      <div class="prose">
+        <p>
+          کل کتاب رسمی راست، فارسیِ روون — نه ترجمه‌ی خشکِ کتاب‌درسی. فصل‌به‌فصل
+          می‌رم جلو و هر چی آماده شد همین‌جا می‌ذارم.
         </p>
-      )
-    }
+        <p>
+          اون‌هایی که هنوز نوبتشون نشده با برچسب
+          <span class="nav-badge">در دست نگارش</span> توی فهرست می‌بینی؛ فعلاً
+          کلیک نمی‌خورن، ولی حواسم بهشون هست.
+        </p>
+      </div>
 
-    <footer class="mt-16 text-xs text-(--color-muted-foreground)">
-      <p>
-        متن اصلی کتاب <span class="latin">The Rust Programming Language</span> تحت
-        مجوز دوگانه <span class="latin">MIT</span> و
-        <span class="latin">Apache-2.0</span> منتشر شده است.
-        <a href="https://doc.rust-lang.org/book/" class="underline hover:no-underline">
-          نسخه اصلی انگلیسی
-        </a>
-      </p>
-    </footer>
+      <section
+        class="mt-10 border border-(--color-border) p-5"
+        aria-label="میزان پیشرفت ترجمه"
+      >
+        <p class="text-sm">
+          تا اینجا <strong>{fa(translated)}</strong> صفحه از
+          <strong>{fa(total)}</strong> آماده شده — {fa(percent)}٪
+        </p>
+        <div class="progress-track mt-3" role="presentation">
+          <div class="progress-fill" style={`width: ${percent}%`}></div>
+        </div>
+      </section>
+
+      {
+        entry && (
+          <p class="mt-8">
+            <a href={`/${entry.slug}/`} class="pager-link inline-block">
+              <span class="pager-label">بزن بریم</span>
+              <span class="pager-title" set:html={titleToHtml(entry.title)} />
+            </a>
+          </p>
+        )
+      }
+
+      <footer class="mt-16 text-xs leading-relaxed text-(--color-muted-foreground)">
+        <p>
+          اصلِ کتاب کارِ تیم راسته و با مجوز
+          <span class="latin">MIT</span> و <span class="latin">Apache-2.0</span>
+          منتشر شده؛ من فقط فارسیش می‌کنم. هر جا ترجمه لنگ زد، برو سراغ
+          <a
+            href="https://doc.rust-lang.org/book/"
+            class="underline hover:no-underline">نسخه‌ی انگلیسی</a
+          >.
+        </p>
+      </footer>
+    </div>
   </main>
 </BookLayout>
