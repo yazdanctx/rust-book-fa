@@ -1,7 +1,5 @@
 # زبان برنامه‌نویسی راست
 
-[مقدمه](ch00-00-introduction.md)
-
 - [شروع کار](ch01-00-getting-started.md)
   - [نصب](ch01-01-installation.md)
   - [سلام، دنیا!](ch01-02-hello-world.md)

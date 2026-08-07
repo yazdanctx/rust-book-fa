@@ -54,6 +54,10 @@
   --color-link-visited: #ac4bff;
   --color-code: #a36100;
 
+  /* The only saturated colour in an otherwise greyscale palette, so it reads as
+     a deliberate accent on the progress bar rather than as part of the theme. */
+  --color-progress: #e5484d;
+
   --font-sans:
     "Peyda", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji";
@@ -326,6 +330,17 @@ a.nav-link[aria-current="page"] {
   .sidebar-backdrop {
     transition: none;
   }
+
+  /* The bar keeps its red and its resting glow; only the sweep and the hum
+     stop. Nothing here carries meaning that the motion was conveying. */
+  .progress-fill,
+  .progress-fill::after {
+    animation: none;
+  }
+
+  .progress-fill::after {
+    opacity: 0;
+  }
 }
 
 /* ── Hero ─────────────────────────────────────────────────────────────────
@@ -379,12 +394,68 @@ a.nav-link[aria-current="page"] {
   height: 6px;
   background: var(--color-card);
   border: 1px solid var(--color-border);
+  /* Clips the arc to the bar, so the sweep cannot escape past the fill. */
+  overflow: hidden;
 }
 
 .progress-fill {
+  position: relative;
   height: 100%;
-  background: var(--color-primary);
+  background: var(--color-progress);
   min-width: 2px;
+  box-shadow:
+    0 0 6px color-mix(in srgb, var(--color-progress) 85%, transparent),
+    0 0 14px color-mix(in srgb, var(--color-progress) 45%, transparent);
+  animation: progress-charge 3.4s ease-in-out infinite;
+}
+
+/* A white-hot core that runs the length of the translated portion and leaves a
+   red wake, so the bar reads as energised rather than merely full. Sized in
+   percentages of the fill, so a 4% bar gets the same effect as a 90% one. */
+.progress-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--color-progress) 55%, transparent) 40%,
+    #fff 50%,
+    color-mix(in srgb, var(--color-progress) 55%, transparent) 60%,
+    transparent 100%
+  );
+  animation: progress-arc 2.8s ease-in-out infinite;
+}
+
+@keyframes progress-arc {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Mains hum on the glow — a few percent either side of resting brightness.
+   Enough to feel live, well short of a strobe. */
+@keyframes progress-charge {
+  0%,
+  100% {
+    box-shadow:
+      0 0 6px color-mix(in srgb, var(--color-progress) 85%, transparent),
+      0 0 14px color-mix(in srgb, var(--color-progress) 45%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 9px color-mix(in srgb, var(--color-progress) 100%, transparent),
+      0 0 22px color-mix(in srgb, var(--color-progress) 65%, transparent);
+  }
 }
 
 /* ── Search ───────────────────────────────────────────────────────────────
@@ -497,11 +568,35 @@ a.pager-link:hover {
   cursor: default;
 }
 
+/* Each box's content hugs the outer edge of the pair: قبلی to the right, بعدی
+   to the left. Without this both inherit `text-align: start` and the next box's
+   text strands itself against the gutter between them. */
+.pager-next {
+  text-align: end;
+}
+
 .pager-label {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
   font-size: 0.75rem;
   color: var(--color-muted-foreground);
   margin-block-end: 0.25rem;
+}
+
+.pager-next .pager-label {
+  justify-content: flex-end;
+}
+
+/* Arrows are bidi-neutral, so left to themselves both resolve to the paragraph
+   direction and land on the right. Flex order pins each one to the outer edge
+   it actually points toward. */
+.pager-arrow {
+  unicode-bidi: isolate;
+}
+
+.pager-next .pager-arrow {
+  order: 1;
 }
 
 .pager-title {

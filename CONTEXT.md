@@ -11,8 +11,8 @@ complete book honestly.
 
 **Page**:
 One chapter or section of the book, corresponding to exactly one markdown file
-in `src-fa/`. There are 101 of them: the introduction plus chapters 1–21. The
-appendices and front matter are out of scope.
+in `src-fa/`. There are 100 of them: chapters 1–21. The introduction, the
+appendices and the front matter are out of scope.
 _Avoid_: Chapter (a Page may be a section within a chapter), Article, Post
 
 **Slug**:
@@ -45,7 +45,7 @@ muted, unclickable element labelled **در دست نگارش** ("being written")
 _Avoid_: Greyed link, Broken link, Placeholder
 
 **Translation Progress**:
-The count of Translated Pages out of 101, derived on every build from file
+The count of Translated Pages out of 100, derived on every build from file
 sizes alone.
 
 ### Source material

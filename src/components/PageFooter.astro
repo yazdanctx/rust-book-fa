@@ -18,25 +18,34 @@ const englishUrl = `https://doc.rust-lang.org/book/${slug}.html`;
  * visible instead of silently teleporting the reader past missing chapters.
  */
 const pager = [
-  { page: prev, label: "قبلی", arrow: "→" },
-  { page: next, label: "بعدی", arrow: "←" },
+  { page: prev, label: "قبلی", arrow: "→", side: "prev" },
+  { page: next, label: "بعدی", arrow: "←", side: "next" },
 ];
 ---
 
 <footer class="mt-20 border-t border-(--color-border) pt-8 pb-16 text-sm">
   <nav class="flex flex-wrap gap-4" aria-label="پیمایش صفحه‌ها">
     {
-      pager.map(({ page, label, arrow }) => (
+      pager.map(({ page, label, arrow, side }) => (
         <div class="min-w-0 flex-1 basis-64">
           {page ? (
             page.translated ? (
-              <a href={`/${page.slug}/`} class="pager-link">
-                <span class="pager-label">{arrow} {label}</span>
+              <a href={`/${page.slug}/`} class={`pager-link pager-${side}`}>
+                <span class="pager-label">
+                  <span class="pager-arrow">{arrow}</span>
+                  <span>{label}</span>
+                </span>
                 <span class="pager-title" set:html={titleToHtml(page.title)} />
               </a>
             ) : (
-              <span class="pager-link pager-disabled" aria-disabled="true" title={UNTRANSLATED}>
-                <span class="pager-label">{arrow} {label}</span>
+              <span
+                class={`pager-link pager-${side} pager-disabled`}
+                aria-disabled="true"
+                title={UNTRANSLATED}>
+                <span class="pager-label">
+                  <span class="pager-arrow">{arrow}</span>
+                  <span>{label}</span>
+                </span>
                 <span class="pager-title" set:html={titleToHtml(page.title)} />
                 <span class="nav-badge">{UNTRANSLATED}</span>
               </span>

@@ -26,10 +26,10 @@ Decisions are recorded in [`adr/`](./adr/).
 ├── fonts/                   # all 10 Peyda weights (source; only 3 ship)
 ├── scripts/
 │   ├── resolve.ts           # src-en/ + listings tree -> src-en-resolved/
-│   └── scaffold.ts          # -> 101 zero-byte files in src-fa/
+│   └── scaffold.ts          # -> 100 zero-byte files in src-fa/
 ├── src-en/                  # vendored upstream English source, never modified
 ├── src-en-resolved/         # generated + committed; the translation worksheet
-├── src-fa/                  # the translation. SUMMARY.md + 101 page files
+├── src-fa/                  # the translation. SUMMARY.md + 100 page files
 ├── public/
 │   ├── fonts/               # 3 shipped weights
 │   └── img/                 # copied from src-en/img

@@ -2,12 +2,18 @@
 status: accepted
 ---
 
-# The translation covers the introduction and chapters 1–21 only
+# The translation covers chapters 1–21 only
 
-The appendices (`appendix-00` … `appendix-07`) and the front matter (`title-page`,
-`foreword`) are out of scope. The book here is 101 pages: `ch00-00-introduction`
-followed by chapters 1–21. They are absent from `src-fa/SUMMARY.md` and have no
-files in `src-fa/`.
+The appendices (`appendix-00` … `appendix-07`), the front matter (`title-page`,
+`foreword`) and the introduction (`ch00-00-introduction`) are out of scope. The
+book here is 100 pages: chapters 1–21. They are absent from `src-fa/SUMMARY.md`
+and have no files in `src-fa/`.
+
+The introduction was dropped after the appendices, for a different reason: it is
+upstream's front-of-book framing (who Rust is for, how to read the book, the
+Ferris table) rather than material about the language, and this translation opens
+directly on chapter 1. No prose anywhere in the book links to it, so unlike the
+appendices its removal costs no cross-references.
 
 ## Consequences
 
