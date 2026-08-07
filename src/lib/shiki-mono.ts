@@ -7,16 +7,21 @@ import type { ThemeRegistration } from "shiki";
  * tone and weight instead: comments recede to the muted grey, strings sit one
  * step below the text colour, and keywords take the full white plus bold. The
  * greys are the existing theme tokens, not new values.
+ *
+ * The background is transparent and the base colour is the page foreground:
+ * blocks sit on the page itself, bounded by their border alone. Shiki writes
+ * both into an inline style on the `<pre>`, which would otherwise win over any
+ * rule in `global.css` — so they are set here rather than overridden there.
  */
 export const shikiMono: ThemeRegistration = {
   name: "mono",
   type: "dark",
   colors: {
-    "editor.foreground": "#e7e5e4",
-    "editor.background": "#1b1918",
+    "editor.foreground": "#ffffff",
+    "editor.background": "#00000000",
   },
-  fg: "#e7e5e4",
-  bg: "#1b1918",
+  fg: "#ffffff",
+  bg: "#00000000",
   settings: [
     {
       scope: ["comment", "punctuation.definition.comment", "string.comment"],

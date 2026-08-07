@@ -52,7 +52,13 @@
 
   --color-link: #54a2ff;
   --color-link-visited: #ac4bff;
-  --color-code: #a36100;
+
+  /* Inline code: the brand red on a near-black red wash. The pair clears 4.8:1,
+     so it stays legible at the 0.85em code spans run at. The border is the same
+     red again, lifted just enough to draw the chip's edge without ringing it. */
+  --color-code: #e5484d;
+  --color-code-bg: #1f0c0e;
+  --color-code-border: #3d1a1d;
 
   /* The only saturated colour in an otherwise greyscale palette, so it reads as
      a deliberate accent on the progress bar rather than as part of the theme. */
@@ -708,21 +714,46 @@ a.pager-link:hover {
   margin-block-start: 1em;
 }
 
+/* Inline code is a chip: red on a darker red, with just enough padding to read
+   as one. The prose sets a 1.9 line-height, which absorbs the vertical padding
+   without opening the lines up. */
 .prose :not(pre) > code {
   font-family: var(--font-mono);
-  font-size: 0.9em;
+  font-size: 0.85em;
   color: var(--color-code);
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-code-border);
+  border-radius: 3px;
+  padding: 0.1em 0.35em;
   word-break: break-word;
+}
+
+/* Headings are already bold and large; a chip inside one reads as a box drawn
+   round part of the title. The colour alone carries it there. */
+.prose :is(h2, h3, h4, h5, h6) code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.9em;
 }
 
 .prose pre {
   border: 1px solid var(--color-border);
   border-radius: 0;
   padding: 1rem 1.15rem;
-  overflow-x: auto;
+  margin: 0;
   font-size: 0.9rem;
   line-height: 1.7;
-  background: var(--color-card);
+  background: transparent;
+  color: var(--color-foreground);
+
+  /* The block scrolls sideways rather than widening: `max-width` bounds it to
+     the wrapper, which `.book-main { min-width: 0 }` bounds to the viewport, so
+     a long line cannot push the page wider on a phone. `contain` stops a
+     finished swipe from chaining into the document's own scroll. */
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
 }
 
 .prose pre code {
@@ -730,6 +761,13 @@ a.pager-link:hover {
   font-size: inherit;
   color: inherit;
   background: none;
+
+  /* `<code>` is inline, so it shrink-wraps the container and the padding-right
+     collapses at the end of the longest line while scrolled. Making it a block
+     that is at least as wide as its content restores the trailing gutter. */
+  display: block;
+  width: fit-content;
+  min-width: 100%;
 }
 
 .prose img {
@@ -798,6 +836,64 @@ a.pager-link:hover {
   font-variant-ligatures: none;
 }
 
+/* Emitted by rehype-code-copy: the positioning context for the copy button and
+   the box the `<pre>` scrolls inside. It is the `.prose` child now, so it is
+   what the `* + *` margin rule spaces — hence `margin: 0` on the `<pre>`. */
+.code-block {
+  position: relative;
+  max-width: 100%;
+}
+
+.code-copy {
+  position: absolute;
+  /* Physical, not logical: the block's content is forced LTR whatever the
+     document direction, so the top-right corner is the one that is reliably
+     empty — the start of every line is on the left. */
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1;
+
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 0.4rem 0.6rem;
+  color: var(--color-muted-foreground);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  cursor: pointer;
+  transition:
+    opacity 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.code-copy:hover {
+  color: var(--color-foreground);
+  border-color: var(--color-muted-foreground);
+}
+
+/* Set by the click handler while the label reads "کپی شد". */
+.code-copy[data-copied] {
+  color: var(--color-code);
+  border-color: var(--color-code-border);
+  background: var(--color-code-bg);
+}
+
+/* Reveal on hover only where hovering is possible. On a touch screen there is
+   no hover state to discover the button with, so it stays visible. */
+@media (hover: hover) {
+  .code-copy {
+    opacity: 0;
+  }
+
+  .code-block:hover .code-copy,
+  .code-copy:focus-visible,
+  .code-copy[data-copied] {
+    opacity: 1;
+  }
+}
+
 /* ── Ferris badges ────────────────────────────────────────────────────────
    Emitted by resolve.ts as an <img class="ferris"> immediately before a code
    block whose upstream fence was marked does_not_compile / panics /
@@ -813,9 +909,9 @@ a.pager-link:hover {
   margin-inline: 0;
 }
 
-/* Sits directly above its block, so kill the inherited paragraph spacing. */
-.prose img.ferris + pre,
-.prose img.ferris + .astro-code {
+/* Sits directly above its block, so kill the inherited paragraph spacing. The
+   block is wrapped by rehype-code-copy, so the wrapper is the sibling now. */
+.prose img.ferris + .code-block {
   margin-block-start: 0;
 }
 
@@ -851,6 +947,11 @@ a.pager-link:hover {
   margin-block-end: 0.5em;
 }
 
+/* The marker is a label for the block below it, not code in prose: it keeps the
+   mono face but drops the chip so it stays a quiet caption. */
 .prose .filename code {
   color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
 }

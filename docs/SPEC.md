@@ -41,7 +41,8 @@ Decisions are recorded in [`adr/`](./adr/).
     │   └── progress.ts      # translation progress
     ├── plugins/
     │   ├── rehype-normalize-headings.ts
-    │   └── rehype-book-links.ts
+    │   ├── rehype-book-links.ts
+    │   └── rehype-code-copy.ts
     ├── components/
     ├── layouts/
     └── pages/
@@ -164,6 +165,19 @@ per-document offset so the shallowest lands on `h2` (ADR-0005). Prose column is
 
 - Shiki with a **custom monochrome theme** built from the existing palette
   greys — comments and strings differentiated by tone and weight only, no hue.
+  Its `bg` is transparent and its `fg` is the page foreground: blocks sit on the
+  page, bounded by their border alone. Both are set in the theme rather than in
+  CSS because Shiki writes them into an inline style on the `<pre>`.
+- **Inline code** is the one place with hue: the brand red on a near-black red
+  wash, as a bordered chip. Suppressed inside headings, where the chip would
+  read as a box drawn around part of the title.
+- **Copy button**, emitted into the HTML by `rehype-code-copy` — which also
+  wraps each block in a `.code-block` positioning context — and bound by one
+  delegated listener in `BaseLayout`. Revealed on hover only under
+  `(hover: hover)`; on touch it is always visible. Falls back to a hidden
+  textarea where `navigator.clipboard` is unavailable (non-secure contexts).
+- Blocks scroll horizontally **inside** their wrapper rather than widening the
+  page: `max-width: 100%` on both, against `.book-main { min-width: 0 }`.
 - `<html dir="rtl" lang="fa">`; `pre, code` forced to `direction: ltr;
   text-align: left`.
 - Ferris Badge rendered beside flagged blocks using the three existing SVGs,
@@ -222,7 +236,7 @@ Ported from yazdan.me, dark-only, Tailwind v4 `@theme`:
 | `--color-secondary` / `--color-accent` | `#292624` |
 | `--color-muted-foreground` / `--color-ring` | `#78726d` |
 | links / visited | `#54a2ff` / `#ac4bff` |
-| inline code | `#a36100` |
+| inline code / its background / its border | `#e5484d` / `#1f0c0e` / `#3d1a1d` |
 
 Also carried over: `.prose blockquote` as a bordered card with a 💡 marker,
 `.prose img` bordered and full-width, square corners on `pre`, `scroll-margin-top: 80px`

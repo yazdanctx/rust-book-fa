@@ -47,3 +47,68 @@ const englishUrl = englishSlug
     <slot />
   </body>
 </html>
+
+<script>
+  /* Copy buttons for code blocks. The markup comes from rehype-code-copy, so
+     this only binds behaviour — one delegated listener rather than one per
+     block, since a page can carry dozens. */
+
+  const COPY = "کپی";
+  const COPIED = "کپی شد";
+  const FAILED = "کپی نشد";
+  const RESET_MS = 2000;
+
+  const timers = new WeakMap<HTMLElement, number>();
+
+  document.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement | null;
+    const button = target?.closest<HTMLButtonElement>("[data-code-copy]");
+    if (!button) return;
+
+    const code = button.parentElement?.querySelector("pre")?.textContent ?? "";
+    void copy(code).then((ok) => flash(button, ok ? COPIED : FAILED));
+  });
+
+  async function copy(text: string): Promise<boolean> {
+    /* navigator.clipboard needs a secure context, which `astro dev` over a LAN
+       address is not. The textarea fallback keeps the button working there. */
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        /* Permission refused, or the document was not focused. Fall through. */
+      }
+    }
+
+    const field = document.createElement("textarea");
+    field.value = text;
+    field.setAttribute("readonly", "");
+    field.style.cssText = "position:fixed;top:0;left:-9999px;opacity:0";
+    document.body.append(field);
+    field.select();
+
+    try {
+      return document.execCommand("copy");
+    } catch {
+      return false;
+    } finally {
+      field.remove();
+    }
+  }
+
+  function flash(button: HTMLElement, ok: boolean): void {
+    const label = button.querySelector(".code-copy-text");
+    if (label) label.textContent = ok ? COPIED : FAILED;
+    if (ok) button.setAttribute("data-copied", "");
+
+    clearTimeout(timers.get(button));
+    timers.set(
+      button,
+      window.setTimeout(() => {
+        if (label) label.textContent = COPY;
+        button.removeAttribute("data-copied");
+      }, RESET_MS),
+    );
+  }
+</script>

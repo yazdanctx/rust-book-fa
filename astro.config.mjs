@@ -6,6 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { shikiMono } from "./src/lib/shiki-mono.ts";
 import { rehypeNormalizeHeadings } from "./src/plugins/rehype-normalize-headings.ts";
 import { rehypeBookLinks } from "./src/plugins/rehype-book-links.ts";
+import { rehypeCodeCopy } from "./src/plugins/rehype-code-copy.ts";
 
 export default defineConfig({
   site: "https://rust-book.yazdan.me",
@@ -26,6 +27,6 @@ export default defineConfig({
       theme: shikiMono,
       wrap: false,
     },
-    rehypePlugins: [rehypeNormalizeHeadings, rehypeBookLinks],
+    rehypePlugins: [rehypeNormalizeHeadings, rehypeBookLinks, rehypeCodeCopy],
   },
 });
