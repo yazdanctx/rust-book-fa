@@ -50,19 +50,37 @@
   --color-accent: #292624;
   --color-accent-foreground: #c2bfbc;
 
-  --color-link: #54a2ff;
-  --color-link-visited: #ac4bff;
+  /* Deep blue: the one colour in the interface that is not the brand, which is
+     precisely why it works for links — nothing else on the page could be
+     mistaken for one. It is as dark as the black background allows and still
+     clears AA (5.7:1); anything deeper stops being readable rather than
+     starting to look richer. Visited desaturates toward slate instead of
+     darkening further, for the same reason. */
+  --color-link: #4a7dff;
+  --color-link-visited: #8b9ac4;
+
+  /* ── Brand ────────────────────────────────────────────────────────────────
+     One red runs the whole interface — inline code, quote markers, the pager
+     frame, the sidebar's current page, the code block's language pip. It is the
+     only hue in an otherwise greyscale palette apart from links, so it reads as
+     the terminal's own colour rather than as decoration.
+     The three steps are the same red at three jobs: full strength for glyphs and
+     glows, `dim` for borders that must sit under text, `wash` for fills. */
+  --color-brand: #e5484d;
+  --color-brand-dim: #7f2226;
+  --color-brand-wash: #150809;
 
   /* Inline code: the brand red on a near-black red wash. The pair clears 4.8:1,
      so it stays legible at the 0.85em code spans run at. The border is the same
      red again, lifted just enough to draw the chip's edge without ringing it. */
-  --color-code: #e5484d;
+  --color-code: var(--color-brand);
   --color-code-bg: #1f0c0e;
   --color-code-border: #3d1a1d;
 
-  /* The only saturated colour in an otherwise greyscale palette, so it reads as
-     a deliberate accent on the progress bar rather than as part of the theme. */
-  --color-progress: #e5484d;
+  /* White, not the brand: at 4% the fill is a couple of pixels wide, and red
+     that small on black reads as a rendering artefact rather than as progress.
+     White is the one value that stays unambiguous at any width. */
+  --color-progress: var(--color-foreground);
 
   --font-sans:
     "Peyda", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
@@ -103,14 +121,14 @@
     background: var(--color-background);
   }
 
+  /* Square, like every other edge on the page. */
   ::-webkit-scrollbar-thumb {
     background: var(--color-border);
     border: 2px solid var(--color-background);
-    border-radius: 6px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-muted-foreground);
+    background: var(--color-brand-dim);
   }
 
   ::-webkit-scrollbar-corner {
@@ -155,13 +173,16 @@
     text-align: start;
   }
 
+  /* The ring is the brand red rather than the neutral grey: on pure black it is
+     the most visible colour available, and it ties keyboard focus to the same
+     accent every other interactive state uses. */
   :focus-visible {
-    outline: 2px solid var(--color-ring);
+    outline: 2px solid var(--color-brand);
     outline-offset: 2px;
   }
 
   ::selection {
-    background: var(--color-secondary);
+    background: color-mix(in srgb, var(--color-brand) 35%, transparent);
     color: var(--color-foreground);
   }
 }
@@ -198,19 +219,27 @@
   padding: 0.35rem 0.6rem;
   color: var(--color-secondary-foreground);
   text-decoration: none;
-  border-radius: 2px;
   line-height: 1.6;
 }
 
+/* Hover and current are the same red at two strengths — a faint wash under
+   light red text, then twice the wash under white — so the list reads as one
+   scale rather than two unrelated effects. No glow: in a column of fifty rows a
+   shadow bleeds into its neighbours and softens edges that should stay sharp. */
 a.nav-link:hover {
-  background: var(--color-card);
-  color: var(--color-foreground);
+  background: color-mix(in srgb, var(--color-brand) 10%, transparent);
+  color: var(--color-link);
 }
 
+/* The current page also takes a lit edge on the side the text starts from. The
+   border eats 2px of the inline-start padding rather than adding to it, so the
+   label does not shift when it becomes current. */
 a.nav-link[aria-current="page"] {
-  background: var(--color-secondary);
+  background: color-mix(in srgb, var(--color-brand) 20%, transparent);
   color: var(--color-foreground);
   font-weight: 600;
+  border-inline-start: 2px solid var(--color-brand);
+  padding-inline-start: calc(0.6rem - 2px);
 }
 
 .nav-number {
@@ -234,7 +263,6 @@ a.nav-link[aria-current="page"] {
   font-size: 0.7rem;
   color: var(--color-muted-foreground);
   border: 1px solid var(--color-border);
-  border-radius: 2px;
   white-space: nowrap;
   vertical-align: middle;
 }
@@ -333,19 +361,32 @@ a.nav-link[aria-current="page"] {
 
 @media (prefers-reduced-motion: reduce) {
   .book-sidebar,
-  .sidebar-backdrop {
+  .sidebar-backdrop,
+  .pager-link,
+  .pager-link::before,
+  .pager-arrow,
+  .code-copy {
     transition: none;
   }
 
-  /* The bar keeps its red and its resting glow; only the sweep and the hum
-     stop. Nothing here carries meaning that the motion was conveying. */
-  .progress-fill,
-  .progress-fill::after {
-    animation: none;
+  /* Colour and glow still change on hover — only the lean is dropped, since it
+     is the one hover response that moves something. */
+  a.pager-prev:hover .pager-arrow,
+  a.pager-next:hover .pager-arrow {
+    transform: none;
   }
 
-  .progress-fill::after {
-    opacity: 0;
+  /* The quote keeps a lit frame, it just stops travelling. Parking the conic
+     sweep would leave the bright arc stranded on whichever edge it happened to
+     start on, so the ring is redrawn as a symmetric gradient instead. */
+  .prose blockquote::after {
+    animation: none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-brand) 50%,
+      transparent 100%
+    );
   }
 }
 
@@ -394,74 +435,25 @@ a.nav-link[aria-current="page"] {
 }
 
 /* ── Progress bar ─────────────────────────────────────────────────────────
-   Fills from the inline start, so it grows right-to-left in this document.    */
+   Fills from the inline start, so it grows right-to-left in this document.
+
+   Built like everything else now: square, black, one neutral hairline, and the
+   brand red doing the actual work. The sweeping arc and the pulsing glow are
+   gone — the bar sits above the fold on a page nobody scrolls past, so any
+   motion here is permanent motion, and the number beneath it already says
+   everything the animation was saying.                                       */
 
 .progress-track {
   height: 6px;
-  background: var(--color-card);
+  background: var(--color-background);
   border: 1px solid var(--color-border);
-  /* Clips the arc to the bar, so the sweep cannot escape past the fill. */
   overflow: hidden;
 }
 
 .progress-fill {
-  position: relative;
   height: 100%;
   background: var(--color-progress);
   min-width: 2px;
-  box-shadow:
-    0 0 6px color-mix(in srgb, var(--color-progress) 85%, transparent),
-    0 0 14px color-mix(in srgb, var(--color-progress) 45%, transparent);
-  animation: progress-charge 3.4s ease-in-out infinite;
-}
-
-/* A white-hot core that runs the length of the translated portion and leaves a
-   red wake, so the bar reads as energised rather than merely full. Sized in
-   percentages of the fill, so a 4% bar gets the same effect as a 90% one. */
-.progress-fill::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    color-mix(in srgb, var(--color-progress) 55%, transparent) 40%,
-    #fff 50%,
-    color-mix(in srgb, var(--color-progress) 55%, transparent) 60%,
-    transparent 100%
-  );
-  animation: progress-arc 2.8s ease-in-out infinite;
-}
-
-@keyframes progress-arc {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  15%,
-  85% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
-
-/* Mains hum on the glow — a few percent either side of resting brightness.
-   Enough to feel live, well short of a strobe. */
-@keyframes progress-charge {
-  0%,
-  100% {
-    box-shadow:
-      0 0 6px color-mix(in srgb, var(--color-progress) 85%, transparent),
-      0 0 14px color-mix(in srgb, var(--color-progress) 45%, transparent);
-  }
-  50% {
-    box-shadow:
-      0 0 9px color-mix(in srgb, var(--color-progress) 100%, transparent),
-      0 0 22px color-mix(in srgb, var(--color-progress) 65%, transparent);
-  }
 }
 
 /* ── Search ───────────────────────────────────────────────────────────────
@@ -480,11 +472,18 @@ a.nav-link[aria-current="page"] {
   color: var(--color-foreground);
   background: var(--color-card);
   border: 1px solid var(--color-border);
-  border-radius: 2px;
+  caret-color: var(--color-brand);
 }
 
 .book-search input::placeholder {
   color: var(--color-muted-foreground);
+}
+
+/* The field is the one thing on the page you type into, so it takes a red edge
+   while focused — the outline ring alone reads as generic browser focus. */
+.book-search input:focus {
+  border-color: var(--color-brand-dim);
+  background: var(--color-brand-wash);
 }
 
 .book-search input:disabled {
@@ -529,7 +528,7 @@ a.nav-link[aria-current="page"] {
 }
 
 .search-hit-excerpt mark {
-  background: var(--color-secondary);
+  background: color-mix(in srgb, var(--color-brand) 28%, transparent);
   color: var(--color-foreground);
 }
 
@@ -557,15 +556,77 @@ a.nav-link[aria-current="page"] {
 
 .pager-link {
   display: block;
+  position: relative;
   padding: 0.75rem 1rem;
   border: 1px solid var(--color-border);
   text-decoration: none;
   color: var(--color-secondary-foreground);
+  background: var(--color-background);
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
 }
 
+/* A live pager is black like everything else, described by its frame alone: a
+   red-tinted border wearing the shine on its lower edge. Only `<a>` gets this —
+   the disabled twin is a `<span>`, so it keeps the neutral dashed box and the
+   ring never reaches it. */
+a.pager-link {
+  border-color: var(--color-code-border);
+}
+
+/* The shine: a radial gradient behind a mask that keeps only the 1px frame, so
+   the light lands on the border itself. It is anchored to the bottom edge, hot
+   at the centre and falling off along the bottom and a little way up the sides.
+   The ellipse is one element-height tall, which puts the top edge exactly at
+   the transparent end of the ramp — so the upper frame stays the plain dark red
+   of the `border` underneath and the button reads as lit from below.
+
+   `inset: -1px` lands the box exactly on the border box — absolute children are
+   positioned against the padding box, which excludes the border — and the 1px
+   padding plus the xor mask punches the middle out, leaving the frame alone. */
+a.pager-link::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 1;
+  padding: 1px;
+  pointer-events: none;
+
+  background: radial-gradient(
+    ellipse 70% 100% at 50% 100%,
+    #ffd7d8 0%,
+    var(--color-brand) 20%,
+    color-mix(in srgb, var(--color-brand) 55%, transparent) 48%,
+    transparent 84%
+  );
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+a.pager-link:hover::before {
+  opacity: 1;
+}
+
+/* Hover is a flat wash rather than a second gradient, so the button never grows
+   one. The brightening frame, the glow and the arrow's lean carry the rest. */
 a.pager-link:hover {
-  background: var(--color-card);
+  border-color: var(--color-brand-dim);
   color: var(--color-foreground);
+  background: var(--color-brand-wash);
+  box-shadow: 0 0 28px -10px color-mix(in srgb, var(--color-brand) 80%, transparent);
 }
 
 .pager-disabled {
@@ -599,10 +660,30 @@ a.pager-link:hover {
    it actually points toward. */
 .pager-arrow {
   unicode-bidi: isolate;
+  transition:
+    transform 0.18s ease,
+    color 0.18s ease,
+    text-shadow 0.18s ease;
 }
 
 .pager-next .pager-arrow {
   order: 1;
+}
+
+/* On hover the arrow lights up and leans the way it points. `translate` is
+   physical, so each direction is written out rather than derived from a logical
+   property: قبلی points right, بعدی points left. */
+a.pager-link:hover .pager-arrow {
+  color: var(--color-brand);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--color-brand) 75%, transparent);
+}
+
+a.pager-prev:hover .pager-arrow {
+  transform: translateX(3px);
+}
+
+a.pager-next:hover .pager-arrow {
+  transform: translateX(-3px);
 }
 
 .pager-title {
@@ -650,17 +731,52 @@ a.pager-link:hover {
   margin-block-end: 0.5em;
 }
 
+/* Section headings carry their markdown depth as a marker, in the same red and
+   mono face the code chrome uses. It is generated content, so it stays out of
+   both the accessibility tree and the Pagefind index — the heading text is
+   unchanged. Only h2/h3 take it; below that the markers would outnumber the
+   prose they organise. */
+.prose h2::before,
+.prose h3::before {
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  font-weight: 400;
+  color: color-mix(in srgb, var(--color-brand) 55%, transparent);
+  margin-inline-end: 0.5em;
+  unicode-bidi: isolate;
+}
+
+.prose h2::before {
+  content: "##";
+}
+
+.prose h3::before {
+  content: "###";
+}
+
+/* The underline stays on at rest rather than appearing on hover: colour alone
+   is not a safe signal, and there is no hover at all on a touch screen. It is
+   held back to a hairline at partial opacity so a paragraph of links does not
+   turn into a ruled page. */
 .prose a {
   color: var(--color-link);
-  text-decoration-line: none;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 0.25em;
+  transition:
+    color 0.15s ease,
+    text-decoration-color 0.15s ease;
 }
 
 .prose a:visited {
   color: var(--color-link-visited);
 }
 
+/* Hover brightens the blue and firms the underline to solid. */
 .prose a:hover {
-  text-decoration-line: underline;
+  color: #7ba3ff;
+  text-decoration-color: currentColor;
 }
 
 /* Italics read poorly in Persian; upstream leans on <em> heavily. */
@@ -692,22 +808,102 @@ a.pager-link:hover {
   list-style-type: decimal;
 }
 
+/* Registered so it can be animated: a plain custom property is a string as far
+   as the animation machinery is concerned, and would jump from 0 to 360 rather
+   than sweeping. Must be top level — `@property` inside a rule is invalid. */
+@property --lightning-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* An aside, drawn as a lit panel: one even hairline the whole way round, red
+   fading down from the top edge, a low red bloom underneath, and a charge
+   running the frame. The asymmetric rule that used to mark the starting edge is
+   gone — the border is uniform now, and the travelling arc is what draws the
+   eye instead. */
 .prose blockquote {
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-brand) 12%, transparent) 0%,
+      color-mix(in srgb, var(--color-brand) 4%, transparent) 50%,
+      transparent 100%
+    ),
+    var(--color-background);
+  border: 1px solid var(--color-code-border);
   padding: 1.25rem;
   padding-inline-end: 2.75rem;
   font-style: normal;
   position: relative;
+  box-shadow: 0 10px 34px -22px color-mix(in srgb, var(--color-brand) 90%, transparent);
 }
 
-.prose blockquote::before {
-  content: "💡";
+/* The charge: a conic gradient rotating behind a mask that keeps only the 1px
+   frame, so a bright arc runs the border like current round a circuit. Most of
+   the sweep is transparent, which is what makes it read as one travelling arc
+   rather than a spinning rainbow.
+
+   It lives on `::after` because `::before` is already the `[!]` marker below.
+
+   `inset: -1px` lands the box exactly on the border box — absolute children are
+   positioned against the padding box, which excludes the border — and the 1px
+   padding plus the xor mask punches the middle out, leaving the frame alone.
+
+   The `0deg` fallback matters: where `@property` is unsupported the var is
+   unregistered, so without it the whole conic-gradient would be invalid and no
+   ring would draw at all. With it the arc renders, just parked. */
+.prose blockquote::after {
+  content: "";
   position: absolute;
-  top: 1.25rem;
-  inset-inline-end: 1rem;
-  font-size: 1.25rem;
+  inset: -1px;
+  padding: 1px;
+  pointer-events: none;
+
+  background: conic-gradient(
+    from var(--lightning-angle, 0deg),
+    transparent 0deg,
+    transparent 205deg,
+    color-mix(in srgb, var(--color-brand) 50%, transparent) 265deg,
+    var(--color-brand) 297deg,
+    #ffd7d8 306deg,
+    var(--color-brand) 315deg,
+    color-mix(in srgb, var(--color-brand) 50%, transparent) 347deg,
+    transparent 360deg
+  );
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+
+  animation: lightning 7s linear infinite;
+}
+
+@keyframes lightning {
+  to {
+    --lightning-angle: 360deg;
+  }
+}
+
+/* Replaces the 💡: the same warning marker a compiler would print, in the mono
+   face and the brand red, glowing just enough to catch the eye on the way past. */
+.prose blockquote::before {
+  content: "[!]";
+  position: absolute;
+  top: 1.15rem;
+  inset-inline-end: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
   line-height: 1;
+  color: var(--color-brand);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--color-brand) 70%, transparent);
+  unicode-bidi: isolate;
 }
 
 .prose blockquote > * + * {
@@ -723,7 +919,6 @@ a.pager-link:hover {
   color: var(--color-code);
   background: var(--color-code-bg);
   border: 1px solid var(--color-code-border);
-  border-radius: 3px;
   padding: 0.1em 0.35em;
   word-break: break-word;
 }
@@ -737,9 +932,10 @@ a.pager-link:hover {
   font-size: 0.9em;
 }
 
+/* The frame lives on `.code-block`; the `<pre>` is only the scrolling viewport
+   inside it. */
 .prose pre {
-  border: 1px solid var(--color-border);
-  border-radius: 0;
+  border: none;
   padding: 1rem 1.15rem;
   margin: 0;
   font-size: 0.9rem;
@@ -796,7 +992,7 @@ a.pager-link:hover {
   font-family: var(--font-mono);
   font-size: 0.85em;
   border: 1px solid var(--color-border);
-  border-radius: 3px;
+  border-block-end-width: 2px;
   padding: 0.1em 0.4em;
   background: var(--color-secondary);
 }
@@ -836,62 +1032,87 @@ a.pager-link:hover {
   font-variant-ligatures: none;
 }
 
-/* Emitted by rehype-code-copy: the positioning context for the copy button and
-   the box the `<pre>` scrolls inside. It is the `.prose` child now, so it is
-   what the `* + *` margin rule spaces — hence `margin: 0` on the `<pre>`. */
+/* Emitted by rehype-code-copy: the frame around the block, and the box the
+   `<pre>` scrolls inside. It is the `.prose` child now, so it is what the
+   `* + *` margin rule spaces — hence `margin: 0` on the `<pre>`.
+
+   Deliberately plain: black on the page's own background, one neutral hairline
+   round it, nothing else. The block carries the longest, densest content on the
+   page, and everything decorative here was competing with the code for it. The
+   red is spent on the pip in the bar and on the syntax itself.
+
+   No `position: relative` — there is nothing absolutely positioned inside any
+   more; the copy button sits in the bar's flex row. */
 .code-block {
-  position: relative;
   max-width: 100%;
+  border: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+/* The window's title bar. Black like the block, separated by a hairline alone.
+   Forced LTR like the code below it: the language name is Latin and the block
+   it labels reads left to right, so the bar would otherwise mirror away from
+   the code it belongs to. */
+.code-bar {
+  display: flex;
+  direction: ltr;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.3rem 0.4rem 0.3rem 0.75rem;
+  background: var(--color-background);
+  border-block-end: 1px solid var(--color-border);
+}
+
+/* The language, set as a prompt: a lit block cursor and then the name, tracked
+   out wide so a four-letter word still reads as a label. */
+.code-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
+
+.code-lang::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.75rem;
+  background: var(--color-brand);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-brand) 75%, transparent);
 }
 
 .code-copy {
-  position: absolute;
-  /* Physical, not logical: the block's content is forced LTR whatever the
-     document direction, so the top-right corner is the one that is reliably
-     empty — the start of every line is on the left. */
-  top: 0.5rem;
-  right: 0.5rem;
-  z-index: 1;
-
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   line-height: 1;
-  padding: 0.4rem 0.6rem;
+  padding: 0.35rem 0.55rem;
   color: var(--color-muted-foreground);
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: 3px;
+  background: transparent;
+  border: 1px solid transparent;
   cursor: pointer;
   transition:
-    opacity 0.15s ease,
     color 0.15s ease,
-    border-color 0.15s ease;
+    border-color 0.15s ease,
+    background 0.15s ease;
 }
 
+/* Neutral like the rest of the bar — the button is chrome, not an accent. */
 .code-copy:hover {
   color: var(--color-foreground);
-  border-color: var(--color-muted-foreground);
+  border-color: var(--color-border);
 }
 
-/* Set by the click handler while the label reads "کپی شد". */
+/* Set by the click handler while the label reads "کپی شد". The one red left in
+   the frame: a transient confirmation earns it where a resting state does not. */
 .code-copy[data-copied] {
-  color: var(--color-code);
-  border-color: var(--color-code-border);
-  background: var(--color-code-bg);
-}
-
-/* Reveal on hover only where hovering is possible. On a touch screen there is
-   no hover state to discover the button with, so it stays visible. */
-@media (hover: hover) {
-  .code-copy {
-    opacity: 0;
-  }
-
-  .code-block:hover .code-copy,
-  .code-copy:focus-visible,
-  .code-copy[data-copied] {
-    opacity: 1;
-  }
+  color: var(--color-brand);
+  border-color: var(--color-brand-dim);
+  background: color-mix(in srgb, var(--color-brand) 14%, transparent);
 }
 
 /* ── Ferris badges ────────────────────────────────────────────────────────

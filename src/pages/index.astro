@@ -54,27 +54,36 @@ const fa = (n: number) => toPersianDigits(String(n));
         </section>
 
         <div class="px-5 pt-10 pb-16">
+            {
+                /* Same `.prose` as a book page, and the Latin words go in code
+             spans exactly as they would in the markdown — so `Rust` reads as
+             the same chip here as it does in every chapter. */
+            }
             <div class="prose">
                 <p>
-                    سلام من یزدانم، دارم سعی میکنم Rust بگیرم ولی شروع کردم کتاب
-                    رسمی Rust رو میخونم و مطالب رو به زبان خودم اینجا بازگو
-                    میکنم.
+                    سلام من یزدانم، دارم سعی میکنم <code>Rust</code> بگیرم ولی
+                    شروع کردم کتاب رسمی <code>Rust</code> رو میخونم و مطالب رو به
+                    زبان خودم اینجا بازگو میکنم.
                 </p>
                 <p>
                     توقع ترجمه خط به خط نداشته باشید و احتمال داره با توجه به
                     مسیر یادگیری خودم یه تغییراتی داخل مطالب بدم و در نهایت شما
                     دارید چیزی که یزدان نوشته رو میخونید و نه ترجمه کتاب، ولی به
-                    صورت کلی مطالب اینجارو طبق کتاب رسمی Rust جلو میبرم.
+                    صورت کلی مطالب اینجارو طبق کتاب رسمی <code>Rust</code> جلو
+                    میبرم.
                 </p>
+                {
+                    /* Astro drops the source whitespace either side of a line
+             break that touches a tag, so any space meant to survive has to sit
+             on the same line as the tag itself — hence the long line below.
+             The badge gets away with it because `.nav-badge` carries its own
+             `margin-inline-start`. */
+                }
                 <p>
                     مطالبی که کامل نشدن با تگ
                     <span class="nav-badge">در دست نگارش</span> مشخص شدن و طبیعتا
-                    نمیتونید بازشون کنید، اگه زیاد معطل شدی میتونی از
-                    <a
-                        href="https://doc.rust-lang.org/book/"
-                        class="underline hover:no-underline mr-1"
-                        >رفرنس انگلیسی</a
-                    > بری جلو.
+                    نمیتونید بازشون کنید، اگه زیاد معطل شدی
+                    میتونی از <a href="https://doc.rust-lang.org/book/">رفرنس انگلیسی</a> بری جلو.
                 </p>
             </div>
 

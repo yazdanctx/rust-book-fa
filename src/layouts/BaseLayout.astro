@@ -65,7 +65,10 @@ const englishUrl = englishSlug
     const button = target?.closest<HTMLButtonElement>("[data-code-copy]");
     if (!button) return;
 
-    const code = button.parentElement?.querySelector("pre")?.textContent ?? "";
+    /* The button sits in the chrome bar, a sibling of the `<pre>` — so the
+       search starts from the wrapper the two share. */
+    const block = button.closest(".code-block");
+    const code = block?.querySelector("pre")?.textContent ?? "";
     void copy(code).then((ok) => flash(button, ok ? COPIED : FAILED));
   });
 
