@@ -41,8 +41,15 @@ _Avoid_: Published page, Complete page
 **Disabled Link**:
 How an Untranslated Page is presented wherever it would otherwise be a link —
 in the Summary sidebar, in prev/next, and in cross-references inside prose. A
-muted, unclickable element labelled **در دست نگارش** ("being written").
+muted, unclickable element carrying the Todo Badge.
 _Avoid_: Greyed link, Broken link, Placeholder
+
+**Todo Badge**:
+The marker on a Disabled Link, reading `todo!()` — the Rust macro for something
+planned but unwritten, which is exactly the distinction this book needs to draw.
+**در دست نگارش** ("being written") survives as its accessible name, so the
+meaning does not depend on getting the joke.
+_Avoid_: Coming soon, WIP, Draft badge
 
 **Translation Progress**:
 The count of Translated Pages out of 100, derived on every build from file
@@ -83,6 +90,43 @@ The crab icon marking a code block as deliberately broken — it does not
 compile, it panics, or it does not do what it appears to do. Derived from the
 attributes on the upstream code fence, which carry no other meaning here.
 _Avoid_: Warning, Callout, Admonition
+
+### Design language
+
+**Terminal Chrome**:
+The interface's one decorative idiom: Latin glyphs that a Rust developer reads
+as carrying meaning, wrapped around Persian text that is never itself styled as
+a terminal. Everything ornamental is rejected in its favour (ADR-0008).
+_Avoid_: Theme, Skin, Cyberpunk, Retro
+
+**Brand Ramp**:
+The five steps of the single red — `wash`, `dim`, `brand`, `hot`, `flare` — from
+the fill under a chip to the near-white core of a glow. It is the only hue in
+the interface apart from links, and it does not spread to new surfaces.
+_Avoid_: Palette, Accent colour, Primary
+
+**Path Prefix**:
+A Page's Slug shown in dim mono ahead of its Farsi title in the sidebar,
+standing in for the box-drawing connectors of a `tree` listing. Real
+information, not decoration: it is the URL contract of ADR-0004 and the key to
+finding the same page in the English book.
+_Avoid_: Breadcrumb, Route label
+
+**Pager Window**:
+The prev/next control, drawn as a miniature of the code block's frame — a title
+bar reading `prev` or `next` above the neighbouring Page's title — and bound to
+the arrow keys it advertises.
+_Avoid_: Pagination, Prev/next buttons, Footer nav
+
+**Build Line**:
+Translation Progress stated as a compile count rather than a percentage, on the
+homepage and in the sidebar header. It does not animate.
+_Avoid_: Progress bar, Completion meter
+
+**Panic Page**:
+The 404, written as a genuine `panic!` dump. The one surface with no long-form
+reading to protect, and therefore the only one allowed to be loud.
+_Avoid_: Error page, Not-found page
 
 ## Translation terminology
 
