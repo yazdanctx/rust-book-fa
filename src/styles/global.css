@@ -745,6 +745,14 @@ a.pager-link:hover {
   border-block-end: 1px solid var(--color-border);
 }
 
+/* A live window's divider takes the same dark red as the frame around it, so
+   the bar reads as part of one lit box rather than as a grey rule laid across
+   it. The disabled twin keeps the neutral grey, matching its dashed frame —
+   a red divider inside a grey dashed box would look like a mistake. */
+a.pager-link .pager-bar {
+  border-block-end-color: var(--color-code-border);
+}
+
 /* `prev` / `next`, set exactly as the code block sets its language: tracked out
    wide so a four-letter word still reads as a label rather than as a word. */
 .pager-dir {
