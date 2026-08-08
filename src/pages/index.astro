@@ -18,32 +18,34 @@ const entry = pages.find((p) => p.translated);
     description="ترجمه فارسی کتاب The Rust Programming Language"
 >
     <main class="mx-auto max-w-3xl">
-        <section class="hero">
-            {
-                /* Decorative: alt is intentionally empty so screen readers skip it.
-          Add a description here if the image ever carries meaning. */
-            }
-            <img
-                src="/toji.png"
-                alt=""
-                width="1024"
-                height="1024"
-                class="hero-img"
-                fetchpriority="high"
-            />
-            <div class="hero-fade"></div>
-            <h1 class="hero-title">زبان برنامه نویسی راست</h1>
-        </section>
-
-        <section
-            class="px-5 pt-5"
-            aria-label="میزان پیشرفت ترجمه"
-        >
-            <div class="progress-track" role="presentation">
-                <div class="progress-fill" style={`width: ${percent}%`}>
-                </div>
+        {/* Hero and progress are one panel: they are a single statement — this
+            is the book, and this is how far along it is — and the lit frame is
+            what holds them together as one. */}
+        <section class="home-panel" aria-label="میزان پیشرفت ترجمه">
+            <div class="home-panel-media">
+                {
+                    /* Decorative: alt is intentionally empty so screen readers skip it.
+              Add a description here if the image ever carries meaning. */
+                }
+                <img
+                    src="/toji.png"
+                    alt=""
+                    width="1024"
+                    height="1024"
+                    class="hero-img"
+                    fetchpriority="high"
+                />
+                <div class="hero-fade"></div>
+                <h1 class="hero-title">زبان برنامه نویسی راست</h1>
             </div>
-            <BuildLine translated={translated} total={total} />
+
+            <div class="home-panel-progress">
+                <div class="progress-track" role="presentation">
+                    <div class="progress-fill" style={`width: ${percent}%`}>
+                    </div>
+                </div>
+                <BuildLine translated={translated} total={total} />
+            </div>
         </section>
 
         <div class="px-5 pt-10 pb-16">

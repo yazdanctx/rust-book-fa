@@ -18,6 +18,11 @@ const { title, description, englishSlug, current } = Astro.props;
     <Sidebar current={current} />
 
     <div class="book-main">
+      {/* Spans the content area rather than the viewport, so it never runs
+          under the sidebar, and scrolls away rather than sitting behind the
+          prose the reader has scrolled to. */}
+      <div class="page-backdrop" aria-hidden="true"></div>
+
       <button
         class="sidebar-toggle"
         type="button"

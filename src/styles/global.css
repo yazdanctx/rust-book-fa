@@ -439,9 +439,10 @@ a.nav-link[aria-current="page"] .nav-path {
     transform: none;
   }
 
-  /* The quote keeps a lit frame, it just stops travelling. Parking the conic
-     sweep would leave the bright arc stranded on whichever edge it happened to
-     start on, so the ring is redrawn as a symmetric gradient instead. */
+  /* The quote and the home panel keep a lit frame, they just stop travelling.
+     Parking the conic sweep would leave the bright arc stranded on whichever
+     edge it happened to start on, so the ring is redrawn as a symmetric
+     gradient instead. */
   .prose blockquote::after {
     animation: none;
     background: linear-gradient(
@@ -451,13 +452,153 @@ a.nav-link[aria-current="page"] .nav-path {
       transparent 100%
     );
   }
+
+  .home-panel::after {
+    animation: none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-foreground) 50%,
+      transparent 100%
+    );
+  }
 }
 
-/* ── Hero ─────────────────────────────────────────────────────────────────
-   The source image is square (833×833), so it is cropped to a band with
-   object-fit and the title sits inside the fade at the bottom.               */
+/* ── Page backdrop ────────────────────────────────────────────────────────
+   Two static layers at the top of every page: a plotting grid, and a soft glow
+   where a screen would be brightest.
 
-.hero {
+   Structural, not atmospheric. ADR-0008 rules out scanlines, CRT bloom and
+   glitch because they carry no information and fight the body copy; a grid is
+   the surface a terminal is drawn ON, which is a different thing. Both layers
+   are monochrome, so red still occupies nothing new, and neither moves.
+
+   The values sit deliberately above the threshold where this reads as a
+   rendering artefact. A first pass at 4% was invisible on anything but a dark
+   room and a good panel — subtlety nobody can see is not restraint, it is dead
+   code.
+
+   It is pinned to the viewport, so it holds still while the page scrolls over
+   it — the backdrop is a surface the content moves across, not part of the
+   document flow. The sidebar paints its own background on top, so it never
+   shows through there.
+
+   The fade is painted rather than masked. `mask-image` would be tidier, but if
+   it ever failed to apply the grid would run at full strength the whole way
+   down. An occluding layer cannot fail that way: if it renders at all, it
+   renders correctly.                                                          */
+
+.page-backdrop {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 70vh;
+  z-index: -1;
+  pointer-events: none;
+
+  /* Topmost layer first. */
+  background-image:
+    /* the page, painted back over the lower part */
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 38%,
+      var(--color-background) 92%
+    ),
+    /* the glow, where a screen would be brightest */
+    radial-gradient(
+      ellipse 90% 55% at 50% 0%,
+      color-mix(in srgb, var(--color-foreground) 14%, transparent) 0%,
+      transparent 70%
+    ),
+    /* the plotting grid */
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-foreground) 12%, transparent) 1.25px,
+      transparent 1.25px
+    );
+  background-size:
+    100% 100%,
+    100% 100%,
+    26px 26px;
+}
+
+/* ── Home panel ───────────────────────────────────────────────────────────
+   The hero and the progress readout are one panel, inside one lit frame: they
+   make a single statement — this is the book, this is how far along it is — and
+   splitting them across two unframed sections said it twice.
+
+   The frame carries a travelling arc, like an aside — the same technique, so
+   the two read as one idiom rather than two effects — but deliberately not the
+   same light. The aside's arc is red because red is what marks a diagnostic;
+   this one is white, because the panel warns about nothing. Two arcs, opposite
+   each other, rather than the aside's one: that reads as a sweep across a
+   surface rather than current chasing round a circuit.
+
+   The frame and the bloom go neutral with it — a red border under a white arc
+   would leave the panel arguing with itself.
+
+   This is the second always-on animation on the site, where ADR-0008 had
+   allowed exactly one; it is recorded there as an amendment.                  */
+
+.home-panel {
+  position: relative;
+  margin-block: 2.5rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-background);
+  box-shadow: 0 10px 40px -24px color-mix(in srgb, var(--color-foreground) 45%, transparent);
+}
+
+/* The charge, lifted from `.prose blockquote::after`: a conic gradient rotating
+   behind a mask that keeps only the 1px frame, so a bright arc runs the border
+   like current round a circuit. Most of the sweep is transparent, which is what
+   makes it read as one travelling arc rather than a spinning rainbow.
+
+   `inset: -1px` lands the box on the border box — absolute children are
+   positioned against the padding box, which excludes the border — and the 1px
+   padding plus the xor mask punches the middle out, leaving the frame alone.
+
+   The `0deg` fallback matters: where `@property` is unsupported the var is
+   unregistered, so without it the whole conic-gradient would be invalid and no
+   ring would draw at all. */
+.home-panel::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  z-index: 2;
+  pointer-events: none;
+
+  background: conic-gradient(
+    from var(--lightning-angle, 0deg),
+    transparent 0deg,
+    color-mix(in srgb, var(--color-foreground) 22%, transparent) 42deg,
+    var(--color-foreground) 74deg,
+    color-mix(in srgb, var(--color-foreground) 22%, transparent) 106deg,
+    transparent 148deg,
+    transparent 180deg,
+    color-mix(in srgb, var(--color-foreground) 22%, transparent) 222deg,
+    var(--color-foreground) 254deg,
+    color-mix(in srgb, var(--color-foreground) 22%, transparent) 286deg,
+    transparent 328deg,
+    transparent 360deg
+  );
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+
+  /* Slower than the aside's seven seconds: two arcs pass any given corner twice
+     as often, so the same period would read as twice the activity. */
+  animation: lightning 11s linear infinite;
+}
+
+.home-panel-media {
   position: relative;
   aspect-ratio: 3 / 2;
   overflow: hidden;
@@ -472,9 +613,17 @@ a.nav-link[aria-current="page"] .nav-path {
   display: block;
 }
 
-/* Black at the bottom fading to nothing at the top, so the image dissolves
-   into the page rather than ending on a hard edge. Uses the background token
-   so it stays exact if the palette ever moves off pure black. */
+.home-panel-progress {
+  padding: 1.25rem;
+  border-block-start: 1px solid var(--color-border);
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────────────
+   The title sits inside the fade at the bottom of the panel's image.        */
+
+/* Black at the bottom fading to nothing at the top, so the image dissolves into
+   the panel rather than ending on a hard edge. Uses the background token so it
+   stays exact if the palette ever moves off pure black. */
 .hero-fade {
   position: absolute;
   inset: 0;
