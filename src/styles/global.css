@@ -463,6 +463,11 @@ a.nav-link[aria-current="page"] .nav-path {
    at 4% white on black it is closer to texture than to pattern. Both layers are
    monochrome, so red still occupies nothing new, and neither moves.
 
+   The values are deliberately above the threshold where this reads as a
+   rendering artefact. A first pass at 4% was invisible on anything but a very
+   dark room and a good panel — subtlety that nobody can see is not restraint,
+   it is dead code.
+
    `z-index: -1` puts it behind every positioned and static child without
    needing a stacking context on each one; it still paints over the root
    background, which is propagated to the canvas.
@@ -491,25 +496,25 @@ a.nav-link[aria-current="page"] .nav-path {
     linear-gradient(
       to bottom,
       transparent 0%,
-      transparent 34%,
-      var(--color-background) 72%
+      transparent 38%,
+      var(--color-background) 78%
     ),
     /* the glow, where a screen would be brightest */
     radial-gradient(
       ellipse 90% 55% at 50% 0%,
-      color-mix(in srgb, var(--color-foreground) 5%, transparent) 0%,
+      color-mix(in srgb, var(--color-foreground) 14%, transparent) 0%,
       transparent 70%
     ),
     /* the plotting grid */
     radial-gradient(
       circle,
-      color-mix(in srgb, var(--color-foreground) 4%, transparent) 1px,
-      transparent 1px
+      color-mix(in srgb, var(--color-foreground) 12%, transparent) 1.25px,
+      transparent 1.25px
     );
   background-size:
     100% 100%,
     100% 100%,
-    28px 28px;
+    26px 26px;
 }
 
 /* ── Hero ─────────────────────────────────────────────────────────────────
