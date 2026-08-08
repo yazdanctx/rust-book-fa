@@ -38,12 +38,19 @@ Table headers, by contrast, were left neutral for exactly the reason this rule
 exists; if red is ever wanted there, it is an amendment to this ADR, not a
 tweak.
 
-**Motion is caused, not ambient.** Hover and focus may move things. The
-travelling arc on `.prose blockquote` is the sole permanent animation on the
-site and stays as the single grandfathered exception; nothing new joins it. A
-blinking cursor was designed, costed and rejected — a hard on/off at ~1Hz in the
+**Motion is caused, not ambient.** Hover and focus may move things. A blinking
+cursor was designed, costed and rejected — a hard on/off at ~1Hz in the
 periphery is a different thing from a seven-second sweep, and it is not wanted
 on a surface people read for hours.
+
+*Amended.* There are now two permanent animations, not one: the travelling arc
+on `.prose blockquote`, and the same arc on the homepage panel. The rule this
+leaves behind is narrower but still real — **ambient motion is the lit-frame
+arc and nothing else.** A second effect would have made this a site that moves;
+the same effect used twice is one idiom applied consistently, which is why the
+panel reuses the blockquote's technique verbatim rather than inventing a glow of
+its own. Both are off under `prefers-reduced-motion`, redrawn as a static
+symmetric gradient so the frame stays lit without travelling.
 
 **The inside of a code block is exempt.** The frame is chrome and may be
 themed; the syntax tokens stay monochrome. If they go neon, `[!]`, the language
