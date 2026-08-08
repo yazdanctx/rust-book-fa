@@ -64,11 +64,26 @@
      frame, the sidebar's current page, the code block's language pip. It is the
      only hue in an otherwise greyscale palette apart from links, so it reads as
      the terminal's own colour rather than as decoration.
-     The three steps are the same red at three jobs: full strength for glyphs and
-     glows, `dim` for borders that must sit under text, `wash` for fills. */
-  --color-brand: #e5484d;
-  --color-brand-dim: #7f2226;
+
+     Five steps, one hue: the ramp gives red range so it can be quiet or loud
+     without spreading to new surfaces. Widening its territory would destroy the
+     thing that makes it work — it reads as the terminal's own colour precisely
+     because nothing else on the page is coloured (ADR-0008).
+
+       wash   fills sitting under content
+       dim    borders that must sit under text
+       brand  glyphs, current state, the resting accent
+       hot    peaks and active states — red that is meant to look live
+       flare  the near-white core of a glow, never flat text
+
+     `flare` is not a new colour: it was already hardcoded in the pager's border
+     shine and the aside's travelling arc, which is exactly why it needed a
+     name — two literals drifting apart is a bug waiting to happen. */
   --color-brand-wash: #150809;
+  --color-brand-dim: #7f2226;
+  --color-brand: #e5484d;
+  --color-brand-hot: #ff7a7e;
+  --color-brand-flare: #ffd7d8;
 
   /* Inline code: the brand red on a near-black red wash. The pair clears 4.8:1,
      so it stays legible at the 0.85em code spans run at. The border is the same
@@ -242,6 +257,40 @@ a.nav-link[aria-current="page"] {
   padding-inline-start: calc(0.6rem - 2px);
 }
 
+/* The Path Prefix: a Page's Slug set as a path above its title, so the column
+   reads as a file listing rather than as a nav menu. It is real information —
+   the Slug is the URL contract (ADR-0004) and the key to finding the same page
+   in the English book — but the Farsi title is still what gets scanned, so it
+   is held to two thirds the size and the muted grey.
+
+   Mono is doing two jobs. It is the terminal idiom, and it keeps Latin digits
+   Latin: Peyda is the FaNum cut, so in the sans stack `ch01-01` would render as
+   `ch۰۱-۰۱` (SPEC §5) — a path that no longer matches the URL it names.
+
+   `isolate` without `direction: ltr`: the box stays RTL, so the line hugs the
+   same edge the title starts from, while the Latin run inside it still reads
+   left to right. That also puts the ellipsis on the inline-end edge, which
+   trims the tail of a long slug and keeps the identifying head — the 66-char
+   ch07-00 is the case that matters. */
+.nav-path {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  line-height: 1.5;
+  color: var(--color-muted-foreground);
+  unicode-bidi: isolate;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* On the current page the path lifts out of the grey along with the title, so
+   the whole row reads as one lit unit rather than a bright title above a dead
+   line. */
+a.nav-link[aria-current="page"] .nav-path {
+  color: var(--color-brand);
+}
+
 .nav-number {
   color: var(--color-muted-foreground);
   font-size: 0.8em;
@@ -256,15 +305,26 @@ a.nav-link[aria-current="page"] {
   cursor: default;
 }
 
+/* The Todo Badge: `todo!()`, the Rust macro for something planned but unwritten,
+   which is exactly the distinction this book has to draw — an Untranslated Page
+   is deliberately not written yet, not broken.
+
+   It stays muted rather than red. "Not yet" is a resting state, not an alert,
+   and red does not spread to surfaces it did not already hold (ADR-0008).
+
+   The Farsi label survives as sr-only text beside it, so the meaning never
+   depends on getting the joke. */
 .nav-badge {
   display: inline-block;
   margin-inline-start: 0.5em;
   padding: 0.05em 0.4em;
+  font-family: var(--font-mono);
   font-size: 0.7rem;
   color: var(--color-muted-foreground);
   border: 1px solid var(--color-border);
   white-space: nowrap;
   vertical-align: middle;
+  unicode-bidi: isolate;
 }
 
 .nav-children {
@@ -456,6 +516,52 @@ a.nav-link[aria-current="page"] {
   min-width: 2px;
 }
 
+/* ── Build Line ───────────────────────────────────────────────────────────
+   Translation Progress stated as a compile count. The book is a build that has
+   not finished, which is a truer and kinder framing of an incomplete
+   translation than a percentage of a whole that does not exist yet.
+
+   It does not animate. A permanently unfinished count that pulsed at the reader
+   would be permanent motion on the page they land on first (ADR-0008).        */
+
+.build-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  margin-block-start: 0.4rem;
+  font-size: 0.7rem;
+  color: var(--color-muted-foreground);
+}
+
+.build-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  unicode-bidi: isolate;
+}
+
+/* The same lit pip the code block and the Pager Window use, so "this is a
+   terminal telling you something" is one mark used consistently. */
+.build-status::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.75rem;
+  background: var(--color-brand);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-brand) 75%, transparent);
+}
+
+/* Sans, not mono: these are Persian digits, and the mono stack has no glyphs
+   for them. */
+.build-count {
+  color: var(--color-foreground);
+  unicode-bidi: isolate;
+}
+
 /* ── Search ───────────────────────────────────────────────────────────────
    Hand-rolled around Pagefind's JS API rather than its bundled UI, which ships
    its own light-theme CSS and layout that would need overriding wholesale.    */
@@ -554,10 +660,14 @@ a.nav-link[aria-current="page"] {
 
 /* ── Page footer pager ──────────────────────────────────────────────────── */
 
+/* Each neighbour is a miniature of the code block: one hairline frame, a title
+   bar naming the direction, and the Farsi title in the body below. It borrows a
+   frame that is already on every page, so the pager reads as part of one system
+   rather than as another effect bolted on. */
+
 .pager-link {
   display: block;
   position: relative;
-  padding: 0.75rem 1rem;
   border: 1px solid var(--color-border);
   text-decoration: none;
   color: var(--color-secondary-foreground);
@@ -597,7 +707,7 @@ a.pager-link::before {
 
   background: radial-gradient(
     ellipse 70% 100% at 50% 100%,
-    #ffd7d8 0%,
+    var(--color-brand-flare) 0%,
     var(--color-brand) 20%,
     color-mix(in srgb, var(--color-brand) 55%, transparent) 48%,
     transparent 84%
@@ -635,30 +745,77 @@ a.pager-link:hover {
   cursor: default;
 }
 
-/* Each box's content hugs the outer edge of the pair: قبلی to the right, بعدی
-   to the left. Without this both inherit `text-align: start` and the next box's
-   text strands itself against the gutter between them. */
-.pager-next {
-  text-align: end;
+/* The title bar, built like the code block's: forced LTR, because the direction
+   name is Latin and would otherwise mirror away from the frame it labels. */
+.pager-bar {
+  display: flex;
+  direction: ltr;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.3rem 0.4rem 0.3rem 0.75rem;
+  border-block-end: 1px solid var(--color-border);
 }
 
-.pager-label {
-  display: flex;
+/* `prev` / `next`, set exactly as the code block sets its language: tracked out
+   wide so a four-letter word still reads as a label rather than as a word. */
+.pager-dir {
+  display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
+
+/* The lit pip, again borrowed from the code block. Only a live window gets it
+   lit — the disabled twin keeps the pip so the two windows stay the same shape,
+   but takes it dark, which is the whole state difference in one 6px block. */
+.pager-dir::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.75rem;
+  background: var(--color-border);
+}
+
+a.pager-link .pager-dir::before {
+  background: var(--color-brand);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-brand) 75%, transparent);
+}
+
+/* Hot, not brand: the pip is the one element in the frame that should read as
+   live when the window is under the cursor. */
+a.pager-link:hover .pager-dir::before {
+  background: var(--color-brand-hot);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-brand-hot) 85%, transparent);
+}
+
+a.pager-link:hover .pager-dir {
+  color: var(--color-foreground);
+}
+
+.pager-body {
+  display: block;
+  padding: 0.75rem 1rem;
+}
+
+/* The homepage's entry window says what it is in Farsi above the chapter title,
+   where a pager window in the footer needs no such label. */
+.pager-cta {
+  display: block;
   font-size: 0.75rem;
   color: var(--color-muted-foreground);
   margin-block-end: 0.25rem;
-}
-
-.pager-next .pager-label {
-  justify-content: flex-end;
 }
 
 /* Arrows are bidi-neutral, so left to themselves both resolve to the paragraph
    direction and land on the right. Flex order pins each one to the outer edge
    it actually points toward. */
 .pager-arrow {
+  font-family: var(--font-mono);
   unicode-bidi: isolate;
   transition:
     transform 0.18s ease,
@@ -666,8 +823,28 @@ a.pager-link:hover {
     text-shadow 0.18s ease;
 }
 
+/* Brackets turn the arrow into the key you can actually press. They are added
+   only on a live window — a Disabled Link does not navigate, so bracketing its
+   arrow would advertise a binding that does nothing — and only where there is a
+   keyboard to press it with, which is what `pointer: fine` is really asking. */
+@media (hover: hover) and (pointer: fine) {
+  a.pager-link .pager-arrow::before {
+    content: "[";
+    color: var(--color-muted-foreground);
+  }
+
+  a.pager-link .pager-arrow::after {
+    content: "]";
+    color: var(--color-muted-foreground);
+  }
+}
+
+/* The bar is LTR, so the direction label lands on its left and the arrow on its
+   right. That is already correct for the prev window, which sits on the right of
+   the pair; the next window sits on the left, so its arrow is reordered to the
+   outer edge it actually points toward. */
 .pager-next .pager-arrow {
-  order: 1;
+  order: -1;
 }
 
 /* On hover the arrow lights up and leans the way it points. `translate` is
@@ -695,6 +872,56 @@ a.pager-next:hover .pager-arrow {
   font-family: var(--font-mono);
   font-size: 0.9em;
   unicode-bidi: isolate;
+}
+
+/* ── Panic page ───────────────────────────────────────────────────────────
+   The 404, written as the dump a reader would get from the thing they are here
+   to learn. It is the one surface with no long-form reading to protect and
+   nobody lands on it deliberately, which makes it the cheapest place on the
+   site to spend character.
+
+   The whole block is forced LTR: it is Latin, and it is quoting a program.
+
+   Red here is the documented exception to "the ramp gains range, not
+   territory" — the Panic Page is the one surface allowed to be loud, and a
+   panic message that is not red is not a panic message.                       */
+
+.panic {
+  direction: ltr;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.9;
+  border: 1px solid var(--color-code-border);
+  background: var(--color-brand-wash);
+  padding: 1rem 1.15rem;
+  overflow-x: auto;
+}
+
+.panic-line {
+  margin: 0;
+  color: var(--color-brand);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* The location is chrome around the message, so it sits back a step. */
+.panic-loc {
+  color: var(--color-brand-dim);
+}
+
+/* The message is the one line that actually tells the reader something. */
+.panic-message {
+  color: var(--color-brand-hot);
+}
+
+.panic-path {
+  color: var(--color-foreground);
+}
+
+/* rustc prints its notes quieter than its errors, and so does this. */
+.panic-note {
+  color: var(--color-muted-foreground);
 }
 
 /* ── Prose ────────────────────────────────────────────────────────────────
@@ -741,17 +968,21 @@ a.pager-next:hover .pager-arrow {
   font-family: var(--font-mono);
   font-size: 0.75em;
   font-weight: 400;
-  color: color-mix(in srgb, var(--color-brand) 55%, transparent);
   margin-inline-end: 0.5em;
   unicode-bidi: isolate;
 }
 
+/* Depth is carried twice over: by how many hashes there are, and by where the
+   marker sits on the ramp. Both readings agree, so a section boundary is
+   legible from the colour alone when scrolling past at speed. */
 .prose h2::before {
   content: "##";
+  color: var(--color-brand);
 }
 
 .prose h3::before {
   content: "###";
+  color: var(--color-brand-dim);
 }
 
 /* The underline stays on at rest rather than appearing on hover: colour alone
@@ -866,7 +1097,7 @@ a.pager-next:hover .pager-arrow {
     transparent 205deg,
     color-mix(in srgb, var(--color-brand) 50%, transparent) 265deg,
     var(--color-brand) 297deg,
-    #ffd7d8 306deg,
+    var(--color-brand-flare) 306deg,
     var(--color-brand) 315deg,
     color-mix(in srgb, var(--color-brand) 50%, transparent) 347deg,
     transparent 360deg
@@ -901,7 +1132,7 @@ a.pager-next:hover .pager-arrow {
   font-size: 0.85rem;
   font-weight: 700;
   line-height: 1;
-  color: var(--color-brand);
+  color: var(--color-brand-hot);
   text-shadow: 0 0 12px color-mix(in srgb, var(--color-brand) 70%, transparent);
   unicode-bidi: isolate;
 }
@@ -988,18 +1219,25 @@ a.pager-next:hover .pager-arrow {
   margin-block-start: 0.6em;
 }
 
+/* A key, drawn as a key: square like every other edge here, sitting on a thicker
+   bottom border with a hairline catching the top, so it reads as a cap with a
+   little height rather than as a bordered word. Neutral throughout — a key name
+   is not an accent. */
 .prose kbd {
   font-family: var(--font-mono);
   font-size: 0.85em;
+  color: var(--color-foreground);
   border: 1px solid var(--color-border);
   border-block-end-width: 2px;
   padding: 0.1em 0.4em;
   background: var(--color-secondary);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-foreground) 10%, transparent);
 }
 
+/* Dashed rather than solid: the same break, drawn the way a terminal draws one. */
 .prose hr {
   border: none;
-  border-block-start: 1px solid var(--color-border);
+  border-block-start: 1px dashed var(--color-border);
   margin-block: 2.5em;
 }
 
@@ -1019,9 +1257,14 @@ a.pager-next:hover .pager-arrow {
   vertical-align: top;
 }
 
+/* The header row reads as a bar over the table, the way the code block's bar
+   sits over its code: same fill, and a firmer rule under it to separate the
+   labels from the data. Deliberately neutral — a table header is a surface red
+   did not previously hold, and the ramp gains range, not territory (ADR-0008). */
 .prose th {
   background: var(--color-card);
   font-weight: 600;
+  border-block-end-width: 2px;
 }
 
 /* ── Code blocks ──────────────────────────────────────────────────────────
@@ -1148,11 +1391,26 @@ a.pager-next:hover .pager-arrow {
   cursor: help;
 }
 
+/* Marked the same way the sidebar marks one, so "not yet written" looks the
+   same everywhere it appears. Generated content, like the `↗ EN` marker below:
+   the element already carries the Farsi label in its `title`, and the sentence
+   it sits inside must keep reading correctly. */
+.prose .link-todo::after {
+  content: "todo!()";
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+  margin-inline-start: 0.3em;
+  vertical-align: super;
+  color: var(--color-muted-foreground);
+  unicode-bidi: isolate;
+}
+
 /* Links to parts of the book this translation does not carry — the appendices
    and front matter. They resolve to the English original, so they are marked to
    set the expectation before the click. */
 .prose .link-en::after {
-  content: "↗ EN";
+  content: "[↗ EN]";
+  font-family: var(--font-mono);
   font-size: 0.7em;
   margin-inline-start: 0.25em;
   vertical-align: super;

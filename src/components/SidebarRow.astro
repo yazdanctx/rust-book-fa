@@ -1,0 +1,52 @@
+---
+import type { BookNode } from "../lib/pages";
+import { titleToHtml } from "../lib/summary";
+
+interface Props {
+  node: BookNode;
+  /** Slug of the page being rendered, so the current row can mark itself. */
+  current?: string;
+  /**
+   * Chapter numbers are bare (`۱`) and take a trailing dot; section numbers
+   * already carry one (`۱.۱`) and would read as `۱.۱.` with another.
+   */
+  chapter?: boolean;
+}
+
+const { node, current, chapter = false } = Astro.props;
+
+const UNTRANSLATED = "در دست نگارش";
+
+const number = node.number && (chapter ? `${node.number}.` : node.number);
+---
+
+{
+  /* One row, both states. A Translated Page is a link; an Untranslated one is a
+     Disabled Link — a <span>, so it is unclickable by construction rather than
+     by a handler, and every hover and focus rule that targets `a.nav-link`
+     misses it without needing to say so. */
+}
+{
+  node.translated ? (
+    <a
+      href={`/${node.slug}/`}
+      class="nav-link"
+      aria-current={node.slug === current ? "page" : undefined}
+    >
+      <span class="nav-path" aria-hidden="true">{node.slug}/</span>
+      {number && <span class="nav-number">{number}</span>}
+      <span set:html={titleToHtml(node.title)} />
+    </a>
+  ) : (
+    <span class="nav-link nav-disabled" aria-disabled="true" title={UNTRANSLATED}>
+      <span class="nav-path" aria-hidden="true">{node.slug}/</span>
+      {number && <span class="nav-number">{number}</span>}
+      <span set:html={titleToHtml(node.title)} />
+      {/* The glyph is the joke, the sr-only text is the meaning. A reader on
+          chapter 1 does not know what `todo!()` is yet, and a screen-reader user
+          should never be read a Rust macro in place of a Farsi label. */}
+      <span class="nav-badge" aria-hidden="true">todo!()</span>
+      <span class="sr-only">{UNTRANSLATED}</span>
+    </span>
+  )
+}

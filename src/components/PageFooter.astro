@@ -21,6 +21,12 @@ const pager = [
   { page: prev, label: "قبلی", arrow: "→", side: "prev" },
   { page: next, label: "بعدی", arrow: "←", side: "next" },
 ];
+
+/**
+ * The title bar names the direction in Latin, which is unambiguous in a way an
+ * arrow in an RTL layout is not. The Farsi label stays as the accessible name,
+ * so a screen reader still announces قبلی/بعدی rather than "prev"/"next".
+ */
 ---
 
 <footer class="mt-20 pb-16 text-sm">
@@ -31,23 +37,32 @@ const pager = [
           {page ? (
             page.translated ? (
               <a href={`/${page.slug}/`} class={`pager-link pager-${side}`}>
-                <span class="pager-label">
+                <span class="pager-bar">
+                  <span class="pager-dir">{side}</span>
                   <span class="pager-arrow">{arrow}</span>
-                  <span>{label}</span>
                 </span>
-                <span class="pager-title" set:html={titleToHtml(page.title)} />
+                <span class="pager-body">
+                  <span class="sr-only">{label}</span>
+                  <span class="pager-title" set:html={titleToHtml(page.title)} />
+                </span>
               </a>
             ) : (
               <span
                 class={`pager-link pager-${side} pager-disabled`}
                 aria-disabled="true"
                 title={UNTRANSLATED}>
-                <span class="pager-label">
+                <span class="pager-bar">
+                  <span class="pager-dir">{side}</span>
                   <span class="pager-arrow">{arrow}</span>
-                  <span>{label}</span>
                 </span>
-                <span class="pager-title" set:html={titleToHtml(page.title)} />
-                <span class="nav-badge">{UNTRANSLATED}</span>
+                <span class="pager-body">
+                  <span class="sr-only">{label}</span>
+                  {/* The title stays, per ADR-0006: the reader must see which
+                      page is missing, not merely that one is. */}
+                  <span class="pager-title" set:html={titleToHtml(page.title)} />
+                  <span class="nav-badge" aria-hidden="true">todo!()</span>
+                  <span class="sr-only">{UNTRANSLATED}</span>
+                </span>
               </span>
             )
           ) : null}
@@ -70,3 +85,45 @@ const pager = [
     </p>
   </div>
 </footer>
+
+<script>
+  /**
+   * The Pager Window advertises `[←]` and `[→]`, so they have to work — a Rust
+   * developer will press the key, and a decorative binding is the one move in
+   * this theme that would actually feel cheap.
+   *
+   * Only `<a>` is selected. An Untranslated neighbour renders as a `<span>`
+   * (ADR-0006), and a first or last Page renders nothing at all, so "inert when
+   * the neighbour is missing or unwritten" falls out of the existing markup
+   * rather than needing a check of its own.
+   */
+  const prev = document.querySelector<HTMLAnchorElement>("a.pager-prev");
+  const next = document.querySelector<HTMLAnchorElement>("a.pager-next");
+
+  if (prev || next) {
+    document.addEventListener("keydown", (event) => {
+      // Leave every modifier combination to the browser: Alt+arrow is
+      // back/forward, Shift+arrow selects text, Cmd/Ctrl+arrow jumps.
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+
+      // Typing in search is the case that matters — the arrow keys are how you
+      // move a caret, and stealing them would make the field unusable.
+      const target = event.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable || target.closest("input, textarea, select"))
+      ) {
+        return;
+      }
+
+      // The document is RTL: ← advances, → goes back, matching the arrows the
+      // windows already show.
+      const destination =
+        event.key === "ArrowLeft" ? next : event.key === "ArrowRight" ? prev : null;
+      if (!destination) return;
+
+      event.preventDefault();
+      window.location.assign(destination.href);
+    });
+  }
+</script>

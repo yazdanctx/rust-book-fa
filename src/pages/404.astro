@@ -9,9 +9,28 @@ const remaining = pages.filter((p) => !p.translated).length;
 
 <BookLayout title="صفحه پیدا نشد">
   <main class="mx-auto max-w-3xl px-5 py-16">
-    <h1 class="text-3xl font-bold">صفحه‌ای پیدا نشد</h1>
+    {/* The dump is decoration with a job: it says "this route does not exist"
+        in the one dialect this audience reads fastest. The Farsi below it says
+        the same thing for everyone else, because nobody should have to know
+        Rust to find their way out of a 404. */}
+    {/* Hidden from assistive tech rather than labelled: the heading and prose
+        immediately below say exactly what the dump says, so exposing it would
+        read the same 404 twice — once as a Rust panic. */}
+    <div class="panic" aria-hidden="true">
+      <p class="panic-line">
+        thread 'main' panicked at <span class="panic-loc">src/book.rs:404:1</span>:
+      </p>
+      <p class="panic-line panic-message">
+        no such page: <span class="panic-path" id="panic-path">/…</span>
+      </p>
+      <p class="panic-line panic-note">
+        note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+      </p>
+    </div>
 
-    <div class="prose mt-8">
+    <h1 class="mt-10 text-3xl font-bold">صفحه‌ای پیدا نشد</h1>
+
+    <div class="prose mt-6">
       <p>
         نشانی‌ای که دنبال آن بودید وجود ندارد. اگر به‌دنبال فصلی از کتاب هستید،
         ممکن است هنوز ترجمه نشده باشد — در حال حاضر
@@ -22,3 +41,13 @@ const remaining = pages.filter((p) => !p.translated).length;
     </div>
   </main>
 </BookLayout>
+
+<script>
+  /**
+   * A static build cannot know which URL was requested, so the panic message
+   * fills in its own path. Falls back to the `/…` placeholder rendered into the
+   * HTML if this never runs — the page still reads correctly without it.
+   */
+  const path = document.getElementById("panic-path");
+  if (path) path.textContent = window.location.pathname;
+</script>
