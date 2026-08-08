@@ -48,9 +48,16 @@ on `.prose blockquote`, and the same arc on the homepage panel. The rule this
 leaves behind is narrower but still real — **ambient motion is the lit-frame
 arc and nothing else.** A second effect would have made this a site that moves;
 the same effect used twice is one idiom applied consistently, which is why the
-panel reuses the blockquote's technique verbatim rather than inventing a glow of
-its own. Both are off under `prefers-reduced-motion`, redrawn as a static
-symmetric gradient so the frame stays lit without travelling.
+panel reuses the blockquote's technique rather than inventing a glow of its own.
+Both are off under `prefers-reduced-motion`, redrawn as a static symmetric
+gradient so the frame stays lit without travelling.
+
+The two differ in light, and the difference is load-bearing rather than
+decorative: the aside's arc is red because red is what marks a diagnostic; the
+panel's is white, because the panel is a title card that warns about nothing.
+The panel also runs two opposed arcs to the aside's one, which reads as a sweep
+across a surface rather than as current chasing round a circuit. Same idiom,
+different sentence.
 
 **The inside of a code block is exempt.** The frame is chrome and may be
 themed; the syntax tokens stay monochrome. If they go neon, `[!]`, the language
