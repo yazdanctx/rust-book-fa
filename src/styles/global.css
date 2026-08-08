@@ -242,6 +242,8 @@
 .book-main {
   flex: 1 1 auto;
   min-width: 0;
+  /* The positioning context for the Page backdrop. */
+  position: relative;
 }
 
 .nav-link {
@@ -453,51 +455,48 @@ a.nav-link[aria-current="page"] .nav-path {
   }
 }
 
-/* ── Homepage backdrop ────────────────────────────────────────────────────
-   Two static layers behind the front page: a plotting grid, and a soft glow
+/* ── Page backdrop ────────────────────────────────────────────────────────
+   Two static layers at the top of every page: a plotting grid, and a soft glow
    where a screen would be brightest.
 
    Structural, not atmospheric. ADR-0008 rules out scanlines, CRT bloom and
-   glitch because they carry no information and fight the body copy; a faint
-   grid is the surface a terminal is drawn ON, which is a different thing — and
-   at 4% white on black it is closer to texture than to pattern. Both layers are
-   monochrome, so red still occupies nothing new, and neither moves.
+   glitch because they carry no information and fight the body copy; a grid is
+   the surface a terminal is drawn ON, which is a different thing. Both layers
+   are monochrome, so red still occupies nothing new, and neither moves.
 
-   The values are deliberately above the threshold where this reads as a
-   rendering artefact. A first pass at 4% was invisible on anything but a very
-   dark room and a good panel — subtlety that nobody can see is not restraint,
-   it is dead code.
+   The values sit deliberately above the threshold where this reads as a
+   rendering artefact. A first pass at 4% was invisible on anything but a dark
+   room and a good panel — subtlety nobody can see is not restraint, it is dead
+   code.
 
-   `z-index: -1` puts it behind every positioned and static child without
-   needing a stacking context on each one; it still paints over the root
-   background, which is propagated to the canvas.
+   It is anchored to the top of the document and scrolls away, rather than being
+   fixed to the viewport. On the homepage the difference is invisible, but a
+   book page is a reading surface: a fixed layer would park this permanently
+   behind whichever paragraph the reader had scrolled to, which is the
+   texture-under-text this theme has refused everywhere else. Here it decorates
+   the head of the page and is gone by the time anyone is reading.
 
-   The fade is the part that matters: the grid is strongest at the top, where
-   the page is mostly hero and empty margin, and gone well before the prose
-   starts. A grid running underneath a paragraph of Persian would be exactly the
-   texture-under-text this theme has avoided everywhere else.
+   The fade is painted rather than masked. `mask-image` would be tidier, but if
+   it ever failed to apply the grid would run at full strength the whole way
+   down. An occluding layer cannot fail that way: if it renders at all, it
+   renders correctly.                                                          */
 
-   That fade is done by painting the page colour back over the lower half as the
-   topmost layer, rather than with `mask-image`. A mask would be tidier, but if
-   it ever failed to apply the grid would run at full strength down the whole
-   page — under the prose — which is the one failure mode worth designing out.
-   An occluding layer cannot fail that way: if it renders at all, it renders
-   correctly.                                                                  */
-
-.home-backdrop {
-  position: fixed;
-  inset: 0;
+.page-backdrop {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 70vh;
   z-index: -1;
   pointer-events: none;
 
   /* Topmost layer first. */
   background-image:
-    /* the page, painted back over the lower half */
+    /* the page, painted back over the lower part */
     linear-gradient(
       to bottom,
       transparent 0%,
       transparent 38%,
-      var(--color-background) 78%
+      var(--color-background) 92%
     ),
     /* the glow, where a screen would be brightest */
     radial-gradient(
