@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "src-fa/ch01-03-hello-cargo.md",
+                "file": "src-fa/ch01-02-hello-world.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "ch01-03-hello-cargo"
+              "title": "ch01-02-hello-world"
             }
           }
         ]
@@ -83,8 +83,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "e279f1f149ec7dbf",
@@ -100,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "src-fa/ch01-03-hello-cargo.md",
+                "file": "src-fa/ch01-02-hello-world.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -119,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "src-fa/ch01-03-hello-cargo.md",
+                "file": "src-fa/ch01-02-hello-world.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -162,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "src-fa/ch01-03-hello-cargo.md",
+                "file": "src-fa/ch01-02-hello-world.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -203,8 +202,8 @@
     "dist/ch01-00-getting-started/index.html",
     "dist/ch01-00-getting-started",
     "dist/toji.png",
-    "dist/img/ferris/panics.svg",
     "dist/img/ferris/does_not_compile.svg",
+    "dist/img/ferris/panics.svg",
     "dist/img/ferris/not_desired_behavior.svg",
     "dist/img/trpl21-01.png",
     "dist/img/trpl17-09.svg",
@@ -212,9 +211,11 @@
     "dist/img/trpl17-07.svg",
     "dist/img/trpl17-06.svg",
     "dist/img/trpl17-05.svg",
+    "docs/adr/0008-terminal-chrome-not-cyberpunk-atmosphere.md",
+    "src-fa/ch01-01-installation.md",
+    "src-fa/ch01-03-hello-cargo.md",
     "src-fa/ch01-02-hello-world.md",
     "src-fa/ch00-00-introduction.md",
-    "src-fa/ch01-00-getting-started.md",
-    "src-fa/ch01-01-installation.md"
+    "src-fa/ch01-00-getting-started.md"
   ]
 }
