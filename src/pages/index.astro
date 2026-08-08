@@ -17,6 +17,10 @@ const entry = pages.find((p) => p.translated);
     title="زبان برنامه‌نویسی راست"
     description="ترجمه فارسی کتاب The Rust Programming Language"
 >
+    {/* Homepage only. Static, monochrome and behind everything — it gives the
+        page some depth without becoming atmosphere, which ADR-0008 rules out. */}
+    <div class="home-backdrop" aria-hidden="true"></div>
+
     <main class="mx-auto max-w-3xl">
         <section class="hero">
             {
