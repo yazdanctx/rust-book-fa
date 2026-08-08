@@ -22,10 +22,19 @@ const entry = pages.find((p) => p.translated);
             is the book, and this is how far along it is — and the lit frame is
             what holds them together as one. */}
         <section class="home-panel" aria-label="میزان پیشرفت ترجمه">
-            {/* The image is a background rather than an <img> so it can hold
-                still while the page scrolls over it. It was already decorative
-                (empty alt), so nothing is lost from the accessibility tree. */}
             <div class="home-panel-media">
+                {
+                    /* Decorative: alt is intentionally empty so screen readers skip it.
+              Add a description here if the image ever carries meaning. */
+                }
+                <img
+                    src="/toji.png"
+                    alt=""
+                    width="1024"
+                    height="1024"
+                    class="hero-img"
+                    fetchpriority="high"
+                />
                 <div class="hero-fade"></div>
                 <h1 class="hero-title">زبان برنامه نویسی راست</h1>
             </div>
