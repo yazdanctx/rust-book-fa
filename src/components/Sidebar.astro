@@ -1,8 +1,8 @@
 ---
 import { getBookTree, type BookNode } from "../lib/pages";
-import { titleToHtml } from "../lib/summary";
-import { toPersianDigits } from "../lib/digits";
 import Search from "./Search.astro";
+import SidebarRow from "./SidebarRow.astro";
+import BuildLine from "./BuildLine.astro";
 
 interface Props {
   /** Slug of the page being rendered, so the active branch can be expanded. */
@@ -15,24 +15,18 @@ const tree = await getBookTree();
 const all = tree.flatMap((n) => [n, ...n.children]);
 const translated = all.filter((p) => p.translated).length;
 const total = all.length;
-const percent = Math.round((translated / total) * 100);
 
 /** A chapter is open when it is the active page or contains it. */
 function isOpen(node: BookNode): boolean {
   if (!current) return false;
   return node.slug === current || node.children.some((c) => c.slug === current);
 }
-
-const UNTRANSLATED = "در دست نگارش";
 ---
 
 <nav id="sidebar" class="book-sidebar" aria-label="فهرست کتاب">
   <div class="border-b border-(--color-border) px-5 py-4">
     <a href="/" class="block font-bold hover:underline">زبان برنامه‌نویسی راست</a>
-    <p class="mt-1 text-xs text-(--color-muted-foreground)">
-      {toPersianDigits(String(translated))} از {toPersianDigits(String(total))} صفحه
-      — {toPersianDigits(String(percent))}٪
-    </p>
+    <BuildLine translated={translated} total={total} />
     <Search />
   </div>
 
@@ -40,51 +34,15 @@ const UNTRANSLATED = "در دست نگارش";
     {
       tree.map((node) => (
         <li>
-          {node.translated ? (
-            <a
-              href={`/${node.slug}/`}
-              class="nav-link"
-              aria-current={node.slug === current ? "page" : undefined}
-            >
-              {node.number && <span class="nav-number">{node.number}.</span>}
-              <span set:html={titleToHtml(node.title)} />
-            </a>
-          ) : (
-            <span class="nav-link nav-disabled" aria-disabled="true" title={UNTRANSLATED}>
-              {node.number && <span class="nav-number">{node.number}.</span>}
-              <span set:html={titleToHtml(node.title)} />
-              <span class="nav-badge">{UNTRANSLATED}</span>
-            </span>
-          )}
+          <SidebarRow node={node} current={current} />
 
           {node.children.length > 0 && isOpen(node) && (
             <ol class="nav-children">
-              {node.children.map((child) =>
-                child.translated ? (
-                  <li>
-                    <a
-                      href={`/${child.slug}/`}
-                      class="nav-link"
-                      aria-current={child.slug === current ? "page" : undefined}
-                    >
-                      {child.number && <span class="nav-number">{child.number}</span>}
-                      <span set:html={titleToHtml(child.title)} />
-                    </a>
-                  </li>
-                ) : (
-                  <li>
-                    <span
-                      class="nav-link nav-disabled"
-                      aria-disabled="true"
-                      title={UNTRANSLATED}
-                    >
-                      {child.number && <span class="nav-number">{child.number}</span>}
-                      <span set:html={titleToHtml(child.title)} />
-                      <span class="nav-badge">{UNTRANSLATED}</span>
-                    </span>
-                  </li>
-                ),
-              )}
+              {node.children.map((child) => (
+                <li>
+                  <SidebarRow node={child} current={current} />
+                </li>
+              ))}
             </ol>
           )}
         </li>

@@ -1,0 +1,27 @@
+---
+import { toPersianDigits } from "../lib/digits";
+
+interface Props {
+  translated: number;
+  total: number;
+}
+
+const { translated, total } = Astro.props;
+
+/**
+ * The book is a build that has not finished. Once it has, the line says so
+ * rather than claiming to still be working.
+ */
+const status = translated === total ? "compiled" : "compiling";
+
+const fa = (n: number) => toPersianDigits(String(n));
+---
+
+<p class="build-line">
+  <span class="build-status">{status}</span>
+  {/* The count stays in the sans stack. `toPersianDigits` emits genuine Persian
+      codepoints, and the mono stack has no glyphs for them — putting the count
+      in mono would fall through to an arbitrary system face. */}
+  <span class="build-count">{fa(translated)}/{fa(total)}</span>
+  <span class="sr-only">صفحه ترجمه شده</span>
+</p>

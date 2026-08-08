@@ -1,0 +1,60 @@
+---
+import type { BookNode } from "../lib/pages";
+import { titleToHtml } from "../lib/summary";
+
+interface Props {
+  node: BookNode;
+  /** Slug of the page being rendered, so the current row can mark itself. */
+  current?: string;
+}
+
+const { node, current } = Astro.props;
+
+const UNTRANSLATED = "در دست نگارش";
+
+/**
+ * The Path Prefix is the Slug's stem — `ch04-01`, not the full 66-character
+ * `ch07-00-managing-growing-projects-with-packages-crates-and-modules`.
+ *
+ * The stem is the part that identifies; the tail restates the title in English
+ * and would have to be ellipsed on most rows anyway. Fixed-width stems also
+ * align down the column, which is what makes it read as a listing rather than
+ * as ragged noise.
+ *
+ * It replaces the Persian chapter number rather than joining it: `ch04-01` and
+ * `۴.۱` say the same thing, and a row does not need two identifiers and a title.
+ * Every Page's Slug matches this shape; anything unexpected falls back to the
+ * whole Slug rather than silently rendering nothing.
+ */
+const stem = node.slug.match(/^ch\d+-\d+/)?.[0] ?? node.slug;
+
+---
+
+{
+  /* One row, both states. A Translated Page is a link; an Untranslated one is a
+     Disabled Link — a <span>, so it is unclickable by construction rather than
+     by a handler, and every hover and focus rule that targets `a.nav-link`
+     misses it without needing to say so. */
+}
+{
+  node.translated ? (
+    <a
+      href={`/${node.slug}/`}
+      class="nav-link"
+      aria-current={node.slug === current ? "page" : undefined}
+    >
+      <span class="nav-path" aria-hidden="true">{stem}/</span>
+      <span set:html={titleToHtml(node.title)} />
+    </a>
+  ) : (
+    <span class="nav-link nav-disabled" aria-disabled="true" title={UNTRANSLATED}>
+      <span class="nav-path" aria-hidden="true">{stem}/</span>
+      <span set:html={titleToHtml(node.title)} />
+      {/* The glyph is the joke, the sr-only text is the meaning. A reader on
+          chapter 1 does not know what `todo!()` is yet, and a screen-reader user
+          should never be read a Rust macro in place of a Farsi label. */}
+      <span class="nav-badge" aria-hidden="true">todo!()</span>
+      <span class="sr-only">{UNTRANSLATED}</span>
+    </span>
+  )
+}

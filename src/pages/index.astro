@@ -2,8 +2,8 @@
 import BookLayout from "../layouts/BookLayout.astro";
 import { getProgress } from "../lib/progress";
 import { getBookPages } from "../lib/pages";
-import { toPersianDigits } from "../lib/digits";
 import { titleToHtml } from "../lib/summary";
+import BuildLine from "../components/BuildLine.astro";
 
 const { translated, total, percent } = await getProgress();
 const pages = await getBookPages();
@@ -11,7 +11,6 @@ const pages = await getBookPages();
 // Where to send someone who just wants to start reading: the first translated
 // page in reading order, or nothing at all if the book has not been started.
 const entry = pages.find((p) => p.translated);
-const fa = (n: number) => toPersianDigits(String(n));
 ---
 
 <BookLayout
@@ -44,13 +43,7 @@ const fa = (n: number) => toPersianDigits(String(n));
                 <div class="progress-fill" style={`width: ${percent}%`}>
                 </div>
             </div>
-            <p class="mt-3 text-sm text-(--color-muted-foreground)">
-                تا اینجا <strong class="text-(--color-foreground)"
-                    >{fa(translated)}</strong
-                > صفحه از <strong class="text-(--color-foreground)"
-                    >{fa(total)}</strong
-                > آماده شده — {fa(percent)}٪
-            </p>
+            <BuildLine translated={translated} total={total} />
         </section>
 
         <div class="px-5 pt-10 pb-16">
@@ -80,7 +73,7 @@ const fa = (n: number) => toPersianDigits(String(n));
                 }
                 <p>
                     مطالبی که کامل نشدن با تگ
-                    <span class="nav-badge">در دست نگارش</span> مشخص شدن و طبیعتا
+                    <span class="nav-badge" aria-hidden="true">todo!()</span><span class="sr-only">در دست نگارش</span> مشخص شدن و طبیعتا
                     نمیتونید بازشون کنید، اگه زیاد معطل شدی
                     میتونی از <a href="https://doc.rust-lang.org/book/">رفرنس انگلیسی</a> بری جلو.
                 </p>
@@ -91,13 +84,19 @@ const fa = (n: number) => toPersianDigits(String(n));
                     <p class="mt-8">
                         <a
                             href={`/${entry.slug}/`}
-                            class="pager-link inline-block"
+                            class="pager-link pager-next inline-block"
                         >
-                            <span class="pager-label">بزن بریم</span>
-                            <span
-                                class="pager-title"
-                                set:html={titleToHtml(entry.title)}
-                            />
+                            <span class="pager-bar">
+                                <span class="pager-dir">start</span>
+                                <span class="pager-arrow">←</span>
+                            </span>
+                            <span class="pager-body">
+                                <span class="pager-cta">بزن بریم</span>
+                                <span
+                                    class="pager-title"
+                                    set:html={titleToHtml(entry.title)}
+                                />
+                            </span>
                         </a>
                     </p>
                 )
