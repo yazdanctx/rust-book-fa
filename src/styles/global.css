@@ -85,6 +85,21 @@
   --color-brand-hot: #ff7a7e;
   --color-brand-flare: #ffd7d8;
 
+  /* ── Code block surface ───────────────────────────────────────────────────
+     The one place the interface leaves black. A block is the densest thing on
+     the page and the thing a reader stares at longest, and lifting it onto its
+     own cool surface separates it from the prose more cleanly than a hairline
+     alone ever did.
+
+     It is a value, not an accent: at this depth the blue reads as "not the page"
+     rather than as a colour, which is why it can sit beside the brand red
+     without either one fighting the other. The bar is one step up from the
+     body, and the edge is a blue-grey rather than the interface's warm
+     `--color-border`, which went muddy against it. */
+  --color-code-surface: #0a0e1a;
+  --color-code-surface-bar: #0d1322;
+  --color-code-edge: #1e2637;
+
   /* Inline code: the brand red on a near-black red wash. The pair clears 4.8:1,
      so it stays legible at the 0.85em code spans run at. The border is the same
      red again, lifted just enough to draw the chip's edge without ringing it. */
@@ -1284,8 +1299,8 @@ a.pager-next:hover .pager-arrow {
    more; the copy button sits in the bar's flex row. */
 .code-block {
   max-width: 100%;
-  border: 1px solid var(--color-border);
-  background: var(--color-background);
+  border: 1px solid var(--color-code-edge);
+  background: var(--color-code-surface);
 }
 
 /* The window's title bar. Black like the block, separated by a hairline alone.
@@ -1299,8 +1314,8 @@ a.pager-next:hover .pager-arrow {
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.3rem 0.4rem 0.3rem 0.75rem;
-  background: var(--color-background);
-  border-block-end: 1px solid var(--color-border);
+  background: var(--color-code-surface-bar);
+  border-block-end: 1px solid var(--color-code-edge);
 }
 
 /* The language, set as a prompt: a lit block cursor and then the name, tracked
@@ -1343,7 +1358,7 @@ a.pager-next:hover .pager-arrow {
 /* Neutral like the rest of the bar — the button is chrome, not an accent. */
 .code-copy:hover {
   color: var(--color-foreground);
-  border-color: var(--color-border);
+  border-color: var(--color-code-edge);
 }
 
 /* Set by the click handler while the label reads "کپی شد". The one red left in

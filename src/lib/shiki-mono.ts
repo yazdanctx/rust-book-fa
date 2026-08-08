@@ -1,29 +1,27 @@
 import type { ThemeRegistration } from "shiki";
 
 /**
- * Near-monochrome syntax theme (SPEC §4.2).
+ * Monochrome syntax theme (SPEC §4.2).
  *
- * Structure is carried by tone and weight — comments recede to the muted grey,
- * strings sit one step below the text colour, punctuation drops away — with the
- * brand red reserved for the two things that make a block scannable at a
- * glance: the keywords that give it its shape, and the shell prompt that says a
- * block is a transcript rather than a program. Everything else stays grey, so
- * the red never has to compete with itself.
+ * Structure is carried entirely by tone and weight: keywords take pure white
+ * and bold, types and functions sit just below it, variables and constants step
+ * down again, strings and attributes further still, and comments and
+ * punctuation recede to the muted greys. Read down the ramp below and it is a
+ * single value scale from #fff to #78726d.
  *
- * The greys are the existing theme tokens and the reds are `--color-brand` and
- * a lighter step of it. Shiki emits inline styles, so these are literals here
- * and cannot read the CSS variables; keep them in sync with `global.css`.
+ * There is no colour in here at all. Red was reserved for keywords, macros and
+ * the shell prompt, but a code block is the densest content on the page, and
+ * the accent is worth more spent on the chrome around it — the language pip,
+ * the copy confirmation, the aside marker — where it still means something.
  *
- * The background is transparent and the base colour is the page foreground:
- * blocks sit on the page itself, bounded by their frame alone. Shiki writes
- * both into an inline style on the `<pre>`, which would otherwise win over any
- * rule in `global.css` — so they are set here rather than overridden there.
+ * Shiki emits inline styles and cannot read CSS variables, so these are
+ * literals; keep them in sync with `global.css`.
+ *
+ * The background is transparent and the base colour is the page foreground, so
+ * the block takes its surface from `.code-block` rather than from here. Shiki
+ * writes both into an inline style on the `<pre>`, which would otherwise win
+ * over any rule in `global.css`.
  */
-
-/** `--color-brand`. */
-const BRAND = "#e5484d";
-/** The brand lifted toward white, for tokens that sit inside dense lines. */
-const BRAND_LIGHT = "#ff8f8f";
 export const shikiMono: ThemeRegistration = {
   name: "mono",
   type: "dark",
@@ -59,7 +57,7 @@ export const shikiMono: ThemeRegistration = {
         "variable.language",
         "keyword.other.rust",
       ],
-      settings: { foreground: BRAND, fontStyle: "bold" },
+      settings: { foreground: "#ffffff", fontStyle: "bold" },
     },
     {
       scope: [
@@ -70,11 +68,11 @@ export const shikiMono: ThemeRegistration = {
       settings: { foreground: "#ffffff" },
     },
     {
-      // Macros are the loudest thing in most Rust listings — `println!` appears
-      // in nearly every one — so they take the lighter red rather than the full
-      // brand, which would put two saturated reds on the same line as `fn`.
+      // `println!` appears in nearly every listing, so a macro is the token most
+      // likely to repeat inside one block. It sits at the same level as a plain
+      // function rather than above it, to keep dense lines even.
       scope: ["entity.name.function.macro", "support.macro"],
-      settings: { foreground: BRAND_LIGHT },
+      settings: { foreground: "#ffffff" },
     },
     {
       scope: [
@@ -115,7 +113,7 @@ export const shikiMono: ThemeRegistration = {
     },
     {
       scope: ["entity.name.tag", "meta.tag"],
-      settings: { foreground: BRAND, fontStyle: "bold" },
+      settings: { foreground: "#ffffff", fontStyle: "bold" },
     },
     {
       scope: ["entity.other.attribute-name", "meta.attribute"],
@@ -124,7 +122,7 @@ export const shikiMono: ThemeRegistration = {
     {
       // Terminal transcripts. The prompt is the one glyph that tells you a
       // block is something you type into rather than something you compile, so
-      // it gets the brand red — the same marker as the chrome bar's cursor.
+      // it stays at full white while the command beside it does not.
       //
       // This only reaches ```console blocks, where the grammar really does emit
       // a prompt scope (`punctuation.separator.prompt.shell-session`). The
@@ -138,7 +136,7 @@ export const shikiMono: ThemeRegistration = {
         "punctuation.separator.prompt",
         "entity.other.prompt",
       ],
-      settings: { foreground: BRAND },
+      settings: { foreground: "#ffffff" },
     },
     {
       scope: ["invalid", "invalid.illegal"],
