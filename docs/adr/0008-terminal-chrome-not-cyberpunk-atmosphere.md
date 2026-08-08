@@ -51,6 +51,20 @@ pip and the copy confirmation all stop registering — the block is the densest
 content on the page, and red is the budget that pays for meaning everywhere
 else.
 
+*Amended.* The syntax theme is now **fully** monochrome, not near-monochrome:
+red has been removed from keywords, macros, tags and the shell prompt, leaving a
+single value scale from `#fff` to the muted grey. Structure is carried by tone
+and weight alone. This tightens the budget rather than relaxing it — the accent
+buys more in the chrome around the block, where it still means something.
+
+In the same change the block gained its own **dark blue surface**, the one place
+the interface leaves black. This is a real exception to "no second hue", and it
+is narrow on purpose: it is a value, not an accent. At that depth the blue reads
+as "not the page" rather than as a colour, which is why it can sit beside the
+brand red without either fighting the other. It applies to the code block
+surface, its bar and its edge — nowhere else. Links remain the only other
+non-brand colour in the interface.
+
 The general rule the budgets share: **bounded elements may carry character;
 repeating body elements may not.** A `kbd`, an `hr`, a table header or a pager
 appears every few screens. A list bullet appears fifty times a page.
