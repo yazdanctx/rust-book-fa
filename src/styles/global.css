@@ -273,15 +273,12 @@ a.nav-link[aria-current="page"] {
    trims the tail of a long slug and keeps the identifying head — the 66-char
    ch07-00 is the case that matters. */
 .nav-path {
-  display: block;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  line-height: 1.5;
+  font-size: 0.7em;
   color: var(--color-muted-foreground);
+  margin-inline-end: 0.6em;
   unicode-bidi: isolate;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* On the current page the path lifts out of the grey along with the title, so
@@ -289,15 +286,6 @@ a.nav-link[aria-current="page"] {
    line. */
 a.nav-link[aria-current="page"] .nav-path {
   color: var(--color-brand);
-}
-
-.nav-number {
-  color: var(--color-muted-foreground);
-  font-size: 0.8em;
-  margin-inline-end: 0.4em;
-  /* Numbering is Persian-Indic but still a number: isolate it so it cannot
-     reorder against the title text beside it. */
-  unicode-bidi: isolate;
 }
 
 .nav-disabled {

@@ -34,7 +34,7 @@ function isOpen(node: BookNode): boolean {
     {
       tree.map((node) => (
         <li>
-          <SidebarRow node={node} current={current} chapter />
+          <SidebarRow node={node} current={current} />
 
           {node.children.length > 0 && isOpen(node) && (
             <ol class="nav-children">
