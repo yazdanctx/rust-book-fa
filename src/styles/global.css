@@ -441,8 +441,8 @@ a.nav-link[aria-current="page"] .nav-path {
 
   /* The quote and the home panel keep a lit frame, they just stop travelling.
      Parking the conic sweep would leave the bright arc stranded on whichever
-     edge it happened to start on, so each ring is redrawn as a symmetric
-     gradient in its own light. */
+     edge it happened to start on, so the ring is redrawn as a symmetric
+     gradient instead. */
   .prose blockquote::after {
     animation: none;
     background: linear-gradient(
@@ -531,16 +531,15 @@ a.nav-link[aria-current="page"] .nav-path {
    The frame carries a travelling arc, like an aside — the same technique, so
    the two read as one idiom rather than two effects — but deliberately not the
    same light. The aside's arc is red because red is what marks a diagnostic;
-   this one is white, because the panel is not warning about anything. It is the
-   book's title card, and a highlight running a polished edge suits it better
-   than a charge running a circuit.
+   this one is white, because the panel warns about nothing. Two arcs, opposite
+   each other, rather than the aside's one: that reads as a sweep across a
+   surface rather than current chasing round a circuit.
 
-   Two arcs, opposite each other, rather than the aside's one. That is what
-   makes it read as a sweep across a surface rather than as current chasing
-   round it, and it is the difference you notice without being able to name.
+   The frame and the bloom go neutral with it — a red border under a white arc
+   would leave the panel arguing with itself.
 
-   The frame and the bloom go neutral with it: a red border under a white arc
-   would leave the panel arguing with itself.                                  */
+   This is the second always-on animation on the site, where ADR-0008 had
+   allowed exactly one; it is recorded there as an amendment.                  */
 
 .home-panel {
   position: relative;
@@ -1255,15 +1254,12 @@ a.pager-next:hover .pager-arrow {
   background: conic-gradient(
     from var(--lightning-angle, 0deg),
     transparent 0deg,
-    color-mix(in srgb, var(--color-foreground) 22%, transparent) 42deg,
-    var(--color-foreground) 74deg,
-    color-mix(in srgb, var(--color-foreground) 22%, transparent) 106deg,
-    transparent 148deg,
-    transparent 180deg,
-    color-mix(in srgb, var(--color-foreground) 22%, transparent) 222deg,
-    var(--color-foreground) 254deg,
-    color-mix(in srgb, var(--color-foreground) 22%, transparent) 286deg,
-    transparent 328deg,
+    transparent 205deg,
+    color-mix(in srgb, var(--color-brand) 50%, transparent) 265deg,
+    var(--color-brand) 297deg,
+    var(--color-brand-flare) 306deg,
+    var(--color-brand) 315deg,
+    color-mix(in srgb, var(--color-brand) 50%, transparent) 347deg,
     transparent 360deg
   );
 
@@ -1276,9 +1272,7 @@ a.pager-next:hover .pager-arrow {
     linear-gradient(#000 0 0);
   mask-composite: exclude;
 
-  /* Slower than the aside's seven seconds: two arcs pass any given corner twice
-     as often, so the same period would read as twice the activity. */
-  animation: lightning 11s linear infinite;
+  animation: lightning 7s linear infinite;
 }
 
 @keyframes lightning {
