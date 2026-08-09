@@ -1446,10 +1446,34 @@ a.pager-next:hover .pager-arrow {
 
    No `position: relative` — there is nothing absolutely positioned inside any
    more; the copy button sits in the bar's flex row. */
+/* The body is glass: a translucent surface over a blurred backdrop, so the
+   page's grid reads through the block softened rather than either showing
+   through sharp or being painted over flat.
+
+   The surface stays at 82% rather than going properly transparent. This is the
+   densest content on the page and the thing a reader stares at longest — the
+   blur is there to give the block depth, not to put texture behind the code. */
 .code-block {
   max-width: 100%;
   border: 1px solid var(--color-code-edge);
-  background: var(--color-code-surface);
+  background: color-mix(in srgb, var(--color-code-surface) 82%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+/* Without `backdrop-filter` the translucency would leave the grid sitting sharp
+   behind the code, which is worse than no effect at all. Fall back to the flat
+   surface.
+
+   The test is the unprefixed property alone, deliberately. Lightning CSS strips
+   the `-webkit-` declaration for the configured targets, so on a browser that
+   only implements the prefixed form there would be no blur to apply — testing
+   for the prefix too would report support, skip this fallback, and leave a
+   translucent block with a sharp grid behind the code. */
+@supports not (backdrop-filter: blur(1px)) {
+  .code-block {
+    background: var(--color-code-surface);
+  }
 }
 
 /* The window's title bar. Black like the block, separated by a hairline alone.
@@ -1463,6 +1487,9 @@ a.pager-next:hover .pager-arrow {
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.3rem 0.4rem 0.3rem 0.75rem;
+  /* Fully opaque, so the bar stays a solid ledge while the body behind it is
+     glass. It is the block's chrome — it should not shimmer with whatever
+     happens to be underneath. */
   background: var(--color-code-surface-bar);
   border-block-end: 1px solid var(--color-code-edge);
 }
