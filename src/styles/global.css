@@ -483,6 +483,12 @@ a.nav-link[aria-current="page"] .nav-path {
    document flow. The sidebar paints its own background on top, so it never
    shows through there.
 
+   It covers the full viewport rather than fading out partway down, because the
+   code blocks are glass and glass over nothing is just a dark panel. The lower
+   half is knocked back to a little over half strength rather than to nothing,
+   which keeps something behind a block wherever it happens to sit while staying
+   quiet enough to pass behind a paragraph.
+
    The fade is painted rather than masked. `mask-image` would be tidier, but if
    it ever failed to apply the grid would run at full strength the whole way
    down. An occluding layer cannot fail that way: if it renders at all, it
@@ -490,20 +496,21 @@ a.nav-link[aria-current="page"] .nav-path {
 
 .page-backdrop {
   position: fixed;
-  inset-block-start: 0;
-  inset-inline: 0;
-  height: 70vh;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
 
   /* Topmost layer first. */
   background-image:
-    /* the page, painted back over the lower part */
+    /* the page, painted partly back over the lower half — partly, not fully.
+       The grid has to survive the whole way down, because the code blocks are
+       glass and glass over nothing is just a dark panel. */
     linear-gradient(
       to bottom,
       transparent 0%,
-      transparent 38%,
-      var(--color-background) 92%
+      transparent 30%,
+      color-mix(in srgb, var(--color-background) 55%, transparent) 78%,
+      color-mix(in srgb, var(--color-background) 55%, transparent) 100%
     ),
     /* the glow, where a screen would be brightest */
     radial-gradient(
@@ -1450,15 +1457,24 @@ a.pager-next:hover .pager-arrow {
    page's grid reads through the block softened rather than either showing
    through sharp or being painted over flat.
 
-   The surface stays at 82% rather than going properly transparent. This is the
-   densest content on the page and the thing a reader stares at longest — the
-   blur is there to give the block depth, not to put texture behind the code. */
+   Glass only reads if there is something behind it. A first pass at 82% was
+   invisible for that reason — 18% of a blurred 12%-white grid is nothing — so
+   the surface is well under half here, and the blur is heavy enough that the
+   grid arrives as a wash rather than as dots. `saturate` gives the little that
+   comes through some life; without it a blurred greyscale grid is just grey.
+
+   The inset hairline along the top is what actually sells it. A pane of glass
+   catches light on its top edge, and that highlight is the difference between
+   "translucent panel" and "glass".                                            */
 .code-block {
   max-width: 100%;
   border: 1px solid var(--color-code-edge);
-  background: color-mix(in srgb, var(--color-code-surface) 82%, transparent);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--color-code-surface) 45%, transparent);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-foreground) 8%, transparent),
+    0 8px 30px -20px #000;
 }
 
 /* Without `backdrop-filter` the translucency would leave the grid sitting sharp
