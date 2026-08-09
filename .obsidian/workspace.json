@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "99183194a9f7586e",
+        "id": "91ff286c6aeebad5",
         "type": "tabs",
         "children": [
           {
-            "id": "105269a97376855b",
+            "id": "bffc3dfd1239b769",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "src-fa/ch01-02-hello-world.md",
+                "file": "src-fa/ch02-00-guessing-game-tutorial.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "ch01-02-hello-world"
+              "title": "ch02-00-guessing-game-tutorial"
             }
           }
         ]
@@ -83,7 +83,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "e279f1f149ec7dbf",
@@ -99,7 +100,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "src-fa/ch01-02-hello-world.md",
+                "file": "src-fa/ch02-00-guessing-game-tutorial.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +119,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "src-fa/ch01-02-hello-world.md",
+                "file": "src-fa/ch02-00-guessing-game-tutorial.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -161,7 +162,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "src-fa/ch01-02-hello-world.md",
+                "file": "src-fa/ch02-00-guessing-game-tutorial.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -188,23 +189,28 @@
       "bases:Create new base": false
     }
   },
-  "active": "105269a97376855b",
+  "active": "bffc3dfd1239b769",
   "lastOpenFiles": [
-    "dist/_astro/BookLayout.xQbKfNtQ.css",
-    "dist/_astro/BookLayout.ChgZBvSz.css",
-    "dist/_astro/BookLayout.BZ44UM66.css",
-    "dist/_astro/BookLayout.Cl1_XnN4.css",
-    "dist/_astro/BookLayout.CKNxlu8L.css",
-    "dist/_astro/BookLayout.C2xs9owC.css",
-    "dist/_astro/BookLayout.DRMFUjHO.css",
-    "dist/_astro/BookLayout.C_0ygy2m.css",
-    "dist/_astro/BookLayout.DnmE9qDa.css",
-    "dist/_astro/BookLayout.CxIuG6pq.css",
+    "src-fa/ch02-00-guessing-game-tutorial.md",
+    "src-fa/ch01-02-hello-world.md",
+    "tmp.md",
+    "src-fa/ch01-01-installation.md",
+    "src-fa/ch01-03-hello-cargo.md",
+    "src-fa/ch01-00-getting-started.md",
     "dist/sitemap-index.xml",
+    "dist/sitemap-0.xml",
+    "dist/index.html",
+    "dist/ch02-00-guessing-game-tutorial/index.html",
+    "dist/ch02-00-guessing-game-tutorial",
+    "dist/ch01-03-hello-cargo/index.html",
+    "dist/ch01-03-hello-cargo",
+    "dist/ch01-02-hello-world/index.html",
+    "dist/ch01-02-hello-world",
+    "dist/ch01-01-installation/index.html",
     "dist/toji.png",
-    "dist/img/ferris/does_not_compile.svg",
-    "dist/img/ferris/panics.svg",
     "dist/img/ferris/not_desired_behavior.svg",
+    "dist/img/ferris/panics.svg",
+    "dist/img/ferris/does_not_compile.svg",
     "dist/img/trpl21-01.png",
     "dist/img/trpl17-09.svg",
     "dist/img/trpl17-08.svg",
@@ -212,10 +218,6 @@
     "dist/img/trpl17-06.svg",
     "dist/img/trpl17-05.svg",
     "docs/adr/0008-terminal-chrome-not-cyberpunk-atmosphere.md",
-    "src-fa/ch01-01-installation.md",
-    "src-fa/ch01-03-hello-cargo.md",
-    "src-fa/ch01-02-hello-world.md",
-    "src-fa/ch00-00-introduction.md",
-    "src-fa/ch01-00-getting-started.md"
+    "src-fa/ch00-00-introduction.md"
   ]
 }
