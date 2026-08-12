@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "src-fa/ch01-02-hello-world.md",
+                "file": "src-fa/ch01-03-hello-cargo.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "ch01-02-hello-world"
+              "title": "ch01-03-hello-cargo"
             }
           }
         ]
@@ -190,28 +190,17 @@
   },
   "active": "bffc3dfd1239b769",
   "lastOpenFiles": [
-    "src-fa/ch01-01-installation.md",
-    "src-fa/ch01-00-getting-started.md",
-    "src-fa/ch03-01-variables-and-mutability.md",
-    "src-fa/ch03-02-data-types.md",
-    "src-fa/ch03-00-common-programming-concepts.md",
-    "src-fa/ch03-03-how-functions-work.md",
     "src-fa/ch01-02-hello-world.md",
-    "src-fa/ch03-04-comments.md",
-    "src-fa/ch03-05-control-flow.md",
-    "src-fa/ch02-00-guessing-game-tutorial.md",
-    "tmp.md",
-    "src-fa/ch01-03-hello-cargo.md",
-    "dist/sitemap-index.xml",
-    "dist/sitemap-0.xml",
-    "dist/index.html",
-    "dist/ch02-00-guessing-game-tutorial/index.html",
-    "dist/ch02-00-guessing-game-tutorial",
-    "dist/ch01-03-hello-cargo/index.html",
-    "dist/ch01-03-hello-cargo",
-    "dist/ch01-02-hello-world/index.html",
-    "dist/ch01-02-hello-world",
-    "dist/ch01-01-installation/index.html",
+    "dist/pagefind/pagefind.js",
+    "dist/pagefind/wasm.unknown.pagefind",
+    "dist/pagefind/pagefind-entry.json",
+    "dist/pagefind/pagefind-component-ui.css",
+    "dist/pagefind/pagefind-modular-ui.css",
+    "dist/pagefind/pagefind-component-ui.js",
+    "dist/pagefind/pagefind-ui.js",
+    "dist/pagefind/pagefind-worker.js",
+    "dist/pagefind/pagefind-modular-ui.js",
+    "dist/pagefind/pagefind-ui.css",
     "dist/toji.png",
     "dist/img/ferris/not_desired_behavior.svg",
     "dist/img/ferris/panics.svg",
@@ -222,6 +211,17 @@
     "dist/img/trpl17-07.svg",
     "dist/img/trpl17-06.svg",
     "dist/img/trpl17-05.svg",
+    "src-fa/ch01-01-installation.md",
+    "src-fa/ch01-00-getting-started.md",
+    "src-fa/ch03-01-variables-and-mutability.md",
+    "src-fa/ch03-02-data-types.md",
+    "src-fa/ch03-00-common-programming-concepts.md",
+    "src-fa/ch03-03-how-functions-work.md",
+    "src-fa/ch03-04-comments.md",
+    "src-fa/ch03-05-control-flow.md",
+    "src-fa/ch02-00-guessing-game-tutorial.md",
+    "tmp.md",
+    "src-fa/ch01-03-hello-cargo.md",
     "docs/adr/0008-terminal-chrome-not-cyberpunk-atmosphere.md",
     "src-fa/ch00-00-introduction.md"
   ]
