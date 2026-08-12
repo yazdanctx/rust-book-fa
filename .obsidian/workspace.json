@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "src-fa/ch02-00-guessing-game-tutorial.md",
+                "file": "src-fa/ch01-02-hello-world.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "ch02-00-guessing-game-tutorial"
+              "title": "ch01-02-hello-world"
             }
           }
         ]
@@ -83,8 +83,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "e279f1f149ec7dbf",
@@ -191,12 +190,18 @@
   },
   "active": "bffc3dfd1239b769",
   "lastOpenFiles": [
-    "src-fa/ch02-00-guessing-game-tutorial.md",
-    "src-fa/ch01-02-hello-world.md",
-    "tmp.md",
     "src-fa/ch01-01-installation.md",
-    "src-fa/ch01-03-hello-cargo.md",
     "src-fa/ch01-00-getting-started.md",
+    "src-fa/ch03-01-variables-and-mutability.md",
+    "src-fa/ch03-02-data-types.md",
+    "src-fa/ch03-00-common-programming-concepts.md",
+    "src-fa/ch03-03-how-functions-work.md",
+    "src-fa/ch01-02-hello-world.md",
+    "src-fa/ch03-04-comments.md",
+    "src-fa/ch03-05-control-flow.md",
+    "src-fa/ch02-00-guessing-game-tutorial.md",
+    "tmp.md",
+    "src-fa/ch01-03-hello-cargo.md",
     "dist/sitemap-index.xml",
     "dist/sitemap-0.xml",
     "dist/index.html",
