@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "src-fa/ch01-03-hello-cargo.md",
+                "file": "src-fa/ch02-00-guessing-game-tutorial.md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "ch01-03-hello-cargo"
+              "title": "ch02-00-guessing-game-tutorial"
             }
           }
         ]
@@ -190,6 +190,7 @@
   },
   "active": "bffc3dfd1239b769",
   "lastOpenFiles": [
+    "src-fa/ch01-03-hello-cargo.md",
     "src-fa/ch01-02-hello-world.md",
     "dist/pagefind/pagefind.js",
     "dist/pagefind/wasm.unknown.pagefind",
@@ -221,7 +222,6 @@
     "src-fa/ch03-05-control-flow.md",
     "src-fa/ch02-00-guessing-game-tutorial.md",
     "tmp.md",
-    "src-fa/ch01-03-hello-cargo.md",
     "docs/adr/0008-terminal-chrome-not-cyberpunk-atmosphere.md",
     "src-fa/ch00-00-introduction.md"
   ]
